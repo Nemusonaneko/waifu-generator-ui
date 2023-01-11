@@ -30,6 +30,8 @@ async function generateWaifu({
       return { url, positive: values?.positive, negative: values?.negative };
     } else if (res.status === 429) {
       throw new Error("Rate limit reached. Try again later");
+    } else {
+      throw new Error("Server Error");
     }
   } catch (error: any) {
     throw new Error(error);
@@ -50,7 +52,7 @@ export default function useGenerateWaifu() {
       },
       onError: (error: any) => {
         showNotification({
-          message: error.toString(),
+          message: error.message.toString(),
           color: "red",
           loading: false,
         });
