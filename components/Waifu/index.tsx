@@ -55,7 +55,7 @@ export default function Waifu() {
         <Center>
           <Box sx={{ width: 512 }} pt={5}>
             <Group position="right">
-              <MintButton generating={generating} url={waifuData?.url} />
+              {/* <MintButton generating={generating} url={waifuData?.url} /> */}
               <DownloadButton generating={generating} url={waifuData?.url} />
             </Group>
           </Box>
