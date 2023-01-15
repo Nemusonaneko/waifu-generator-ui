@@ -9,9 +9,9 @@ export default function Disclaimer() {
           Model used:{" "}
           <Link
             target="_blank"
-            href="https://huggingface.co/Linaqruf/anything-v3.0"
+            href="https://huggingface.co/andite/anything-v4.0"
           >
-            Anything V3
+            Anything V4
           </Link>
         </Text>
 
