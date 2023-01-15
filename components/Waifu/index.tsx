@@ -14,8 +14,19 @@ import { useForm } from "@mantine/form";
 import { FormValues } from "../../types";
 import GeneratedPrompt from "../GeneratedPrompt";
 import MintButton from "../MintButton";
+import React from "react";
 
 export default function Waifu() {
+  const [countdown, setCountdown] = React.useState<number>(0);
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      if (countdown > 0) {
+        setCountdown(countdown - 1);
+      }
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [countdown]);
+
   const {
     mutate: generate,
     data: waifuData,
@@ -30,11 +41,25 @@ export default function Waifu() {
   });
 
   const onSubmit = (values: FormValues) => {
-    generate({ prevBlob: waifuData?.url, values: values, random: false });
+    generate(
+      { prevBlob: waifuData?.url, values: values, random: false },
+      {
+        onSettled: () => {
+          setCountdown(10);
+        },
+      }
+    );
   };
 
   const onRandom = () => {
-    generate({ prevBlob: waifuData?.url, values: null, random: true });
+    generate(
+      { prevBlob: waifuData?.url, values: null, random: true },
+      {
+        onSettled: () => {
+          setCountdown(10);
+        },
+      }
+    );
   };
 
   return (
@@ -85,12 +110,17 @@ export default function Waifu() {
               radius="md"
               size="md"
               onClick={onRandom}
-              disabled={generating}
+              disabled={generating || countdown > 0}
             >
-              Surprise Me
+              Surprise Me {countdown > 0 && `(${countdown})`}
             </Button>
-            <Button radius="md" size="md" type="submit" disabled={generating}>
-              Generate
+            <Button
+              radius="md"
+              size="md"
+              type="submit"
+              disabled={generating || countdown > 0}
+            >
+              Generate {countdown > 0 && `(${countdown})`}
             </Button>
           </Group>
         </form>
