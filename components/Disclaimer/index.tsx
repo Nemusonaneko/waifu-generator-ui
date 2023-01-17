@@ -5,7 +5,7 @@ export default function Disclaimer() {
   return (
     <>
       <Footer height={100}>
-        <Text pb={5}>
+        <Text pb={1}>
           Model used:{" "}
           <Link
             target="_blank"
@@ -14,18 +14,28 @@ export default function Disclaimer() {
             Anything V4
           </Link>
         </Text>
-
+        <Text pb={1}>
+          Site and server run by:{" "}
+          <Link target="_blank" href="https://twitter.com/nemusonaUwU">
+            @nemusonaUwU
+          </Link> {" "} and their loyal RTX 4090
+        </Text>
+        <Text pb={5}>
+          If you wanna donate magic internet money, you can donate to
+          nemusona.eth
+        </Text>
+        <Text>Disclaimers:</Text>
         <Text size="sm" pb={3}>
-          {`You can't use the model to deliberately produce nor share illegal or
+          {`-You can't use the model to deliberately produce nor share illegal or
           harmful outputs or content`}
         </Text>
         <Text size="sm" pb={3}>
-          The authors claims no rights on the outputs you generate, you are free
+          -The authors claims no rights on the outputs you generate, you are free
           to use them and are accountable for their use which must not go
           against the provisions set in the license
         </Text>
         <Text size="sm" pb={3}>
-          You may re-distribute the weights and use the model commercially
+          -You may re-distribute the weights and use the model commercially
           and/or as a service. If you do, please be aware you have to include
           the same use restrictions as the ones in the license and share a copy
           of the CreativeML OpenRAIL-M to all your users (please read the
