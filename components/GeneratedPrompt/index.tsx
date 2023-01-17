@@ -11,8 +11,12 @@ export default function GeneratedPrompt({
     <>
       <Center>
         <Box sx={{ width: 512 }}>
-          {positive && <Text size="sm">{`Positive: ${positive}`}</Text>}
-          {negative && <Text size="sm">{`Negative: ${negative}`}</Text>}
+          {positive && positive.length > 0 && (
+            <Text size="sm">{`Positive: ${positive}`}</Text>
+          )}
+          {negative && negative.length > 0 && (
+            <Text size="sm">{`Negative: ${negative}`}</Text>
+          )}
         </Box>
       </Center>
     </>

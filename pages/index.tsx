@@ -1,4 +1,4 @@
-import Disclaimer from "../components/Disclaimer";
+import Info from "../components/Info";
 import Top from "../components/Top";
 import Waifu from "../components/Waifu";
 import Layout from "../layout";
@@ -8,7 +8,7 @@ export default function Home() {
     <Layout>
       <Top />
       <Waifu />
-      <Disclaimer/>
+      <Info />
     </Layout>
   );
 }

@@ -7,13 +7,11 @@ import {
   Button,
   Group,
 } from "@mantine/core";
-
 import useGenerateWaifu from "../../queries/useGenerateWaifu";
 import DownloadButton from "../DownloadButton";
 import { useForm } from "@mantine/form";
 import { FormValues } from "../../types";
 import GeneratedPrompt from "../GeneratedPrompt";
-import MintButton from "../MintButton";
 import React from "react";
 
 export default function Waifu() {
@@ -51,17 +49,6 @@ export default function Waifu() {
     );
   };
 
-  const onRandom = () => {
-    generate(
-      { prevBlob: waifuData?.url, values: null, random: true },
-      {
-        onSettled: () => {
-          setCountdown(15);
-        },
-      }
-    );
-  };
-
   return (
     <>
       <Box pb={10}>
@@ -85,10 +72,12 @@ export default function Waifu() {
             </Group>
           </Box>
         </Center>
-        <GeneratedPrompt
-          positive={waifuData?.positive}
-          negative={waifuData?.negative}
-        />
+        {waifuData && (
+          <GeneratedPrompt
+            positive={waifuData.positive}
+            negative={waifuData.negative}
+          />
+        )}
         <form
           onSubmit={form.onSubmit((values: FormValues) => onSubmit(values))}
         >
@@ -106,14 +95,14 @@ export default function Waifu() {
             disabled={generating}
           />
           <Group position="right" mt="md">
-            <Button
+            {/* <Button
               radius="md"
               size="md"
               onClick={onRandom}
               disabled={generating || countdown > 0}
             >
               Surprise Me {countdown > 0 && `(${countdown})`}
-            </Button>
+            </Button> */}
             <Button
               radius="md"
               size="md"
