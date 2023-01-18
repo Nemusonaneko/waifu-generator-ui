@@ -17,11 +17,11 @@ export default function Info() {
                 prompt with space)
               </Text>
               <Text size="sm">
-                - Number notation works as well (i.e. prompt:1.5)
-              </Text>
-              <Text size="sm">
                 - Emphasize certain prompts by wrapping them in layers of
                 paraenthesis. i.e. (some emphasis), ((more emphasis))
+              </Text>
+              <Text size="sm">
+                - Number notation works for emphasis as well (i.e. prompt:1.5)
               </Text>
               <Text size="sm">- Be specific with your prompts</Text>
               <Text size="sm">
