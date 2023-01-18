@@ -21,7 +21,7 @@ export default function Info() {
               </Text>
               <Text size="sm">
                 - Emphasize certain prompts by wrapping them in layers of
-                paraenthesis. i.e. (some emphasis), [[more emphasis]]
+                paraenthesis. i.e. (some emphasis), ((more emphasis))
               </Text>
               <Text size="sm">- Be specific with your prompts</Text>
               <Text size="sm">
