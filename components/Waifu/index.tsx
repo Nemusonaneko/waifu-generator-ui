@@ -43,7 +43,7 @@ export default function Waifu() {
       { prevBlob: waifuData?.url, values: values, random: false },
       {
         onSettled: () => {
-          setCountdown(15);
+          setCountdown(30);
         },
       }
     );
