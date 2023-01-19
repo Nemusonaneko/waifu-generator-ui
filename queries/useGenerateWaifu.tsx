@@ -25,7 +25,7 @@ async function generateWaifu({
       body: body,
     }).then((res) => {
       if (res.ok) return res;
-      throw new Error("Try again later (Probably Rate Limited)");
+      throw new Error("Try again later (Probably rate limited or server got rekt)");
     });
     if (res.status === 200) {
       const blob = await res.blob();
@@ -37,7 +37,7 @@ async function generateWaifu({
       throw new Error("Server Error");
     }
   } catch (error: any) {
-    throw new Error("Try again later (Probably Rate Limited)");
+    throw new Error("Try again later (Probably rate limited or server got rekt)");
   }
 }
 
