@@ -43,7 +43,7 @@ export default function Waifu() {
       { prevBlob: waifuData?.url, values: values, random: false },
       {
         onSettled: () => {
-          setCountdown(15);
+          setCountdown(20);
         },
       }
     );
@@ -82,15 +82,15 @@ export default function Waifu() {
           onSubmit={form.onSubmit((values: FormValues) => onSubmit(values))}
         >
           <TextInput
-            label=" Positive Prompts"
-            placeholder="kawaii, llamas, you"
+            label="Positive Prompts"
+            placeholder="What you want the AI to include"
             {...form.getInputProps("positive")}
             disabled={generating}
             pb={3}
           />
           <TextInput
             label="Negative Prompts"
-            placeholder="sbf, caroline, alameda"
+            placeholder="What you want the AI to avoid"
             {...form.getInputProps("negative")}
             disabled={generating}
           />
