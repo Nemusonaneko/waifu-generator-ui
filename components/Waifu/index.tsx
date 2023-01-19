@@ -13,6 +13,7 @@ import { useForm } from "@mantine/form";
 import { FormValues } from "../../types";
 import GeneratedPrompt from "../GeneratedPrompt";
 import React from "react";
+import useGetStatus from "../../queries/useGetStatus";
 
 export default function Waifu() {
   const [countdown, setCountdown] = React.useState<number>(0);
@@ -24,6 +25,8 @@ export default function Waifu() {
     }, 1000);
     return () => clearInterval(interval);
   }, [countdown]);
+
+  const { refetch: fetchStatus } = useGetStatus();
 
   const {
     mutate: generate,
@@ -39,11 +42,12 @@ export default function Waifu() {
   });
 
   const onSubmit = (values: FormValues) => {
+    fetchStatus();
     generate(
       { prevBlob: waifuData?.url, values: values, random: false },
       {
         onSettled: () => {
-          setCountdown(20);
+          setCountdown(15);
         },
       }
     );
