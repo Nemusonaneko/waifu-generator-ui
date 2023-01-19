@@ -5,9 +5,8 @@ import Layout from "../layout";
 import useGetStatus from "../queries/useGetStatus";
 
 export default function Home() {
-
   useGetStatus();
-  
+
   return (
     <Layout>
       <Top />
