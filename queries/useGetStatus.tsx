@@ -18,7 +18,7 @@ async function getStatus() {
 
 export default function useGetStatus() {
   return useQuery(["status"], () => getStatus(), {
-    refetchInterval: 10000,
+    refetchInterval: 60000,
     onSuccess: () => {
       // showNotification({
       //   message: "Server is active",
