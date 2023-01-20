@@ -50,14 +50,12 @@ export default function Waifu() {
         loading: false,
       });
     });
-    generate(
-      { prevBlob: waifuData?.url, values: values, random: false },
-      {
-        onSettled: () => {
-          setCountdown(15);
-        },
-      }
-    );
+    if (amtInQueue && amtInQueue > 10) {
+      setCountdown(30);
+    } else {
+      setCountdown(20);
+    }
+    generate({ prevBlob: waifuData?.url, values: values, random: false });
   };
 
   return (
