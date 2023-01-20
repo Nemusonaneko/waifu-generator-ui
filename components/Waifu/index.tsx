@@ -6,7 +6,7 @@ import {
   Button,
   Group,
   Textarea,
-  Text
+  Text,
 } from "@mantine/core";
 import useGenerateWaifu from "../../queries/useGenerateWaifu";
 import DownloadButton from "../DownloadButton";
@@ -118,7 +118,7 @@ export default function Waifu() {
             >
               Surprise Me {countdown > 0 && `(${countdown})`}
             </Button> */}
-            <Text>{`Current Queue: ${amtInQueue ? amtInQueue : "🙃"}`}</Text>
+            <Text>{`Being Generated: ${amtInQueue ? amtInQueue : "idk"}`}</Text>
             <Button
               radius="md"
               size="md"
