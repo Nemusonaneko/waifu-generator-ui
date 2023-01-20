@@ -3,11 +3,14 @@ import { useQuery } from "react-query";
 
 async function getStatus() {
   try {
-    const res = await fetch("https://waifus-api.nemusona.com/api/status", {
+    const res = await fetch("https://waifus-api.nemusona.com/queue", {
       method: "GET",
     });
     if (res.status === 200) {
-      return true;
+      const result = await res.json();
+      return (
+        Number(result.active) + Number(result.delayed) + Number(result.waiting)
+      );
     } else {
       throw new Error("Server Offline");
     }

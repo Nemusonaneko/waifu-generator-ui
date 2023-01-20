@@ -17,7 +17,7 @@ async function generateWaifu({
           prompt: values?.positive || "",
           negative_prompt: values?.negative || "",
         });
-    const res = await fetch(`https://waifus-api.nemusona.com/api/generate`, {
+    const res = await fetch(`https://waifus-api.nemusona.com/generate`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -64,7 +64,7 @@ export default function useGenerateWaifu() {
         showNotification({
           message: "Generating waifu",
           color: "yellow",
-          loading: false,
+          loading: true,
         });
       },
     }

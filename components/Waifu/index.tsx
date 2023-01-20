@@ -14,6 +14,7 @@ import { FormValues } from "../../types";
 import GeneratedPrompt from "../GeneratedPrompt";
 import React from "react";
 import useGetStatus from "../../queries/useGetStatus";
+import { showNotification } from "@mantine/notifications";
 
 export default function Waifu() {
   const [countdown, setCountdown] = React.useState<number>(0);
@@ -26,7 +27,7 @@ export default function Waifu() {
     return () => clearInterval(interval);
   }, [countdown]);
 
-  const { refetch: fetchStatus } = useGetStatus();
+  const { refetch: fetchStatus, data: amtInQueue } = useGetStatus();
 
   const {
     mutate: generate,
@@ -42,7 +43,13 @@ export default function Waifu() {
   });
 
   const onSubmit = (values: FormValues) => {
-    fetchStatus();
+    fetchStatus().then(() => {
+      showNotification({
+        message: `There are ${amtInQueue} ppl in queue`,
+        color: "yellow",
+        loading: false,
+      });
+    });
     generate(
       { prevBlob: waifuData?.url, values: values, random: false },
       {
@@ -71,7 +78,6 @@ export default function Waifu() {
         <Center>
           <Box sx={{ width: 512 }} pt={5}>
             <Group position="right">
-              {/* <MintButton generating={generating} url={waifuData?.url} /> */}
               <DownloadButton generating={generating} url={waifuData?.url} />
             </Group>
           </Box>
