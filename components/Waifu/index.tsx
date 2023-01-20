@@ -53,7 +53,7 @@ export default function Waifu() {
           color: "yellow",
           loading: false,
         });
-        const cooldown = amtInQueue * 2.5;
+        const cooldown = Math.round(amtInQueue * 2.5);
         if (cooldown < 30) {
           setCountdown(30);
         } else {
