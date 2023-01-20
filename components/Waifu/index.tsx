@@ -50,10 +50,10 @@ export default function Waifu() {
         loading: false,
       });
     });
-    if (amtInQueue && amtInQueue > 10) {
+    if (amtInQueue && amtInQueue > 15) {
       setCountdown(30);
     } else {
-      setCountdown(20);
+      setCountdown(15);
     }
     generate({ prevBlob: waifuData?.url, values: values, random: false });
   };
