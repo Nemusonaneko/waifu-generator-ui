@@ -56,11 +56,11 @@ export default function Waifu() {
         const cooldown = Math.round(amtInQueue * 2.5);
         if (cooldown < 30) {
           setCountdown(30);
-        } else {
+        } else if (cooldown <= 60) {
           setCountdown(cooldown);
+        } else {
+          setCountdown(60);
         }
-      } else {
-        setCountdown(60);
       }
     });
     generate({ prevBlob: waifuData?.url, values: values, random: false });
