@@ -46,7 +46,7 @@ export default function Waifu() {
   const onSubmit = (values: FormValues) => {
     fetchStatus().then(() => {
       if (amtInQueue) {
-        const eta = amtInQueue * 1.5;
+        const eta = amtInQueue * 1.8;
         showNotification({
           message: `There are ${amtInQueue} ppl in queue (ETA ${eta.toFixed(
             0
@@ -54,7 +54,7 @@ export default function Waifu() {
           color: "yellow",
           loading: false,
         });
-        const cooldown = Math.round(amtInQueue * 2);
+        const cooldown = Math.round(((eta * 1.2) / 5) * 5);
         setCountdown(
           cooldown <= 15 ? 15 : cooldown <= 30 ? 30 : cooldown <= 45 ? 45 : 60
         );
@@ -118,7 +118,7 @@ export default function Waifu() {
             >
               Surprise Me {countdown > 0 && `(${countdown})`}
             </Button> */}
-            <Text>{`Being Generated: ${amtInQueue ? amtInQueue : "idk"}`}</Text>
+            <Text size="sm">{`Being Generated: ${amtInQueue ? amtInQueue : "idk"}`}</Text>
             <Button
               radius="md"
               size="md"
