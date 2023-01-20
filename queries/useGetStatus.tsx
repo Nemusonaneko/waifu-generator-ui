@@ -21,7 +21,7 @@ async function getStatus() {
 
 export default function useGetStatus() {
   return useQuery(["status"], () => getStatus(), {
-    refetchInterval: 5000,
+    refetchInterval: 3000,
     // refetchOnMount: false,
     // refetchOnWindowFocus: false,
     // refetchOnReconnect: false,

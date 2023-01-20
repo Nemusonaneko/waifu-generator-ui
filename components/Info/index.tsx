@@ -6,6 +6,31 @@ export default function Info() {
     <>
       <Footer height={100}>
         <Accordion defaultValue="Info">
+          <Accordion.Item value="siteInfo">
+            <Accordion.Control>Site Info</Accordion.Control>
+            <Accordion.Panel>
+              <Text size="sm">
+                - Model used:{" "}
+                <Link
+                  target="_blank"
+                  href="https://huggingface.co/andite/anything-v4.0"
+                >
+                  Anything V4
+                </Link>
+              </Text>
+              <Text size="sm">
+                - Site and server run by:{" "}
+                <Link target="_blank" href="https://twitter.com/nemusonaUwU">
+                  @nemusonaUwU
+                </Link>{" "}
+                and their loyal RTX 4090
+              </Text>
+              <Text size="sm">
+                - If you wanna donate magic internet money, you can donate to
+                nemusona.eth
+              </Text>
+            </Accordion.Panel>
+          </Accordion.Item>
           <Accordion.Item value="promptingInfo">
             <Accordion.Control>Prompting Info</Accordion.Control>
             <Accordion.Panel>
@@ -29,31 +54,6 @@ export default function Info() {
                 <Link target="_blank" href="https://danbooru.donmai.us/">
                   (Search tags here)
                 </Link>
-              </Text>
-            </Accordion.Panel>
-          </Accordion.Item>
-          <Accordion.Item value="siteInfo">
-            <Accordion.Control>Site Info</Accordion.Control>
-            <Accordion.Panel>
-              <Text size="sm">
-                - Model used:{" "}
-                <Link
-                  target="_blank"
-                  href="https://huggingface.co/andite/anything-v4.0"
-                >
-                  Anything V4
-                </Link>
-              </Text>
-              <Text size="sm">
-                - Site and server run by:{" "}
-                <Link target="_blank" href="https://twitter.com/nemusonaUwU">
-                  @nemusonaUwU
-                </Link>{" "}
-                and their loyal RTX 4090
-              </Text>
-              <Text size="sm">
-                - If you wanna donate magic internet money, you can donate to
-                nemusona.eth
               </Text>
             </Accordion.Panel>
           </Accordion.Item>

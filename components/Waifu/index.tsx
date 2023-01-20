@@ -46,23 +46,29 @@ export default function Waifu() {
   const onSubmit = (values: FormValues) => {
     fetchStatus().then(() => {
       if (amtInQueue) {
+        if (amtInQueue > 30) {
+          showNotification({
+            message: `There are ${amtInQueue} ppl in queue and your request has a high chance of timing out.`,
+            color: "red",
+            loading: false,
+          });
+          return;
+        }
         const eta = amtInQueue * 1.8;
         showNotification({
           message: `There are ${amtInQueue} ppl in queue (ETA ${eta.toFixed(
             0
           )} sec)`,
           color: "yellow",
-          loading: false,
+          loading: true,
         });
-        const cooldown = Math.round(((eta * 1.2) / 5) * 5);
-        setCountdown(
-          cooldown <= 15 ? 15 : cooldown <= 30 ? 30 : cooldown <= 45 ? 45 : 60
-        );
+        const cooldown = Math.round(((eta * 1.5) / 5) * 5);
+        setCountdown(cooldown <= 30 ? 30 : cooldown <= 60 ? 60 : 90);
       } else {
         setCountdown(60);
       }
+      generate({ prevBlob: waifuData?.url, values: values, random: false });
     });
-    generate({ prevBlob: waifuData?.url, values: values, random: false });
   };
 
   return (
@@ -118,7 +124,9 @@ export default function Waifu() {
             >
               Surprise Me {countdown > 0 && `(${countdown})`}
             </Button> */}
-            <Text size="sm">{`Being Generated: ${amtInQueue ? amtInQueue : "idk"}`}</Text>
+            <Text size="sm">{`Being Generated: ${
+              amtInQueue ? amtInQueue : "idk"
+            }`}</Text>
             <Button
               radius="md"
               size="md"
