@@ -3,9 +3,10 @@ import {
   Image,
   Center,
   Box,
-  TextInput,
   Button,
   Group,
+  Textarea,
+  Text
 } from "@mantine/core";
 import useGenerateWaifu from "../../queries/useGenerateWaifu";
 import DownloadButton from "../DownloadButton";
@@ -45,7 +46,7 @@ export default function Waifu() {
   const onSubmit = (values: FormValues) => {
     fetchStatus().then(() => {
       if (amtInQueue) {
-        const eta = amtInQueue * 2;
+        const eta = amtInQueue * 1.5;
         showNotification({
           message: `There are ${amtInQueue} ppl in queue (ETA ${eta.toFixed(
             0
@@ -53,12 +54,10 @@ export default function Waifu() {
           color: "yellow",
           loading: false,
         });
-        const cooldown = Math.round(amtInQueue * 2.5);
-        if (cooldown < 30) {
-          setCountdown(30);
-        } else {
-          setCountdown(60);
-        }
+        const cooldown = Math.round(amtInQueue * 2);
+        setCountdown(
+          cooldown <= 15 ? 15 : cooldown <= 30 ? 30 : cooldown <= 45 ? 45 : 60
+        );
       } else {
         setCountdown(60);
       }
@@ -97,14 +96,14 @@ export default function Waifu() {
         <form
           onSubmit={form.onSubmit((values: FormValues) => onSubmit(values))}
         >
-          <TextInput
+          <Textarea
             label="Positive Prompts"
             placeholder="What you want the AI to include"
             {...form.getInputProps("positive")}
             disabled={generating}
             pb={3}
           />
-          <TextInput
+          <Textarea
             label="Negative Prompts"
             placeholder="What you want the AI to avoid"
             {...form.getInputProps("negative")}
@@ -119,6 +118,7 @@ export default function Waifu() {
             >
               Surprise Me {countdown > 0 && `(${countdown})`}
             </Button> */}
+            <Text>{`Current Queue: ${amtInQueue ? amtInQueue : "🙃"}`}</Text>
             <Button
               radius="md"
               size="md"
