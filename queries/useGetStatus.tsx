@@ -24,13 +24,13 @@ export default function useGetStatus() {
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
-    onSuccess: () => {
-      showNotification({
-        message: "Server is active",
-        color: "green",
-        loading: false,
-      });
-    },
+    // onSuccess: () => {
+    //   showNotification({
+    //     message: "Server is active",
+    //     color: "green",
+    //     loading: false,
+    //   });
+    // },
     onError: () => {
       showNotification({
         message: "Server is down",

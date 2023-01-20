@@ -44,17 +44,25 @@ export default function Waifu() {
 
   const onSubmit = (values: FormValues) => {
     fetchStatus().then(() => {
-      showNotification({
-        message: `There are ${amtInQueue} ppl in queue`,
-        color: "yellow",
-        loading: false,
-      });
+      if (amtInQueue) {
+        showNotification({
+          message: `There are ${amtInQueue} ppl in queue (ETA ${(
+            amtInQueue * 1.5
+          ).toFixed(0)} sec)`,
+          color: "yellow",
+          loading: false,
+        });
+        const cooldown = amtInQueue * 2;
+        if (cooldown < 20) {
+          setCountdown(20);
+        } else {
+          setCountdown(cooldown);
+        }
+      } else {
+        setCountdown(30);
+      }
     });
-    if (amtInQueue && amtInQueue > 15) {
-      setCountdown(30);
-    } else {
-      setCountdown(15);
-    }
+
     generate({ prevBlob: waifuData?.url, values: values, random: false });
   };
 
