@@ -52,7 +52,6 @@ export default function Waifu() {
             color: "red",
             loading: false,
           });
-          return;
         }
         const eta = amtInQueue * 1.8;
         showNotification({
