@@ -61,8 +61,8 @@ export default function Waifu() {
           color: "yellow",
           loading: true,
         });
-        const cooldown = Math.round(((eta * 1.5) / 5) * 5);
-        setCountdown(cooldown <= 30 ? 30 : cooldown <= 60 ? 60 : 90);
+        const cooldown = Math.round(((amtInQueue * 2) / 5) * 5);
+        setCountdown(cooldown <= 30 ? 30 : 60);
       } else {
         setCountdown(60);
       }
