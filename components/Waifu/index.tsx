@@ -63,9 +63,7 @@ export default function Waifu() {
           color: "yellow",
           loading: true,
         });
-        setCountdown(
-          eta < 10 ? 20 : eta < 20 ? 30 : eta < 30 ? 40 : eta < 40 ? 50 : 60
-        );
+        setCountdown(eta < 10 ? 30 : 60);
       } else {
         setCountdown(60);
       }
