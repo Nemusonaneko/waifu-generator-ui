@@ -13,9 +13,9 @@ export default function Info() {
                 - Model used:{" "}
                 <Link
                   target="_blank"
-                  href="https://huggingface.co/andite/anything-v4.0"
+                  href="https://huggingface.co/WarriorMama777/OrangeMixs#abyssorangemix2-aom2"
                 >
-                  Anything V4
+                  AbyssOrangeMix2 (AOM2)
                 </Link>
               </Text>
               <Text size="sm">
