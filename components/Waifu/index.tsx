@@ -46,13 +46,6 @@ export default function Waifu() {
   const onSubmit = (values: FormValues) => {
     fetchStatus().then(() => {
       if (amtInQueue) {
-        if (amtInQueue > 30) {
-          showNotification({
-            message: `There are ${amtInQueue} ppl in queue and your request has a high chance of timing out.`,
-            color: "red",
-            loading: false,
-          });
-        }
         const eta = amtInQueue * 1.8;
         showNotification({
           message: `There are ${amtInQueue} ppl in queue (ETA ${eta.toFixed(
@@ -61,8 +54,9 @@ export default function Waifu() {
           color: "yellow",
           loading: true,
         });
-        const cooldown = Math.round(((eta * 2) / 5) * 5);
-        setCountdown(cooldown > 60 ? 60 : cooldown);
+        setCountdown(
+          eta < 10 ? 20 : eta < 20 ? 30 : eta < 30 ? 40 : eta < 40 ? 50 : 60
+        );
       } else {
         setCountdown(60);
       }
