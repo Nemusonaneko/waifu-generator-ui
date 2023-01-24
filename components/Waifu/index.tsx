@@ -55,7 +55,7 @@ export default function Waifu() {
           });
           return;
         }
-        const eta = amtInQueue * 1.2;
+        const eta = amtInQueue * 1.4;
         showNotification({
           message: `There are ${amtInQueue} ppl in queue (ETA ${eta.toFixed(
             0
