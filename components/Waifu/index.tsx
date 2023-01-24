@@ -46,7 +46,7 @@ export default function Waifu() {
   const onSubmit = (values: FormValues) => {
     fetchStatus().then(() => {
       if (amtInQueue) {
-        if (amtInQueue >= 30) {
+        if (amtInQueue >= 50) {
           showNotification({
             message:
               "Too many being generated atm. High chance of it timing out.",
@@ -55,7 +55,7 @@ export default function Waifu() {
           });
           return;
         }
-        const eta = amtInQueue * 1.8;
+        const eta = amtInQueue * 1.3;
         showNotification({
           message: `There are ${amtInQueue} ppl in queue (ETA ${eta.toFixed(
             0
@@ -63,7 +63,7 @@ export default function Waifu() {
           color: "yellow",
           loading: true,
         });
-        setCountdown(eta < 10 ? 30 : 60);
+        setCountdown(eta < 15 ? 30 : 60);
       } else {
         setCountdown(60);
       }
@@ -125,7 +125,7 @@ export default function Waifu() {
               Surprise Me {countdown > 0 && `(${countdown})`}
             </Button> */}
             <Text size="sm">{`Being Generated: ${
-              amtInQueue ? amtInQueue : "idk"
+              amtInQueue ? amtInQueue : 0
             }`}</Text>
             <Button
               radius="md"
