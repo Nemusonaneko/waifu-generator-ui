@@ -55,7 +55,7 @@ export default function Waifu() {
           });
           return;
         }
-        const eta = amtInQueue * 1.3;
+        const eta = amtInQueue * 1.2;
         showNotification({
           message: `There are ${amtInQueue} ppl in queue (ETA ${eta.toFixed(
             0
@@ -63,9 +63,11 @@ export default function Waifu() {
           color: "yellow",
           loading: true,
         });
-        setCountdown(eta < 15 ? 30 : 60);
+        setCountdown(
+          eta < 10 ? 20 : eta < 20 ? 30 : eta < 30 ? 40 : eta < 40 ? 50 : 60
+        );
       } else {
-        setCountdown(60);
+        setCountdown(20);
       }
       generate({ prevBlob: waifuData?.url, values: values, random: false });
     });
@@ -124,9 +126,9 @@ export default function Waifu() {
             >
               Surprise Me {countdown > 0 && `(${countdown})`}
             </Button> */}
-            <Text size="sm">{`Being Generated: ${
+            <Text size="sm">{`Currently Generating: ${
               amtInQueue ? amtInQueue : 0
-            }`}</Text>
+            } Waifu(s)`}</Text>
             <Button
               radius="md"
               size="md"
