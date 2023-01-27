@@ -62,13 +62,13 @@ export default function Info() {
             <Accordion.Panel>
               <Text size="sm">
                 - Only time prompt information is stored is when it is in the
-                queue and it will be removed when finalized
+                queue and it is removed when reqyest is finalized
               </Text>
               <Text size="sm">
-                - Images generated from this generator are not stored on server
-                nor pc
+                - Images generated nor prompts from this generator are not
+                stored on my server or my pc
               </Text>
-              <Text size="sm">- I do use Cloudflare tho</Text>
+              <Text size="sm">- I do use Cloudflare and Vultr tho</Text>
               <Text size="sm">
                 <Link
                   target="_blank"
