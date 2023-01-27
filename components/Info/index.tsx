@@ -57,6 +57,36 @@ export default function Info() {
               </Text>
             </Accordion.Panel>
           </Accordion.Item>
+          <Accordion.Item value="privacy">
+            <Accordion.Control>Privacy</Accordion.Control>
+            <Accordion.Panel>
+              <Text size="sm">
+                - Only time prompt information is stored is when it is in the
+                queue and it will be removed when finalized
+              </Text>
+              <Text size="sm">
+                - Images generated from this generator are not stored on server
+                nor pc
+              </Text>
+              <Text size="sm">- I do use Cloudflare tho</Text>
+              <Text size="sm">
+                <Link
+                  target="_blank"
+                  href="https://github.com/Nemusonaneko/waifus-api"
+                >
+                  Shitty API Code
+                </Link>
+              </Text>
+              <Text size="sm">
+                <Link
+                  target="_blank"
+                  href="https://github.com/Nemusonaneko/waifu-generator-ui"
+                >
+                  Shitty Frontend Code
+                </Link>
+              </Text>
+            </Accordion.Panel>
+          </Accordion.Item>
           <Accordion.Item value="disclaimer">
             <Accordion.Control>Disclaimer</Accordion.Control>
             <Accordion.Panel>
