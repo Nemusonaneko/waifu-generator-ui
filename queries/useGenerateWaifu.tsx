@@ -23,11 +23,6 @@ async function generateWaifu({
         "content-type": "application/json",
       },
       body: body,
-    }).then((res) => {
-      if (res.ok) return res;
-      throw new Error(
-        "Try again later (Probably rate limited or server got rekt)"
-      );
     });
     if (res.status === 200) {
       const blob = await res.blob();
@@ -35,6 +30,8 @@ async function generateWaifu({
       return { url, positive: values?.positive, negative: values?.negative };
     } else if (res.status === 429) {
       throw new Error("Rate limit reached. Try again later");
+    } else if (res.status === 503) {
+      throw new Error("Server not ready to take request");
     } else {
       throw new Error("Server Error");
     }
