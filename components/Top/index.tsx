@@ -11,6 +11,9 @@ export default function Top() {
           {"Nemu's Waifu Generator"}
         </Text>
       </Center>
+      <Center>
+        <Text size="md" pb={10}>Server will be down from 2023/01/31 0:00 UTC to 2023/01/31 6:00 UTC</Text>
+      </Center>
     </>
   );
 }
