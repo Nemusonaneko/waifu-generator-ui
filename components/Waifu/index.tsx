@@ -64,9 +64,9 @@ export default function Waifu() {
           loading: true,
         });
         const cooldown = Math.ceil((amtInQueue * 1.5) / 10) * 10;
-        setCountdown(cooldown < 10 ? 10 : cooldown);
+        setCountdown(cooldown < 30 ? 10 : cooldown);
       } else {
-        setCountdown(10);
+        setCountdown(30);
       }
       generate({ prevBlob: waifuData?.url, values: values, random: false });
     });
