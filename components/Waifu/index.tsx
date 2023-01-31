@@ -55,7 +55,7 @@ export default function Waifu() {
           });
           return;
         }
-        const eta = Math.ceil((amtInQueue * 1.3) / 5) * 5;
+        const eta = Math.ceil((amtInQueue * 1.5) / 5) * 5;
         showNotification({
           message: `There are ${amtInQueue} ppl in queue (ETA ${eta.toFixed(
             0
@@ -63,10 +63,10 @@ export default function Waifu() {
           color: "yellow",
           loading: true,
         });
-        const cooldown = Math.ceil((amtInQueue * 1.5) / 10) * 10;
-        setCountdown(cooldown < 30 ? 30 : cooldown);
+        const cooldown = Math.round((amtInQueue * 2.5) / 10) * 10;
+        setCountdown(cooldown < 60 ? 60 : cooldown > 120 ? 120 : cooldown);
       } else {
-        setCountdown(30);
+        setCountdown(60);
       }
       generate({ prevBlob: waifuData?.url, values: values, random: false });
     });
