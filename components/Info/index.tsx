@@ -1,36 +1,37 @@
-import { Accordion, Footer, Text } from "@mantine/core";
+import { Accordion, Box, Footer, Text } from "@mantine/core";
 import Link from "next/link";
 
 export default function Info() {
   return (
     <>
       <Footer height={100}>
+        <Box pl={5} pt={5}>
+          <Text size="sm">
+            - Due to some weird stuff with the 4000 series, I can only generate
+            30 waifus at once (mfw $2000 gpu and can only get 20it/s max with tweaks)
+          </Text>
+          <Text size="sm">
+            - Model used:{" "}
+            <Link
+              target="_blank"
+              href="https://huggingface.co/andite/anything-v4.0"
+            >
+              Anything V4
+            </Link>
+          </Text>
+          <Text size="sm">
+            - Site and server run by:{" "}
+            <Link target="_blank" href="https://twitter.com/nemusonaUwU">
+              @nemusonaUwU
+            </Link>{" "}
+            and their loyal RTX 4090
+          </Text>
+          <Text size="sm">
+            - If you wanna donate magic internet money, you can donate to
+            nemusona.eth
+          </Text>
+        </Box>
         <Accordion defaultValue="Info">
-          <Accordion.Item value="siteInfo">
-            <Accordion.Control>Site Info</Accordion.Control>
-            <Accordion.Panel>
-              <Text size="sm">
-                - Model used:{" "}
-                <Link
-                  target="_blank"
-                  href="https://huggingface.co/andite/anything-v4.0"
-                >
-                  Anything V4
-                </Link>
-              </Text>
-              <Text size="sm">
-                - Site and server run by:{" "}
-                <Link target="_blank" href="https://twitter.com/nemusonaUwU">
-                  @nemusonaUwU
-                </Link>{" "}
-                and their loyal RTX 4090
-              </Text>
-              <Text size="sm">
-                - If you wanna donate magic internet money, you can donate to
-                nemusona.eth
-              </Text>
-            </Accordion.Panel>
-          </Accordion.Item>
           <Accordion.Item value="promptingInfo">
             <Accordion.Control>Prompting Info</Accordion.Control>
             <Accordion.Panel>
@@ -62,7 +63,7 @@ export default function Info() {
             <Accordion.Panel>
               <Text size="sm">
                 - Only time prompt information is stored is when it is in the
-                queue and it is removed when reqyest is finalized
+                queue and it is removed when request is finalized
               </Text>
               <Text size="sm">
                 - Images generated nor prompts from this generator are not
