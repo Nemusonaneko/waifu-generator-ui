@@ -28,7 +28,7 @@ export default function Info() {
           </Text>
           <Text size="sm">
             <Link target="_blank" href="https://discord.gg/nbEN88q6dw">
-              Discord{" "}
+              - Discord{" "}
             </Link>
             to make it easier to reach me
           </Text>
