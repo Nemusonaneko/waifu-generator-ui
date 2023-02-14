@@ -29,6 +29,7 @@ export default function Info() {
           </Text>
           <Text size="sm">
             -
+            {" "}
             <Link target="_blank" href="https://discord.gg/nbEN88q6dw">
               Discord
             </Link>{" "}
