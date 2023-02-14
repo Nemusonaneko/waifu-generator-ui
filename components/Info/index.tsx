@@ -8,7 +8,8 @@ export default function Info() {
         <Box pl={5} pt={5}>
           <Text size="sm">
             - Due to some weird stuff with the 4000 series, I can only generate
-            30 waifus at once (mfw $2000 gpu and can only get 20it/s max with tweaks)
+            30 waifus at once (mfw $2000 gpu and can only get 20it/s max with
+            tweaks)
           </Text>
           <Text size="sm">
             - Model used:{" "}
@@ -28,8 +29,8 @@ export default function Info() {
           </Text>
           <Text size="sm">
             <Link target="_blank" href="https://discord.gg/nbEN88q6dw">
-              - Discord{" "}
-            </Link>
+              - Discord
+            </Link>{" "}
             to make it easier to reach me
           </Text>
           <Text size="sm">
