@@ -27,6 +27,12 @@ export default function Info() {
             and their loyal RTX 4090
           </Text>
           <Text size="sm">
+            <Link target="_blank" href="https://discord.gg/nbEN88q6dw">
+              Discord{" "}
+            </Link>
+            to make it easier to reach me
+          </Text>
+          <Text size="sm">
             - If you wanna donate magic internet money, you can donate to
             nemusona.eth
           </Text>
