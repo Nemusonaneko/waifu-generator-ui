@@ -32,13 +32,15 @@ async function generateWaifu({
       throw new Error("Rate limit reached. Try again later");
     } else if (res.status === 503) {
       throw new Error("Server not ready to take request");
+    } else if (res.status === 404) {
+      throw new Error("Error in server response");
     } else {
-      throw new Error("Server Error");
+      throw new Error(
+        `Something went wrong status: ${res.status} message: ${res.statusText}`
+      );
     }
   } catch (error: any) {
-    throw new Error(
-      "Try again later (Probably rate limited or server got rekt)"
-    );
+    throw new Error("Something went wrong");
   }
 }
 
