@@ -40,7 +40,7 @@ async function generateWaifu({
       );
     }
   } catch (error: any) {
-    throw new Error("Something went wrong");
+    throw new Error(`Something went wrong ${error}`);
   }
 }
 
