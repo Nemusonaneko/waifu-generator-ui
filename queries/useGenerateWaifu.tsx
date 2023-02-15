@@ -23,7 +23,13 @@ async function generateWaifu({ prevBlob, values }: GenerateWaifuValues) {
     if (res.status === 200) {
       const blob = await res.blob();
       const url = URL.createObjectURL(blob);
-      return { url, positive: values?.positive, negative: values?.negative };
+      return {
+        url,
+        positive: values?.positive,
+        negative: values?.negative,
+        cfgScale: values?.cfgScale,
+        denoiseStrength: values?.denoiseStrength,
+      };
     } else if (res.status === 429) {
       throw new Error("Rate limit reached. Try again later");
     } else if (res.status === 503) {

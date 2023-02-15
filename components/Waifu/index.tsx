@@ -108,6 +108,8 @@ export default function Waifu() {
           <GeneratedPrompt
             positive={waifuData.positive}
             negative={waifuData.negative}
+            cfgScale={waifuData.cfgScale}
+            denoiseStrength={waifuData.denoiseStrength}
           />
         )}
         <form
