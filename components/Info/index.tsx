@@ -69,7 +69,7 @@ export default function Info() {
                 (higher = closer)
               </Text>
               <Text size="sm">
-                {`- Denoise Strength controls how much "noise" is added to the image (higher = noisier)`}
+                {`- Denoise Strength controls how similar everything will be in the image (higher = less similar)`}
               </Text>
             </Accordion.Panel>
           </Accordion.Item>
