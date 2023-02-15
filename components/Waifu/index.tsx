@@ -130,7 +130,7 @@ export default function Waifu() {
             {...form.getInputProps("negative")}
             disabled={generating}
           />
-          <Group position="center" mt="md">
+          <Group position="right" mt="md">
             <Box sx={{ width: 256 }}>
               <Text size="sm">CFG Scale</Text>
               <Slider

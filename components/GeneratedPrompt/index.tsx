@@ -21,10 +21,8 @@ export default function GeneratedPrompt({
           {negative && negative.length > 0 && (
             <Text size="sm">{`Negative: ${negative}`}</Text>
           )}
-          {cfgScale && <Text size="sm">{`CFG Scale: ${cfgScale}`}</Text>}
-          {denoiseStrength && (
-            <Text size="sm">{`Denoise Strength: ${denoiseStrength}`}</Text>
-          )}
+          <Text size="sm">{`CFG Scale: ${cfgScale ?? 0}`}</Text>
+          <Text size="sm">{`Denoise Strength: ${denoiseStrength ?? 0}`}</Text>
         </Box>
       </Center>
     </>
