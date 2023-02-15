@@ -3,8 +3,14 @@ export interface FormValues {
   negative: string;
 }
 
+export interface FullFormValues {
+  positive: string;
+  negative: string;
+  cfgScale: number;
+  denoiseStrength: number;
+}
+
 export interface GenerateWaifuValues {
-    prevBlob: string | undefined | null;
-    values: FormValues | null;
-    random: boolean;
+  prevBlob: string | undefined | null;
+  values: FullFormValues | null;
 }

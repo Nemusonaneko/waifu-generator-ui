@@ -2,21 +2,17 @@ import { useMutation } from "react-query";
 import { GenerateWaifuValues } from "../types";
 import { showNotification } from "@mantine/notifications";
 
-async function generateWaifu({
-  prevBlob,
-  values,
-  random,
-}: GenerateWaifuValues) {
+async function generateWaifu({ prevBlob, values }: GenerateWaifuValues) {
   try {
     if (prevBlob) {
       URL.revokeObjectURL(prevBlob);
     }
-    const body = random
-      ? JSON.stringify({})
-      : JSON.stringify({
-          prompt: values?.positive || "",
-          negative_prompt: values?.negative || "",
-        });
+    const body = JSON.stringify({
+      prompt: values?.positive || "",
+      negative_prompt: values?.negative || "",
+      cfg_scale: values?.cfgScale || 10,
+      denoising_strength: values?.denoiseStrength || 0,
+    });
     const res = await fetch(`https://waifus-api.nemusona.com/generate`, {
       method: "POST",
       headers: {
@@ -46,8 +42,8 @@ async function generateWaifu({
 
 export default function useGenerateWaifu() {
   return useMutation(
-    ({ prevBlob, values, random }: GenerateWaifuValues) =>
-      generateWaifu({ prevBlob, values, random }),
+    ({ prevBlob, values }: GenerateWaifuValues) =>
+      generateWaifu({ prevBlob, values }),
     {
       onSuccess: () => {
         showNotification({

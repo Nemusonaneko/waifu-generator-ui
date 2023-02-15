@@ -7,18 +7,21 @@ import {
   Group,
   Textarea,
   Text,
+  Slider,
 } from "@mantine/core";
 import useGenerateWaifu from "../../queries/useGenerateWaifu";
 import DownloadButton from "../DownloadButton";
 import { useForm } from "@mantine/form";
 import { FormValues } from "../../types";
 import GeneratedPrompt from "../GeneratedPrompt";
-import React from "react";
 import useGetStatus from "../../queries/useGetStatus";
 import { showNotification } from "@mantine/notifications";
+import React from "react";
 
 export default function Waifu() {
   const [countdown, setCountdown] = React.useState<number>(0);
+  const [cfgScale, setCfgScale] = React.useState(10);
+  const [denoiseStrength, setDenoiseStrength] = React.useState<number>(0);
   React.useEffect(() => {
     const interval = setInterval(() => {
       if (countdown > 0) {
@@ -43,7 +46,7 @@ export default function Waifu() {
     },
   });
 
-  const onSubmit = (values: FormValues) => {
+  const onSubmit = (values: FormValues, cfgScale: number) => {
     fetchStatus().then(() => {
       if (amtInQueue) {
         if (amtInQueue > 30) {
@@ -68,7 +71,15 @@ export default function Waifu() {
       } else {
         setCountdown(60);
       }
-      generate({ prevBlob: waifuData?.url, values: values, random: false });
+      generate({
+        prevBlob: waifuData?.url,
+        values: {
+          positive: values.positive,
+          negative: values.negative,
+          cfgScale: cfgScale,
+          denoiseStrength: denoiseStrength,
+        },
+      });
     });
   };
 
@@ -101,7 +112,9 @@ export default function Waifu() {
           />
         )}
         <form
-          onSubmit={form.onSubmit((values: FormValues) => onSubmit(values))}
+          onSubmit={form.onSubmit((values: FormValues) =>
+            onSubmit(values, cfgScale)
+          )}
         >
           <Textarea
             label="Positive Prompts"
@@ -116,7 +129,44 @@ export default function Waifu() {
             {...form.getInputProps("negative")}
             disabled={generating}
           />
-          <Group position="right" mt="md">
+          <Group position="center" mt="md">
+            <Box sx={{ width: 256 }}>
+              <Text size="sm">CFG Scale</Text>
+              <Slider
+                pt={5}
+                min={0}
+                max={20}
+                marks={[
+                  { value: 0, label: "0" },
+                  { value: 5, label: "5" },
+                  { value: 10, label: "10" },
+                  { value: 15, label: "15" },
+                  { value: 20, label: "20" },
+                ]}
+                value={cfgScale}
+                onChange={setCfgScale}
+              />
+            </Box>
+            <Box sx={{ width: 256 }}>
+              <Text size="sm">Denoise Strength</Text>
+              <Slider
+                pt={5}
+                min={0}
+                max={1}
+                marks={[
+                  { value: 0, label: "0" },
+                  { value: 0.25, label: ".25" },
+                  { value: 0.5, label: ".5" },
+                  { value: 0.75, label: ".75" },
+                  { value: 1, label: "1" },
+                ]}
+                value={Math.round(denoiseStrength * 500) / 500}
+                onChange={setDenoiseStrength}
+                step={0.05}
+              />
+            </Box>
+          </Group>
+          <Group position="right" mt="md" pt={10}>
             {/* <Button
               radius="md"
               size="md"
