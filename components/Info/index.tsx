@@ -5,7 +5,7 @@ export default function Info() {
   return (
     <>
       <Footer height={100}>
-        <Box pl={5} pt={5}>
+        <Box pl={10} pt={5}>
           <Text size="sm">
             - Due to some weird stuff with the 4000 series, I can only generate
             30 waifus at once (mfw $2000 gpu and can only get 20it/s max with
@@ -28,8 +28,7 @@ export default function Info() {
             and their loyal RTX 4090
           </Text>
           <Text size="sm">
-            -
-            {" "}
+            -{" "}
             <Link target="_blank" href="https://discord.gg/nbEN88q6dw">
               Discord
             </Link>{" "}
@@ -64,6 +63,13 @@ export default function Info() {
                 <Link target="_blank" href="https://danbooru.donmai.us/">
                   (Search tags here)
                 </Link>
+              </Text>
+              <Text size="sm">
+                - CFG Scale controls how close the AI will follow your prompts
+                (higher = closer)
+              </Text>
+              <Text size="sm">
+                {`- Denoise Strength controls how much "noise" is added to the image (higher = noisier)`}
               </Text>
             </Accordion.Panel>
           </Accordion.Item>
