@@ -123,12 +123,14 @@ export default function Waifu() {
             {...form.getInputProps("positive")}
             disabled={generating}
             pb={3}
+            autosize
           />
           <Textarea
             label="Negative Prompts"
             placeholder="What you want the AI to avoid"
             {...form.getInputProps("negative")}
             disabled={generating}
+            autosize
           />
           <Group position="right" mt="md">
             <Box sx={{ width: 256 }}>
