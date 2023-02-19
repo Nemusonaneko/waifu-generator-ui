@@ -11,11 +11,11 @@ export default function Top() {
           {"Nemu's Waifu Generator"}
         </Text>
       </Center>
-      <Center>
+      {/* <Center>
         <Text size="md" pb={10}>
           Server is down for a lil bit
         </Text>
-      </Center>
+      </Center> */}
     </>
   );
 }
