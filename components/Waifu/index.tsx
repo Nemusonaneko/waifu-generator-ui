@@ -58,7 +58,7 @@ export default function Waifu() {
           });
           return;
         }
-        const eta = Math.ceil((amtInQueue * 3) / 5) * 5;
+        const eta = Math.ceil((amtInQueue * 1.5) / 5) * 5;
         showNotification({
           message: `There are ${amtInQueue} ppl in queue (ETA ${eta.toFixed(
             0
