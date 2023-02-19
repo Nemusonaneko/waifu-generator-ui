@@ -49,7 +49,7 @@ export default function Waifu() {
   const onSubmit = (values: FormValues, cfgScale: number) => {
     fetchStatus().then(() => {
       if (amtInQueue) {
-        if (amtInQueue > 30) {
+        if (amtInQueue > 50) {
           showNotification({
             message:
               "Too many being generated atm. High chance of it timing out.",
@@ -58,7 +58,7 @@ export default function Waifu() {
           });
           return;
         }
-        const eta = Math.ceil((amtInQueue * 2) / 5) * 5;
+        const eta = Math.ceil((amtInQueue * 3) / 5) * 5;
         showNotification({
           message: `There are ${amtInQueue} ppl in queue (ETA ${eta.toFixed(
             0
@@ -66,9 +66,9 @@ export default function Waifu() {
           color: "yellow",
           loading: true,
         });
-        setCountdown(amtInQueue >= 15 ? 120 : 60);
+        setCountdown(amtInQueue >= 30 ? 60 : 30);
       } else {
-        setCountdown(60);
+        setCountdown(30);
       }
       generate({
         prevBlob: waifuData?.url,

@@ -7,9 +7,10 @@ export default function Info() {
       <Footer height={100}>
         <Box pl={10} pt={5}>
           <Text size="sm">
-            - Due to some weird stuff with the 4000 series, I can only generate
+            {/* - Due to some weird stuff with the 4000 series, I can only generate
             30 waifus at once (mfw $2000 gpu and can only get 20it/s max with
-            tweaks)
+            tweaks) */}
+            - Raising limit to 50. Fuck it.
           </Text>
           <Text size="sm">
             - Model used:{" "}
