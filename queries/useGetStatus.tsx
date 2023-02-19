@@ -7,10 +7,7 @@ async function getStatus() {
       method: "GET",
     });
     if (res.status === 200) {
-      const result = await res.json();
-      return (
-        Number(result.active) + Number(result.delayed) + Number(result.waiting)
-      );
+      return Number(await res.text());
     } else {
       throw new Error("Server Offline");
     }
