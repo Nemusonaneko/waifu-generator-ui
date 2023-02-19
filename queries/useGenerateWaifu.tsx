@@ -13,15 +13,19 @@ async function generateWaifu({ prevBlob, values }: GenerateWaifuValues) {
       cfg_scale: values?.cfgScale || 10,
       denoising_strength: values?.denoiseStrength || 0,
     });
-    const res = await fetch(`https://waifus-api.nemusona.com/generate`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: body,
-    });
+    const res: Response = await fetch(
+      `https://waifus-api.nemusona.com/generate`,
+      {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: body,
+      }
+    );
     if (res.status === 200) {
-      const blob = await res.blob();
+      const buffer = Buffer.from(await res.text(), "base64");
+      const blob = new Blob([buffer]);
       const url = URL.createObjectURL(blob);
       return {
         url,
