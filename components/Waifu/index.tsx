@@ -201,7 +201,7 @@ export default function Waifu() {
               radius="md"
               size="md"
               type="submit"
-              disabled={generating || countdown > 0}
+              disabled={generating || countdown > 0 || !model}
             >
               Generate {countdown > 0 && `(${countdown})`}
             </Button>
