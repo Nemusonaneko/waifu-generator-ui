@@ -8,6 +8,7 @@ import {
   Textarea,
   Text,
   Slider,
+  Select,
 } from "@mantine/core";
 import useGenerateWaifu from "../../queries/useGenerateWaifu";
 import DownloadButton from "../DownloadButton";
@@ -22,6 +23,7 @@ export default function Waifu() {
   const [countdown, setCountdown] = React.useState<number>(0);
   const [cfgScale, setCfgScale] = React.useState(10);
   const [denoiseStrength, setDenoiseStrength] = React.useState<number>(0);
+  const [model, setModel] = React.useState<string | null>(null);
   React.useEffect(() => {
     const interval = setInterval(() => {
       if (countdown > 0) {
@@ -31,7 +33,7 @@ export default function Waifu() {
     return () => clearInterval(interval);
   }, [countdown]);
 
-  const { refetch: fetchStatus, data: amtInQueue } = useGetStatus();
+  const { refetch: fetchStatus, data: amtInQueue } = useGetStatus(model);
 
   const {
     mutate: generate,
@@ -66,17 +68,17 @@ export default function Waifu() {
           color: "yellow",
           loading: true,
         });
-        setCountdown(amtInQueue >= 30 ? 60 : 30);
+        setCountdown(amtInQueue >= 15 ? 90 : 60);
       } else {
-        setCountdown(30);
+        setCountdown(60);
       }
       generate({
-        prevBlob: waifuData?.url,
         values: {
           positive: values.positive,
           negative: values.negative,
           cfgScale: cfgScale,
           denoiseStrength: denoiseStrength,
+          model: model,
         },
       });
     });
@@ -84,7 +86,7 @@ export default function Waifu() {
 
   return (
     <>
-      <Box pb={10}>
+      <Box pb={10} sx={{ width: 600 }}>
         <Center>
           <div style={{ width: 512, height: 512, position: "relative" }}>
             <LoadingOverlay visible={generating} overlayBlur={3} />
@@ -110,6 +112,7 @@ export default function Waifu() {
             negative={waifuData.negative}
             cfgScale={waifuData.cfgScale}
             denoiseStrength={waifuData.denoiseStrength}
+            model={waifuData.model}
           />
         )}
         <form
@@ -132,8 +135,21 @@ export default function Waifu() {
             disabled={generating}
             autosize
           />
-          <Group position="right" mt="md">
-            <Box sx={{ width: 256 }}>
+          <Group spacing="xs" pt={5}>
+            <Box sx={{ width: 192 }}>
+              <Text size="sm">Model</Text>
+              <Select
+                value={model}
+                placeholder="Choose Model"
+                data={[
+                  { value: "anything", label: "Anything" },
+                  { value: "aom", label: "AOM" },
+                  { value: "counterfeit", label: "Counterfeit" },
+                ]}
+                onChange={setModel}
+              />
+            </Box>
+            <Box sx={{ width: 192 }}>
               <Text size="sm">CFG Scale</Text>
               <Slider
                 pt={5}
@@ -150,7 +166,7 @@ export default function Waifu() {
                 onChange={setCfgScale}
               />
             </Box>
-            <Box sx={{ width: 256 }}>
+            <Box sx={{ width: 192 }}>
               <Text size="sm">Denoise Strength</Text>
               <Slider
                 pt={5}
