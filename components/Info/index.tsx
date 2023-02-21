@@ -7,21 +7,6 @@ export default function Info() {
       <Footer height={100}>
         <Box pl={10} pt={5}>
           <Text size="sm">
-            {/* - Due to some weird stuff with the 4000 series, I can only generate
-            30 waifus at once (mfw $2000 gpu and can only get 20it/s max with
-            tweaks) */}
-            - Raising limit to 50. Fuck it.
-          </Text>
-          <Text size="sm">
-            - Model used:{" "}
-            <Link
-              target="_blank"
-              href="https://huggingface.co/andite/anything-v4.0"
-            >
-              Anything V4
-            </Link>
-          </Text>
-          <Text size="sm">
             - Site and server run by:{" "}
             <Link target="_blank" href="https://twitter.com/nemusonaUwU">
               @nemusonaUwU

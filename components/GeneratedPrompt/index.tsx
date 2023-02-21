@@ -5,11 +5,13 @@ export default function GeneratedPrompt({
   negative,
   cfgScale,
   denoiseStrength,
+  model,
 }: {
   positive: string | null | undefined;
   negative: string | null | undefined;
   cfgScale: number | null | undefined;
   denoiseStrength: number | null | undefined;
+  model: string | null | undefined;
 }) {
   return (
     <>
@@ -23,6 +25,9 @@ export default function GeneratedPrompt({
           )}
           <Text size="sm">{`CFG Scale: ${cfgScale ?? 0}`}</Text>
           <Text size="sm">{`Denoise Strength: ${denoiseStrength ?? 0}`}</Text>
+          {model && model.length > 0 && (
+            <Text size="sm">{`Model: ${model}`}</Text>
+          )}
         </Box>
       </Center>
     </>

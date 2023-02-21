@@ -1,11 +1,15 @@
 import { showNotification } from "@mantine/notifications";
 import { useQuery } from "react-query";
 
-async function getStatus() {
+async function getStatus(model: string | null) {
   try {
-    const res = await fetch("https://waifus-api.nemusona.com/queue", {
-      method: "GET",
-    });
+    if (!model) throw new Error("No model selected");
+    const res = await fetch(
+      `https://waifus-api.nemusona.com/queue/${model.toLowerCase()}`,
+      {
+        method: "GET",
+      }
+    );
     if (res.status === 200) {
       return Number(await res.text());
     } else {
@@ -16,8 +20,8 @@ async function getStatus() {
   }
 }
 
-export default function useGetStatus() {
-  return useQuery(["status"], () => getStatus(), {
+export default function useGetStatus(model: string | null) {
+  return useQuery(["status", model], () => getStatus(model), {
     refetchInterval: 5000,
     // refetchOnMount: false,
     // refetchOnWindowFocus: false,

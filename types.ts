@@ -8,9 +8,9 @@ export interface FullFormValues {
   negative: string;
   cfgScale: number;
   denoiseStrength: number;
+  model: string | null;
 }
 
 export interface GenerateWaifuValues {
-  prevBlob: string | undefined | null;
   values: FullFormValues | null;
 }

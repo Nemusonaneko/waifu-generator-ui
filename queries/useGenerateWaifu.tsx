@@ -2,11 +2,10 @@ import { useMutation } from "react-query";
 import { GenerateWaifuValues } from "../types";
 import { showNotification } from "@mantine/notifications";
 
-async function generateWaifu({ prevBlob, values }: GenerateWaifuValues) {
+async function generateWaifu({ values }: GenerateWaifuValues) {
   try {
-    if (prevBlob) {
-      URL.revokeObjectURL(prevBlob);
-    }
+    if (!values) throw new Error("No values");
+    if (!values.model) throw new Error("No model selected");
     const body = JSON.stringify({
       prompt: values?.positive || "",
       negative_prompt: values?.negative || "",
@@ -14,7 +13,7 @@ async function generateWaifu({ prevBlob, values }: GenerateWaifuValues) {
       denoising_strength: values?.denoiseStrength || 0,
     });
     const res: Response = await fetch(
-      `https://waifus-api.nemusona.com/generate`,
+      `https://waifus-api.nemusona.com/generate/${values.model.toLowerCase()}`,
       {
         method: "POST",
         headers: {
@@ -29,10 +28,11 @@ async function generateWaifu({ prevBlob, values }: GenerateWaifuValues) {
       const url = URL.createObjectURL(blob);
       return {
         url,
-        positive: values?.positive,
-        negative: values?.negative,
-        cfgScale: values?.cfgScale,
-        denoiseStrength: values?.denoiseStrength,
+        positive: values.positive,
+        negative: values.negative,
+        cfgScale: values.cfgScale,
+        denoiseStrength: values.denoiseStrength,
+        model: values.model,
       };
     } else if (res.status === 429) {
       throw new Error("Rate limit reached. Try again later");
@@ -52,8 +52,7 @@ async function generateWaifu({ prevBlob, values }: GenerateWaifuValues) {
 
 export default function useGenerateWaifu() {
   return useMutation(
-    ({ prevBlob, values }: GenerateWaifuValues) =>
-      generateWaifu({ prevBlob, values }),
+    ({ values }: GenerateWaifuValues) => generateWaifu({ values }),
     {
       onSuccess: () => {
         showNotification({
