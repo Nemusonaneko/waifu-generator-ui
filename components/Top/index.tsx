@@ -11,11 +11,11 @@ export default function Top() {
           {"Nemu's Waifu Generator"}
         </Text>
       </Center>
-      <Center>
+      {/* <Center>
         <Text size="md" pb={10}>
           Site will be down 2023-02-22 00:00:00 GMT for upgrades
         </Text>
-      </Center>
+      </Center> */}
     </>
   );
 }
