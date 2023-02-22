@@ -141,6 +141,7 @@ export default function Waifu() {
               <Select
                 value={model}
                 placeholder="Choose Model"
+                disabled={generating}
                 data={[
                   { value: "anything", label: "Anything" },
                   { value: "aom", label: "AOM" },
@@ -164,6 +165,7 @@ export default function Waifu() {
                 ]}
                 value={cfgScale}
                 onChange={setCfgScale}
+                disabled={generating}
               />
             </Box>
             <Box sx={{ width: 192 }}>
@@ -179,9 +181,12 @@ export default function Waifu() {
                   { value: 0.75, label: ".75" },
                   { value: 1, label: "1" },
                 ]}
-                value={Math.round(denoiseStrength * 500) / 500}
+                value={Number(
+                  (Math.round(denoiseStrength * 500) / 500).toFixed(2)
+                )}
                 onChange={setDenoiseStrength}
                 step={0.05}
+                disabled={generating}
               />
             </Box>
           </Group>
