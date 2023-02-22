@@ -33,9 +33,9 @@ export default function useGetStatus(model: string | null) {
     //     loading: false,
     //   });
     // },
-    onError: () => {
+    onError: (error: any) => {
       showNotification({
-        message: "Server is down",
+        message: error.message,
         color: "red",
         loading: false,
       });
