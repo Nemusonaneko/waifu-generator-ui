@@ -28,7 +28,7 @@ export default function GeneratedPrompt({
             denoiseStrength?.toFixed(2) ?? 0
           }`}</Text>
           {model && model.length > 0 && (
-            <Text size="sm">{`Model: ${model}`}</Text>
+            <Text size="sm">{`Model: ${translateModel(model)}`}</Text>
           )}
         </Box>
       </Center>
