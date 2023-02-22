@@ -15,6 +15,7 @@ import DownloadButton from "../DownloadButton";
 import { useForm } from "@mantine/form";
 import { FormValues } from "../../types";
 import GeneratedPrompt from "../GeneratedPrompt";
+import useGetQueue from "../../queries/useGetQueue";
 import useGetStatus from "../../queries/useGetStatus";
 import { showNotification } from "@mantine/notifications";
 import React from "react";
@@ -33,7 +34,8 @@ export default function Waifu() {
     return () => clearInterval(interval);
   }, [countdown]);
 
-  const { refetch: fetchStatus, data: amtInQueue } = useGetStatus(model);
+  const { refetch: fetchStatus, data: amtInQueue } = useGetQueue(model);
+  const {} = useGetStatus();
 
   const {
     mutate: generate,
@@ -60,15 +62,12 @@ export default function Waifu() {
           });
           return;
         }
-        const eta = Math.ceil((amtInQueue * 1.5) / 5) * 5;
         showNotification({
-          message: `There are ${amtInQueue} ppl in queue (ETA ${eta.toFixed(
-            0
-          )} sec)`,
+          message: `There are ${amtInQueue} ppl in queue.`,
           color: "yellow",
           loading: true,
         });
-        setCountdown(amtInQueue >= 15 ? 90 : 60);
+        setCountdown(amtInQueue >= 15 ? 60 : 30);
       } else {
         setCountdown(60);
       }

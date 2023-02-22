@@ -1,38 +1,24 @@
 import { showNotification } from "@mantine/notifications";
 import { useQuery } from "react-query";
 
-async function getStatus(model: string | null) {
+async function getStatus() {
   try {
-    if (!model) throw new Error("No model selected");
-    const res = await fetch(
-      `https://waifus-api.nemusona.com/queue/${model.toLowerCase()}`,
-      {
-        method: "GET",
-      }
-    );
+    const res = await fetch(`https://waifus-api.nemusona.com/`, {
+      method: "GET",
+    });
     if (res.status === 200) {
-      return Number(await res.text());
+      return true;
     } else {
-      throw new Error("Server Offline");
+      throw new Error("Server is Offline");
     }
   } catch (error: any) {
-    throw new Error("Server Offline");
+    throw new Error("Server is Offline");
   }
 }
 
-export default function useGetStatus(model: string | null) {
-  return useQuery(["status", model], () => getStatus(model), {
-    refetchInterval: 5000,
-    // refetchOnMount: false,
-    // refetchOnWindowFocus: false,
-    // refetchOnReconnect: false,
-    // onSuccess: () => {
-    //   showNotification({
-    //     message: "Server is active",
-    //     color: "green",
-    //     loading: false,
-    //   });
-    // },
+export default function useGetStatus() {
+  return useQuery(["status"], () => getStatus(), {
+    refetchInterval: 30000,
     onError: (error: any) => {
       showNotification({
         message: error.message,
