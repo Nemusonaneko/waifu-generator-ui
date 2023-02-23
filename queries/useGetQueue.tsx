@@ -3,7 +3,14 @@ import { useQuery } from "react-query";
 
 async function getQueue(model: string | null) {
   try {
-    if (!model) throw new Error("No model selected");
+    if (!model) {
+      showNotification({
+        message: "Choose a model",
+        color: "yellow",
+        loading: false,
+      });
+      return;
+    }
     const res = await fetch(
       `https://waifus-api.nemusona.com/queue/${model.toLowerCase()}`,
       {

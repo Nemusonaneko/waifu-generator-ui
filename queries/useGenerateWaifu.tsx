@@ -34,19 +34,11 @@ async function generateWaifu({ values }: GenerateWaifuValues) {
         denoiseStrength: values.denoiseStrength,
         model: values.model,
       };
-    } else if (res.status === 429) {
-      throw new Error("Rate limit reached. Try again later");
-    } else if (res.status === 503) {
-      throw new Error("Server not ready to take request");
-    } else if (res.status === 404) {
-      throw new Error("Error in server response");
     } else {
-      throw new Error(
-        `Something went wrong status: ${res.status} message: ${res.statusText}`
-      );
+      throw new Error(`${res.status}:${res.statusText}`);
     }
   } catch (error: any) {
-    throw new Error(`Something went wrong ${error}`);
+    throw new Error(`${error}`);
   }
 }
 
