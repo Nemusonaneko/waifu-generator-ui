@@ -67,7 +67,7 @@ export default function Waifu() {
           color: "yellow",
           loading: true,
         });
-        setCountdown(amtInQueue >= 15 ? 60 : 30);
+        setCountdown(amtInQueue >= 15 ? 120 : 60);
       } else {
         setCountdown(60);
       }
