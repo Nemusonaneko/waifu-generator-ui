@@ -80,7 +80,7 @@ export default function Waifu() {
             : SIXTY_SEC;
         setNextTime(Date.now() + cooldown);
       } else {
-        setNextTime(Date.now() + SIXTY_SEC);
+        setNextTime(Date.now() + FIFTEEN_SEC);
       }
       generate({
         values: {
