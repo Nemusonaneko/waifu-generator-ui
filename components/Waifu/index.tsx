@@ -28,11 +28,8 @@ export default function Waifu() {
   const [model, setModel] = React.useState<string | null>(null);
   React.useEffect(() => {
     const interval = setInterval(() => {
-      if (countdown > 0 && Date.now() > nextTime) {
-        setCountdown(Math.floor((nextTime - Date.now()) / 1e3));
-      } else {
-        setCountdown(0);
-      }
+      const time = Math.floor((nextTime - Date.now()) / 1e3);
+      setCountdown(0 > time ? 0 : time);
     }, 1e3);
     return () => clearInterval(interval);
   }, [countdown, nextTime]);
