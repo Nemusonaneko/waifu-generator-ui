@@ -20,6 +20,10 @@ import useGetStatus from "../../queries/useGetStatus";
 import { showNotification } from "@mantine/notifications";
 import React from "react";
 
+const SIXTY_SEC = 60 * 1e3;
+const THIRTY_SEC = 30 * 1e3;
+const FIFTEEN_SEC = 15 * 1e3;
+
 export default function Waifu() {
   const [countdown, setCountdown] = React.useState<number>(0);
   const [nextTime, setNextTime] = React.useState<number>(Date.now());
@@ -53,7 +57,7 @@ export default function Waifu() {
   const onSubmit = (values: FormValues, cfgScale: number) => {
     fetchStatus().then(() => {
       if (amtInQueue) {
-        if (amtInQueue >= 30) {
+        if (amtInQueue >= 50) {
           showNotification({
             message:
               "Too many being generated atm. High chance of it timing out.",
@@ -67,9 +71,16 @@ export default function Waifu() {
           color: "yellow",
           loading: true,
         });
-        setNextTime(Date.now() + 60 * 1e3);
+
+        const cooldown =
+          20 > amtInQueue
+            ? FIFTEEN_SEC
+            : 30 > amtInQueue
+            ? THIRTY_SEC
+            : SIXTY_SEC;
+        setNextTime(Date.now() + cooldown);
       } else {
-        setNextTime(Date.now() + 60 * 1e3);
+        setNextTime(Date.now() + SIXTY_SEC);
       }
       generate({
         values: {
