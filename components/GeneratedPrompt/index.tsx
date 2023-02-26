@@ -41,7 +41,7 @@ function translateModel(model: string) {
     case "aom":
       return "AOM3";
     case "anything":
-      return "Anything V4";
+      return "Anything V4.5";
     case "counterfeit":
       return "Counterfeit V2.5";
     default:

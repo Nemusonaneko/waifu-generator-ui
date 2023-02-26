@@ -11,7 +11,7 @@ export default function Info() {
             <Link target="_blank" href="https://twitter.com/nemusonaUwU">
               @nemusonaUwU
             </Link>{" "}
-            and their loyal RTX 4090
+            contributors, their 4090, and some rented GPUs
           </Text>
           <Text size="sm">
             -{" "}
