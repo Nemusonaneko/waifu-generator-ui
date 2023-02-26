@@ -22,17 +22,20 @@ import React from "react";
 
 export default function Waifu() {
   const [countdown, setCountdown] = React.useState<number>(0);
+  const [nextTime, setNextTime] = React.useState<number>(Date.now());
   const [cfgScale, setCfgScale] = React.useState(10);
-  const [denoiseStrength, setDenoiseStrength] = React.useState<number>(0);
+  const [denoiseStrength, setDenoiseStrength] = React.useState<number>(0.5);
   const [model, setModel] = React.useState<string | null>(null);
   React.useEffect(() => {
     const interval = setInterval(() => {
-      if (countdown > 0) {
-        setCountdown(countdown - 1);
+      if (countdown > 0 && Date.now() > nextTime) {
+        setCountdown(Math.floor((nextTime - Date.now()) / 1e3));
+      } else {
+        setCountdown(0);
       }
-    }, 1000);
+    }, 1e3);
     return () => clearInterval(interval);
-  }, [countdown]);
+  }, [countdown, nextTime]);
 
   const { refetch: fetchStatus, data: amtInQueue } = useGetQueue(model);
   const {} = useGetStatus();
@@ -67,9 +70,9 @@ export default function Waifu() {
           color: "yellow",
           loading: true,
         });
-        setCountdown(amtInQueue >= 15 ? 120 : 60);
+        setNextTime(Date.now() + 60 * 1e3);
       } else {
-        setCountdown(60);
+        setNextTime(Date.now() + 60 * 1e3);
       }
       generate({
         values: {
