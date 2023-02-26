@@ -24,6 +24,15 @@ export default function Info() {
             - If you wanna donate magic internet money, you can donate to
             nemusona.eth
           </Text>
+          <Text size="sm">
+            {"- If you wanna donate normie money, you can donate through my "}
+            <Link target="_blank" href="https://ko-fi.com/nemusona">
+              ko-fi
+            </Link>
+          </Text>
+          <Text size="sm">
+            {"- GPUs are expensive so it would be greatly appreciated <3"}
+          </Text>
         </Box>
         <Accordion defaultValue="Info">
           <Accordion.Item value="promptingInfo">
