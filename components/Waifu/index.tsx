@@ -53,7 +53,7 @@ export default function Waifu() {
   const onSubmit = (values: FormValues, cfgScale: number) => {
     fetchStatus().then(() => {
       if (amtInQueue) {
-        if (amtInQueue >= 30) {
+        if (amtInQueue >= 50) {
           showNotification({
             message:
               "Too many being generated atm. High chance of it timing out.",
