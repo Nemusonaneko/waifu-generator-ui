@@ -1,5 +1,4 @@
 import {
-  LoadingOverlay,
   Image,
   Center,
   Box,
@@ -126,7 +125,6 @@ export default function Waifu() {
       <Box pb={10} sx={{ width: 768 }}>
         <Center>
           <div style={{ width: 512, height: 512, position: "relative" }}>
-            <LoadingOverlay visible={generating} overlayBlur={3} />
             <Image
               alt="waifu"
               height={512}
