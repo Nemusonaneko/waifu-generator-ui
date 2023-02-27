@@ -23,7 +23,7 @@ export default function HistoryImage({
     const blob = new Blob([buffer]);
     url = URL.createObjectURL(blob);
   } catch {
-    url = historyData.imgUrl;
+    url = Tink;
   }
   function onDelete() {
     let current: HistoryValues[] = JSON.parse(
@@ -65,7 +65,9 @@ export default function HistoryImage({
             seed={historyData.seed}
           />
           <Group position="right">
-            <DownloadButton url={url} generating={false} />
+            {typeof url === "string" && (
+              <DownloadButton url={url} generating={false} />
+            )}
             <Button radius="md" size="xs" color="red" onClick={onDelete}>
               Delete
             </Button>
