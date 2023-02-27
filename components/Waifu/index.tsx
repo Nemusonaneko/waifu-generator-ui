@@ -105,6 +105,7 @@ export default function Waifu() {
             );
             current.unshift({
               imgUrl: data.url,
+              blob: data.blob,
               positive: data.positive,
               negative: data.negative,
               cfgScale: data.cfgScale,
