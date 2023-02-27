@@ -30,7 +30,7 @@ async function generateWaifu({ values }: GenerateWaifuValues) {
       const url = URL.createObjectURL(blob);
       return {
         url,
-        blob,
+        base64: json.base64,
         positive: json.positive,
         negative: json.negative,
         cfgScale: json.cfg_scale,

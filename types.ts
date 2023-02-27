@@ -18,7 +18,7 @@ export interface GenerateWaifuValues {
 
 export interface HistoryValues {
   imgUrl: string;
-  blob: Blob;
+  base64: string;
   positive: string;
   negative: string;
   cfgScale: number;

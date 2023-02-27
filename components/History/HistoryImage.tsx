@@ -14,8 +14,18 @@ export default function HistoryImage({
   historyData: HistoryValues;
 }) {
   const [modalOpened, setModalOpened] = React.useState<boolean>(false);
-  const newUrl = URL.createObjectURL(historyData.blob);
   const queryClient = useQueryClient();
+
+  let url;
+  try {
+    if (!historyData.base64) throw Error("No base64");
+    const buffer = Buffer.from(historyData.base64, "base64");
+    const blob = new Blob([buffer]);
+    url = URL.createObjectURL(blob);
+  } catch {
+    url = "";
+    throw new Error("Failed to get image");
+  }
   function onDelete() {
     let current: HistoryValues[] = JSON.parse(
       localStorage.getItem("history") ?? "[]"
@@ -29,7 +39,7 @@ export default function HistoryImage({
   return (
     <>
       <Image
-        src={newUrl}
+        src={url}
         alt="img"
         width={128}
         height={128}
@@ -45,7 +55,7 @@ export default function HistoryImage({
       >
         <Box sx={{ width: 512 }}>
           <Center>
-            <Image src={newUrl} alt="img" width={512} height={512} />
+            <Image src={url} alt="img" width={512} height={512} />
           </Center>
           <GeneratedPrompt
             positive={historyData.positive}
@@ -56,7 +66,7 @@ export default function HistoryImage({
             seed={historyData.seed}
           />
           <Group position="right">
-            <DownloadButton url={newUrl} generating={false} />
+            <DownloadButton url={url} generating={false} />
             <Button radius="md" size="xs" color="red" onClick={onDelete}>
               Delete
             </Button>
