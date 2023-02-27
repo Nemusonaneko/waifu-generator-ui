@@ -3,7 +3,7 @@ import { useQuery } from "react-query";
 
 async function getStatus() {
   try {
-    const res = await fetch(`https://waifus-api.nemusona.com/`, {
+    const res = await fetch(`http://localhost:8000/`, {
       method: "GET",
     });
     if (res.status === 200) {

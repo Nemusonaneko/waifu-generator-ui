@@ -9,16 +9,18 @@ import {
   Text,
   Slider,
   Select,
+  NumberInput,
 } from "@mantine/core";
 import useGenerateWaifu from "../../queries/useGenerateWaifu";
 import DownloadButton from "../DownloadButton";
 import { useForm } from "@mantine/form";
-import { FormValues } from "../../types";
+import { FormValues, HistoryValues } from "../../types";
 import GeneratedPrompt from "../GeneratedPrompt";
 import useGetQueue from "../../queries/useGetQueue";
 import useGetStatus from "../../queries/useGetStatus";
 import { showNotification } from "@mantine/notifications";
 import React from "react";
+import { useQueryClient } from "react-query";
 
 const SIXTY_SEC = 60 * 1e3;
 const THIRTY_SEC = 30 * 1e3;
@@ -27,9 +29,12 @@ const FIFTEEN_SEC = 15 * 1e3;
 export default function Waifu() {
   const [countdown, setCountdown] = React.useState<number>(0);
   const [nextTime, setNextTime] = React.useState<number>(Date.now());
-  const [cfgScale, setCfgScale] = React.useState(10);
+  const [cfgScale, setCfgScale] = React.useState<number>(10);
+  const [seed, setSeed] = React.useState<number>(-1);
   const [denoiseStrength, setDenoiseStrength] = React.useState<number>(0.5);
   const [model, setModel] = React.useState<string | null>(null);
+  const queryClient = useQueryClient();
+
   React.useEffect(() => {
     const interval = setInterval(() => {
       const time = Math.floor((nextTime - Date.now()) / 1e3);
@@ -82,21 +87,42 @@ export default function Waifu() {
       } else {
         setNextTime(Date.now() + FIFTEEN_SEC);
       }
-      generate({
-        values: {
-          positive: values.positive,
-          negative: values.negative,
-          cfgScale: cfgScale,
-          denoiseStrength: denoiseStrength,
-          model: model,
+      generate(
+        {
+          values: {
+            positive: values.positive,
+            negative: values.negative,
+            cfgScale: cfgScale,
+            denoiseStrength: denoiseStrength,
+            model: model,
+            seed: seed,
+          },
         },
-      });
+        {
+          onSuccess: (data) => {
+            let current: HistoryValues[] = JSON.parse(
+              localStorage.getItem("history") ?? "[]"
+            );
+            current.unshift({
+              imgUrl: data.url,
+              positive: data.positive,
+              negative: data.negative,
+              cfgScale: data.cfgScale,
+              denoiseStrength: data.denoiseStrength,
+              model: data.model,
+              seed: data.seed,
+            });
+            localStorage.setItem("history", JSON.stringify(current));
+            queryClient.invalidateQueries();
+          },
+        }
+      );
     });
   };
 
   return (
     <>
-      <Box pb={10} sx={{ width: 600 }}>
+      <Box pb={10} sx={{ width: 768 }}>
         <Center>
           <div style={{ width: 512, height: 512, position: "relative" }}>
             <LoadingOverlay visible={generating} overlayBlur={3} />
@@ -123,6 +149,7 @@ export default function Waifu() {
             cfgScale={waifuData.cfgScale}
             denoiseStrength={waifuData.denoiseStrength}
             model={waifuData.model}
+            seed={waifuData.seed}
           />
         )}
         <form
@@ -146,7 +173,7 @@ export default function Waifu() {
             autosize
           />
           <Group spacing="xs" pt={5}>
-            <Box sx={{ width: 192 }}>
+            <Box sx={{ width: 184 }}>
               <Text size="sm">Model</Text>
               <Select
                 value={model}
@@ -160,7 +187,15 @@ export default function Waifu() {
                 onChange={setModel}
               />
             </Box>
-            <Box sx={{ width: 192 }}>
+            <Box sx={{ width: 184 }}>
+              <Text size="sm">Seed</Text>
+              <NumberInput
+                hideControls
+                value={seed}
+                onChange={(s) => setSeed(s ?? -1)}
+              />
+            </Box>
+            <Box sx={{ width: 184 }}>
               <Text size="sm">CFG Scale</Text>
               <Slider
                 pt={5}
@@ -178,7 +213,7 @@ export default function Waifu() {
                 disabled={generating}
               />
             </Box>
-            <Box sx={{ width: 192 }}>
+            <Box sx={{ width: 184 }}>
               <Text size="sm">Denoise Strength</Text>
               <Slider
                 pt={5}

@@ -10,7 +10,7 @@ export default function Layout({ children }: { children: any }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/cute.gif" />
       </Head>
-      <Box sx={{ width: 600 }} mx="auto" my="lg">
+      <Box sx={{ width: 768}} mx="auto" my="lg">
         <main>{children}</main>
       </Box>
     </>

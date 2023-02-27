@@ -1,4 +1,4 @@
-import { Box, Center, Text } from "@mantine/core";
+import { Box, Center, ScrollArea, Text } from "@mantine/core";
 
 export default function GeneratedPrompt({
   positive,
@@ -6,12 +6,14 @@ export default function GeneratedPrompt({
   cfgScale,
   denoiseStrength,
   model,
+  seed,
 }: {
   positive: string | null | undefined;
   negative: string | null | undefined;
   cfgScale: number | null | undefined;
   denoiseStrength: number | null | undefined;
   model: string | null | undefined;
+  seed: number | null | undefined;
 }) {
   return (
     <>
@@ -30,13 +32,14 @@ export default function GeneratedPrompt({
           {model && model.length > 0 && (
             <Text size="sm">{`Model: ${translateModel(model)}`}</Text>
           )}
+          {seed && <Text size="sm">{`Seed: ${seed}`}</Text>}
         </Box>
       </Center>
     </>
   );
 }
 
-function translateModel(model: string) {
+export function translateModel(model: string) {
   switch (model.toLowerCase()) {
     case "aom":
       return "AOM3";

@@ -11,9 +11,10 @@ async function generateWaifu({ values }: GenerateWaifuValues) {
       negative_prompt: values?.negative || "",
       cfg_scale: values?.cfgScale || 10,
       denoising_strength: values?.denoiseStrength || 0,
+      seed: values?.seed
     });
     const res: Response = await fetch(
-      `https://waifus-api.nemusona.com/generate/${values.model.toLowerCase()}`,
+      `http://localhost:8000/generate/${values.model.toLowerCase()}`,
       {
         method: "POST",
         headers: {
@@ -23,16 +24,18 @@ async function generateWaifu({ values }: GenerateWaifuValues) {
       }
     );
     if (res.status === 200) {
-      const buffer = Buffer.from(await res.text(), "base64");
+      const json = await res.json();
+      const buffer = Buffer.from(json.base64, "base64");
       const blob = new Blob([buffer]);
       const url = URL.createObjectURL(blob);
       return {
         url,
-        positive: values.positive,
-        negative: values.negative,
-        cfgScale: values.cfgScale,
-        denoiseStrength: values.denoiseStrength,
-        model: values.model,
+        positive: json.positive,
+        negative: json.negative,
+        cfgScale: json.cfg_scale,
+        denoiseStrength: json.denoising_strength,
+        model: json.model,
+        seed: json.seed,
       };
     } else {
       throw new Error(`${res.status}:${res.statusText}`);
