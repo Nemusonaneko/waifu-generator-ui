@@ -5,6 +5,7 @@ import React from "react";
 import GeneratedPrompt from "../GeneratedPrompt";
 import DownloadButton from "../DownloadButton";
 import { useQueryClient } from "react-query";
+import Tink from "../../public/think.png";
 
 export default function HistoryImage({
   index,
@@ -18,13 +19,11 @@ export default function HistoryImage({
 
   let url;
   try {
-    if (!historyData.base64) throw Error("No base64");
     const buffer = Buffer.from(historyData.base64, "base64");
     const blob = new Blob([buffer]);
     url = URL.createObjectURL(blob);
   } catch {
     url = historyData.imgUrl;
-    throw new Error("Failed to get image");
   }
   function onDelete() {
     let current: HistoryValues[] = JSON.parse(
