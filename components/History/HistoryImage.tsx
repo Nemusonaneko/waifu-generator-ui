@@ -14,6 +14,7 @@ export default function HistoryImage({
   historyData: HistoryValues;
 }) {
   const [modalOpened, setModalOpened] = React.useState<boolean>(false);
+  const newUrl = URL.createObjectURL(historyData.blob);
   const queryClient = useQueryClient();
   function onDelete() {
     let current: HistoryValues[] = JSON.parse(
@@ -28,7 +29,7 @@ export default function HistoryImage({
   return (
     <>
       <Image
-        src={historyData.imgUrl}
+        src={newUrl}
         alt="img"
         width={128}
         height={128}
@@ -44,12 +45,7 @@ export default function HistoryImage({
       >
         <Box sx={{ width: 512 }}>
           <Center>
-            <Image
-              src={historyData.imgUrl}
-              alt="img"
-              width={512}
-              height={512}
-            />
+            <Image src={newUrl} alt="img" width={512} height={512} />
           </Center>
           <GeneratedPrompt
             positive={historyData.positive}
@@ -60,7 +56,7 @@ export default function HistoryImage({
             seed={historyData.seed}
           />
           <Group position="right">
-            <DownloadButton url={historyData.imgUrl} generating={false} />
+            <DownloadButton url={newUrl} generating={false} />
             <Button radius="md" size="xs" color="red" onClick={onDelete}>
               Delete
             </Button>

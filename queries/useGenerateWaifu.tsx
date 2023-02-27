@@ -11,7 +11,7 @@ async function generateWaifu({ values }: GenerateWaifuValues) {
       negative_prompt: values?.negative || "",
       cfg_scale: values?.cfgScale || 10,
       denoising_strength: values?.denoiseStrength || 0,
-      seed: values?.seed
+      seed: values?.seed,
     });
     const res: Response = await fetch(
       `https://waifus-api.nemusona.com/generate/${values.model.toLowerCase()}`,
@@ -30,6 +30,7 @@ async function generateWaifu({ values }: GenerateWaifuValues) {
       const url = URL.createObjectURL(blob);
       return {
         url,
+        blob,
         positive: json.positive,
         negative: json.negative,
         cfgScale: json.cfg_scale,
