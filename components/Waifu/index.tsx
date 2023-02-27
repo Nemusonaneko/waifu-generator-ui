@@ -245,12 +245,14 @@ export default function Waifu() {
             </Button> */}
             <Text size="sm">{`Currently Generating: ${
               amtInQueue ? amtInQueue : 0
-            } Waifu(s)`}</Text>
+            }`}</Text>
             <Button
               radius="md"
               size="md"
               type="submit"
               disabled={generating || countdown > 0 || !model}
+              loading={generating}
+              loaderPosition="right"
             >
               Generate {countdown > 0 && `(${countdown})`}
             </Button>
