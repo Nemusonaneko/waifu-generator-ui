@@ -23,7 +23,7 @@ export default function HistoryImage({
     const blob = new Blob([buffer]);
     url = URL.createObjectURL(blob);
   } catch {
-    url = "";
+    url = historyData.imgUrl;
     throw new Error("Failed to get image");
   }
   function onDelete() {
