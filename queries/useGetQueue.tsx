@@ -12,7 +12,7 @@ async function getQueue(model: string | null) {
       return;
     }
     const res = await fetch(
-      `http://localhost:8000/queue/${model.toLowerCase()}`,
+      `https://waifus-api.nemusona.com/queue/${model.toLowerCase()}`,
       {
         method: "GET",
       }
