@@ -99,34 +99,48 @@ export default function Waifu() {
         },
         {
           onSuccess: (data) => {
+            let current: HistoryValues[] = JSON.parse(
+              localStorage.getItem("history") ?? "[]"
+            );
+            const toStore = {
+              imgUrl: data.url,
+              base64: data.base64,
+              positive: data.positive,
+              negative: data.negative,
+              cfgScale: data.cfgScale,
+              denoiseStrength: data.denoiseStrength,
+              model: data.model,
+              seed: data.seed,
+            };
+            const originalSize = JSON.stringify(current).length;
+            current.unshift(toStore);
             try {
-              let current: HistoryValues[] = JSON.parse(
-                localStorage.getItem("history") ?? "[]"
-              );
-              if (current.length >= 10) {
-                while (current.length >= 10) {
-                  current.pop();
-                }
-              }
-              current.unshift({
-                imgUrl: data.url,
-                base64: data.base64,
-                positive: data.positive,
-                negative: data.negative,
-                cfgScale: data.cfgScale,
-                denoiseStrength: data.denoiseStrength,
-                model: data.model,
-                seed: data.seed,
-              });
               localStorage.setItem("history", JSON.stringify(current));
-              queryClient.invalidateQueries();
-            } catch {
-              showNotification({
-                message: "Unable to save image to history.",
-                color: "red",
-                loading: false,
-              });
+            } catch (error) {
+              try {
+                let count = 0;
+                const storeSize = JSON.stringify(toStore).length;
+                let currentSize = originalSize;
+                while (currentSize + storeSize > originalSize) {
+                  current.splice(current.length - 1, 1);
+                  count++;
+                  currentSize = JSON.stringify(current).length;
+                }
+                localStorage.setItem("history", JSON.stringify(current));
+                showNotification({
+                  message: `Removed the last ${count} images in history to free up localStorage`,
+                  color: "yellow",
+                  loading: false,
+                });
+              } catch {
+                showNotification({
+                  message: "Unable to save image to history.",
+                  color: "red",
+                  loading: false,
+                });
+              }
             }
+            queryClient.invalidateQueries();
           },
         }
       );

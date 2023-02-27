@@ -42,7 +42,7 @@ export default function HistoryImage({
         alt="img"
         width={128}
         height={128}
-        style={{ padding: 4 }}
+        style={{ padding: 3 }}
         onClick={() => setModalOpened(true)}
       />
 

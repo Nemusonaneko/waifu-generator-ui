@@ -18,7 +18,7 @@ async function getStatus() {
 
 export default function useGetStatus() {
   return useQuery(["status"], () => getStatus(), {
-    refetchInterval: 30000,
+    refetchInterval: 10000,
     onError: (error: any) => {
       showNotification({
         message: error.message,
