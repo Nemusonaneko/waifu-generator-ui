@@ -1,12 +1,15 @@
 import { Button, Group, ScrollArea, Text } from "@mantine/core";
 import useGetHistory from "../../queries/useGetHistory";
 import HistoryImage from "./HistoryImage";
+import { useQueryClient } from "react-query";
 
 export default function History() {
   const { data: historyData } = useGetHistory();
+  const queryClient = useQueryClient();
 
   function onDeleteAll() {
     localStorage.removeItem("history");
+    queryClient.invalidateQueries();
   }
   return (
     <>
