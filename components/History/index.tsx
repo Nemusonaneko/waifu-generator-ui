@@ -1,4 +1,4 @@
-import { Button, Group, ScrollArea, Text } from "@mantine/core";
+import { Button, Center, Group, ScrollArea, Text } from "@mantine/core";
 import useGetHistory from "../../queries/useGetHistory";
 import HistoryImage from "./HistoryImage";
 import { useQueryClient } from "react-query";
@@ -21,11 +21,15 @@ export default function History() {
               Delete All
             </Button>
           </Group>
-          <ScrollArea style={{ height: 132 }}>
-            {historyData.map((x, i) => {
-              return <HistoryImage key={i} index={Number(i)} historyData={x} />;
-            })}
-          </ScrollArea>
+          <Center>
+            <ScrollArea style={{ height: 136, maxWidth: 640 }}>
+              {historyData.map((x, i) => {
+                return (
+                  <HistoryImage key={i} index={Number(i)} historyData={x} />
+                );
+              })}
+            </ScrollArea>
+          </Center>
         </>
       )}
     </>
