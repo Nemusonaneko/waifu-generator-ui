@@ -4,11 +4,11 @@ import { useQuery } from "react-query";
 async function getQueue(model: string | null) {
   try {
     if (!model) {
-      showNotification({
-        message: "Choose a model",
-        color: "yellow",
-        loading: false,
-      });
+      // showNotification({
+      //   message: "Choose a model",
+      //   color: "yellow",
+      //   loading: false,
+      // });
       return;
     }
     const res = await fetch(
