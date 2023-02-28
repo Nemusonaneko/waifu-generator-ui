@@ -29,7 +29,7 @@ async function getQueue(model: string | null) {
 
 export default function useGetQueue(model: string | null) {
   return useQuery(["queue", model], () => getQueue(model), {
-    refetchInterval: 3000,
+    refetchInterval: 1000,
     // refetchOnMount: false,
     // refetchOnWindowFocus: false,
     // refetchOnReconnect: false,
