@@ -25,7 +25,7 @@ export default function Info() {
             nemusona.eth
           </Text>
           <Text size="sm">
-            {"- If you wanna donate normie money, you can donate through my "}
+            {"- You can also donate through my "}
             <Link target="_blank" href="https://ko-fi.com/nemusona">
               ko-fi
             </Link>
