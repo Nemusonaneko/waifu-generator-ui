@@ -77,9 +77,7 @@ export default function Waifu() {
         });
 
         const cooldown =
-          20 > amtInQueue
-            ? FIFTEEN_SEC
-            : 30 > amtInQueue
+         30 > amtInQueue
             ? THIRTY_SEC
             : SIXTY_SEC;
         setNextTime(Date.now() + cooldown);
