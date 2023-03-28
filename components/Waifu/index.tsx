@@ -76,10 +76,7 @@ export default function Waifu() {
           loading: true,
         });
 
-        const cooldown =
-         30 > amtInQueue
-            ? THIRTY_SEC
-            : SIXTY_SEC;
+        const cooldown = 30 > amtInQueue ? THIRTY_SEC : SIXTY_SEC;
         setNextTime(Date.now() + cooldown);
       } else {
         setNextTime(Date.now() + FIFTEEN_SEC);
@@ -207,6 +204,7 @@ export default function Waifu() {
                   { value: "anything", label: "Anything V4.5" },
                   { value: "aom", label: "AOM3" },
                   { value: "counterfeit", label: "Counterfeit V2.5" },
+                  { value: "pastel", label: "Pastel Mix" },
                 ]}
                 onChange={setModel}
               />
@@ -214,6 +212,7 @@ export default function Waifu() {
             <Box sx={{ width: 184 }}>
               <Text size="sm">Seed</Text>
               <NumberInput
+                disabled={generating}
                 hideControls
                 value={seed}
                 onChange={(s) => setSeed(s ?? -1)}
