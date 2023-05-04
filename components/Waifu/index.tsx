@@ -61,7 +61,7 @@ export default function Waifu() {
   const onSubmit = (values: FormValues, cfgScale: number) => {
     fetchStatus().then(() => {
       if (amtInQueue) {
-        if (amtInQueue >= 30) {
+        if (amtInQueue >= 50) {
           showNotification({
             message:
               "Too many being generated atm. High chance of it timing out.",
@@ -76,7 +76,7 @@ export default function Waifu() {
           loading: true,
         });
 
-        const cooldown = 15 > amtInQueue ? THIRTY_SEC : SIXTY_SEC;
+        const cooldown = 20 > amtInQueue ? THIRTY_SEC : SIXTY_SEC;
         setNextTime(Date.now() + cooldown);
       } else {
         setNextTime(Date.now() + FIFTEEN_SEC);
