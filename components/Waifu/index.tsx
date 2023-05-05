@@ -202,7 +202,7 @@ export default function Waifu() {
                 disabled={generating}
                 data={[
                   { value: "anything", label: "Anything V4.5" },
-                  // { value: "aom", label: "AOM3" },
+                  { value: "aom", label: "AOM3" },
                   // { value: "counterfeit", label: "Counterfeit V2.5" },
                   // { value: "pastel", label: "Pastel Mix" },
                 ]}
