@@ -46,7 +46,7 @@ export function translateModel(model: string) {
     case "anything":
       return "Anything V4.5";
     case "counterfeit":
-      return "Counterfeit V2.5";
+      return "Counterfeit V3";
     case "pastel":
       return "Pastel Mix";
     default:
