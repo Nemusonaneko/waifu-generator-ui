@@ -201,7 +201,7 @@ export default function Waifu() {
                 placeholder="Choose Model"
                 disabled={generating}
                 data={[
-                  { value: "anything", label: "Anything V5" },
+                  { value: "anything", label: "Anything V4.5" },
                   { value: "aom", label: "AOM3" },
                   { value: "counterfeit", label: "Counterfeit V3" },
                   // { value: "pastel", label: "Pastel Mix" },
