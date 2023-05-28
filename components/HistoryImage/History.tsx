@@ -1,4 +1,4 @@
-import { Button, Center, Group, ScrollArea, Text } from "@mantine/core";
+import { Button, Group, ScrollArea, Text } from "@mantine/core";
 import useGetHistory from "../../queries/useGetHistory";
 import HistoryImage from "./HistoryImage";
 import { useQueryClient } from "react-query";

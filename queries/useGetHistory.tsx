@@ -9,5 +9,5 @@ async function getQueue() {
 }
 
 export default function useGetHistory() {
-  return useQuery(["historyQuery"], () => getQueue());
+  return useQuery(["historyQuery"], () => getQueue(), {});
 }

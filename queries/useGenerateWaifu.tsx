@@ -1,20 +1,20 @@
 import { useMutation } from "react-query";
-import { GenerateWaifuValues } from "../types";
 import { showNotification } from "@mantine/notifications";
+import { FormValues } from "../types";
 
-async function generateWaifu({ values }: GenerateWaifuValues) {
+async function generateWaifu(values: FormValues) {
   try {
     if (!values) throw new Error("No values");
-    if (!values.model) throw new Error("No model selected");
+    if (!values.modelUsed) throw new Error("No model selected");
     const body = JSON.stringify({
-      prompt: values?.positive || "",
-      negative_prompt: values?.negative || "",
+      prompt: values?.positivePrompts || "",
+      negative_prompt: values?.negativePrompts || "",
       cfg_scale: values?.cfgScale || 10,
       denoising_strength: values?.denoiseStrength || 0,
       seed: values?.seed,
     });
     const res: Response = await fetch(
-      `https://waifus-api.nemusona.com/generate/${values.model.toLowerCase()}`,
+      `http://localhost:8000/generate/${values.modelUsed.toLowerCase()}`,
       {
         method: "POST",
         headers: {
@@ -48,7 +48,7 @@ async function generateWaifu({ values }: GenerateWaifuValues) {
 
 export default function useGenerateWaifu() {
   return useMutation(
-    ({ values }: GenerateWaifuValues) => generateWaifu({ values }),
+    ( values : FormValues) => generateWaifu(values),
     {
       onSuccess: () => {
         showNotification({
