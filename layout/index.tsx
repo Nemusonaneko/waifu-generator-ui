@@ -1,5 +1,13 @@
 import Head from "next/head";
-import { AppShell, Button, Header, Navbar, Text, Stack } from "@mantine/core";
+import {
+  AppShell,
+  Button,
+  Header,
+  Text,
+  Flex,
+  Menu,
+  UnstyledButton,
+} from "@mantine/core";
 import React from "react";
 import DogO from "../public/DogO.png";
 import Image from "next/image";
@@ -7,6 +15,7 @@ import { useAccount, useConnect, useDisconnect, useEnsName } from "wagmi";
 import { InjectedConnector } from "wagmi/connectors/injected";
 import formatAddress from "../utils/address";
 import Link from "next/link";
+import { borgar, twitter, opensea, discord } from "../public/icons";
 
 export default function Layout({ children }: { children: any }) {
   const { address, isConnected } = useAccount();
@@ -24,34 +33,6 @@ export default function Layout({ children }: { children: any }) {
         <link rel="icon" href="/DogO.png" />
       </Head>
       <AppShell
-        navbar={
-          <Navbar width={{ sm: 200 }} style={{ marginTop: "10px" }}>
-            <div style={{ marginLeft: "5px", marginRight: "5px" }}>
-              <Stack>
-                <Link href="/" style={{textDecoration: "none"}}>
-                  <Button fullWidth>
-                    <Text size="lg">Home</Text>
-                  </Button>
-                </Link>
-                <Link href="/pass" style={{textDecoration: "none"}}>
-                  <Button fullWidth>
-                    <Text size="lg">Waifu Pass</Text>
-                  </Button>
-                </Link>
-                <Link href="/faq" style={{textDecoration: "none"}}>
-                  <Button fullWidth>
-                    <Text size="lg">FAQ</Text>
-                  </Button>
-                </Link>
-                <Link href="/disclaimers" style={{textDecoration: "none"}}>
-                  <Button fullWidth>
-                    <Text size="lg">Disclaimers</Text>
-                  </Button>
-                </Link>
-              </Stack>
-            </div>
-          </Navbar>
-        }
         header={
           <Header height={{ base: 64, md: 72 }} withBorder>
             <div
@@ -65,10 +46,52 @@ export default function Layout({ children }: { children: any }) {
                   gap: "10px",
                 }}
               >
-                <Image src={DogO} alt="DogO" width={64} height={64} />
-                <Text size="xl" fw={700}>
-                  {"Nemu's Waifu Generator"}
-                </Text>
+                <Flex align="center" gap={5}>
+                  <Menu>
+                    <Menu.Target>
+                      <UnstyledButton sx={{ width: 36, height: 36 }}>
+                        {borgar}
+                      </UnstyledButton>
+                    </Menu.Target>
+                    <Menu.Dropdown>
+                      <Link href="/" style={{ textDecoration: "none" }}>
+                        <Menu.Item>
+                          <Text size="xl" fw={500}>
+                            Home
+                          </Text>
+                        </Menu.Item>
+                      </Link>
+                      <Link href="/pass" style={{ textDecoration: "none" }}>
+                        <Menu.Item>
+                          <Text size="xl" fw={500}>
+                            Waifu Pass
+                          </Text>
+                        </Menu.Item>
+                      </Link>
+                      <Link href="/faq" style={{ textDecoration: "none" }}>
+                        <Menu.Item>
+                          <Text size="xl" fw={500}>
+                            FAQ
+                          </Text>
+                        </Menu.Item>
+                      </Link>
+                      <Link
+                        href="/disclaimers"
+                        style={{ textDecoration: "none" }}
+                      >
+                        <Menu.Item>
+                          <Text size="xl" fw={500}>
+                            Disclaimers
+                          </Text>
+                        </Menu.Item>
+                      </Link>
+                    </Menu.Dropdown>
+                  </Menu>
+                  <Image src={DogO} alt="DogO" width={64} height={64} />
+                  <Text size="xl" fw={700}>
+                    {"Nemu's Waifu Generator"}
+                  </Text>
+                </Flex>
               </div>
               <div
                 style={{
@@ -76,10 +99,29 @@ export default function Layout({ children }: { children: any }) {
                   marginRight: "10px",
                   position: "absolute",
                   right: "10px",
+                  gap: "5px",
+                  alignItems: "center",
                 }}
               >
+                <UnstyledButton sx={{ width: 38, height: 38 }}>
+                  <Link href="https://discord.gg/nbEN88q6dw" target="_blank">
+                    {discord}
+                  </Link>
+                </UnstyledButton>
+
+                <UnstyledButton sx={{ width: 44, height: 44 }}>
+                  <Link href="https://twitter.com/waifugeneth" target="_blank">
+                    {twitter}
+                  </Link>
+                </UnstyledButton>
+                <UnstyledButton sx={{ width: 38, height: 38 }}>
+                  <Link href="/" target="_blank">
+                    {opensea}
+                  </Link>
+                </UnstyledButton>
                 <Button
                   radius="md"
+                  w={148}
                   onClick={isConnected ? () => disconnect() : () => connect()}
                 >
                   <Text size="sm" fw={500}>

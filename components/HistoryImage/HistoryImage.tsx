@@ -16,15 +16,18 @@ export default function HistoryImage({
 }) {
   const [modalOpened, setModalOpened] = React.useState<boolean>(false);
   const queryClient = useQueryClient();
+  const [url, setUrl] = React.useState<any>();
 
-  let url;
-  try {
-    const buffer = Buffer.from(historyData.base64, "base64");
-    const blob = new Blob([buffer]);
-    url = URL.createObjectURL(blob);
-  } catch {
-    url = Tink;
-  }
+  React.useEffect(() => {
+    try {
+      const buffer = Buffer.from(historyData.base64, "base64");
+      const blob = new Blob([buffer]);
+      setUrl(URL.createObjectURL(blob));
+    } catch {
+      setUrl(Tink);
+    }
+  }, [index, historyData])
+
   function onDelete() {
     let current: HistoryValues[] = JSON.parse(
       localStorage.getItem("history") ?? "[]"

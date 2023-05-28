@@ -12,7 +12,6 @@ export interface SubmitValues {
   negativePrompts: string;
   cfgScale: number;
   denoiseStrength: number;
-  seed: number;
 }
 
 export interface HistoryValues {
