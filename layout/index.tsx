@@ -16,6 +16,7 @@ import { InjectedConnector } from "wagmi/connectors/injected";
 import formatAddress from "../utils/address";
 import Link from "next/link";
 import { borgar, twitter, opensea, discord } from "../public/icons";
+import blur from "../public/blur.webp";
 
 export default function Layout({ children }: { children: any }) {
   const { address, isConnected } = useAccount();
@@ -68,13 +69,13 @@ export default function Layout({ children }: { children: any }) {
                           </Text>
                         </Menu.Item>
                       </Link>
-                      <Link href="/faq" style={{ textDecoration: "none" }}>
+                      {/* <Link href="/faq" style={{ textDecoration: "none" }}>
                         <Menu.Item>
                           <Text size="xl" fw={500}>
                             FAQ
                           </Text>
                         </Menu.Item>
-                      </Link>
+                      </Link> */}
                       <Link
                         href="/disclaimers"
                         style={{ textDecoration: "none" }}
@@ -87,7 +88,9 @@ export default function Layout({ children }: { children: any }) {
                       </Link>
                     </Menu.Dropdown>
                   </Menu>
-                  <Image src={DogO} alt="DogO" width={64} height={64} />
+                  <Link href="/">
+                    <Image src={DogO} alt="DogO" width={64} height={64} />
+                  </Link>
                   <Text size="xl" fw={700}>
                     {"Nemu's Waifu Generator"}
                   </Text>
@@ -119,6 +122,18 @@ export default function Layout({ children }: { children: any }) {
                     {opensea}
                   </Link>
                 </UnstyledButton>
+                <UnstyledButton sx={{ width: 38, height: 38 }}>
+                  <Link href="/" target="_blank">
+                    <Image src={blur} width={40} height={40} alt="blur" />
+                  </Link>
+                </UnstyledButton>
+                <Link href="/pass" style={{ textDecoration: "none" }}>
+                  <Button radius="md" w={128}>
+                    <Text size="md" fw={500}>
+                      {"Waifu Pass"}
+                    </Text>
+                  </Button>
+                </Link>
                 <Button
                   radius="md"
                   w={148}

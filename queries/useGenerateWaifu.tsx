@@ -14,7 +14,7 @@ async function generateWaifu(values: FormValues) {
       seed: values?.seed,
     });
     const res: Response = await fetch(
-      `http://localhost:8000/generate/${values.modelUsed.toLowerCase()}`,
+      `http://localhost:42069/generate/${values.modelUsed.toLowerCase()}`,
       {
         method: "POST",
         headers: {

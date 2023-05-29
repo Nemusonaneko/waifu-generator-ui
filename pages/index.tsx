@@ -222,13 +222,20 @@ export default function Home() {
                         }
                         style={{ width: 32, height: 32 }}
                       >
-                        {arrowPath}
+                        <Tooltip
+                          position="top-start"
+                          label="Reuse seed of last generation"
+                        >
+                          {arrowPath}
+                        </Tooltip>
                       </UnstyledButton>
                       <UnstyledButton
                         onClick={() => setSeed(-1)}
                         style={{ width: 32, height: 32 }}
                       >
-                        {questionMarkCircle}
+                        <Tooltip position="top-start" label="Random seed">
+                          {questionMarkCircle}
+                        </Tooltip>
                       </UnstyledButton>
                     </Group>
                   </div>
@@ -266,9 +273,11 @@ export default function Home() {
                     overflow: "auto",
                   }}
                 >
-                  <Text size="lg" fw={500}>
-                    Prompt Information:
-                  </Text>
+                  <Center>
+                    <Text size="xl" fw={500}>
+                      Prompt Information:
+                    </Text>
+                  </Center>
                   <Text size="md">Positive Prompts:</Text>
                   <Text size="sm">{waifuData?.positive}</Text>
                   <Text size="md">Negative Prompts:</Text>
@@ -358,11 +367,10 @@ export default function Home() {
         </Box>
       </Center>
       <Center>
-      <Box w={1024} pt={96}>
-        <History />
-      </Box>
+        <Box w={1024} pt={96}>
+          <History />
+        </Box>
       </Center>
-      
     </Layout>
   );
 }
