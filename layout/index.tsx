@@ -18,6 +18,7 @@ import Link from "next/link";
 import { borgar, twitter, opensea, discord } from "../public/icons";
 import blur from "../public/blur.webp";
 import { useWindowSize } from "../hooks/useWindowSize";
+import Cute from "../public/cute.gif";
 
 export default function Layout({ children }: { children: any }) {
   const { address, isConnected } = useAccount();
@@ -100,7 +101,7 @@ export default function Layout({ children }: { children: any }) {
                       </Menu.Dropdown>
                     </Menu>
                     <Link href="/">
-                      <Image src={DogO} alt="DogO" width={64} height={64} />
+                      <Image src={Cute} alt="DogO" width={64} height={64} />
                     </Link>
                     <Text size="md" fw={700}>
                       Nemu's Waifu Generator
@@ -265,7 +266,7 @@ export default function Layout({ children }: { children: any }) {
                       </Menu.Dropdown>
                     </Menu>
                     <Link href="/">
-                      <Image src={DogO} alt="DogO" width={64} height={64} />
+                      <Image src={Cute} alt="DogO" width={64} height={64} />
                     </Link>
                   </Flex>
                 </div>

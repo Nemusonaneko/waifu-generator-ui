@@ -17,6 +17,7 @@ import {
 } from "@mantine/core";
 import Image from "next/image";
 import DogO from "../public/DogO.png";
+import Cute from "../public/cute.gif";
 import React from "react";
 import { HistoryValues, SubmitValues } from "../types";
 import useGetQueue from "../queries/useGetQueue";
@@ -165,7 +166,7 @@ export default function Home() {
                     alt="waifu"
                     height={400}
                     width={400}
-                    src={waifuData?.url ?? DogO}
+                    src={waifuData?.url ?? Cute}
                   />
                 </Center>
                 <Stack style={{ marginTop: "10px" }} spacing="md">
@@ -376,7 +377,7 @@ export default function Home() {
                   alt="waifu"
                   height={300}
                   width={300}
-                  src={waifuData?.url ?? DogO}
+                  src={waifuData?.url ?? Cute}
                 />
               </Center>
               <Stack style={{ marginTop: "10px" }} spacing="xs">
