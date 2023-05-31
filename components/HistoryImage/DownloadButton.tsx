@@ -1,4 +1,4 @@
-import { Box, Button } from "@mantine/core";
+import { Button } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 
 export default function downloadButton({
@@ -34,14 +34,14 @@ export default function downloadButton({
   };
   return (
     <>
-        <Button
-          radius="md"
-          size="xs"
-          onClick={() => onDownload(url)}
-          disabled={generating || !url}
-        >
-          Download
-        </Button>
+      <Button
+        radius="md"
+        size="xs"
+        onClick={() => onDownload(url)}
+        disabled={generating || !url}
+      >
+        Download
+      </Button>
     </>
   );
 }
