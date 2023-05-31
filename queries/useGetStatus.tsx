@@ -5,6 +5,9 @@ async function getStatus() {
   try {
     const res = await fetch(`https://waifus-api.nemusona.com/`, {
       method: "GET",
+      headers: {
+        "origin": "https://waifus.nemusona.com"
+      },
     });
     if (res.status === 200) {
       return true;

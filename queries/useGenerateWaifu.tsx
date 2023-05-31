@@ -19,6 +19,7 @@ async function generateWaifu(values: FormValues) {
         method: "POST",
         headers: {
           "content-type": "application/json",
+          "origin": "https://waifus.nemusona.com"
         },
         body: body,
       }

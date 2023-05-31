@@ -15,6 +15,9 @@ async function getQueue(model: string | null) {
       `https://waifus-api.nemusona.com/queue/${model.toLowerCase()}`,
       {
         method: "GET",
+        headers: {
+          "origin": "https://waifus.nemusona.com"
+        },
       }
     );
     if (res.status === 200) {
