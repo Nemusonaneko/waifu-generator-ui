@@ -16,9 +16,9 @@ import { InjectedConnector } from "wagmi/connectors/injected";
 import { Carousel } from "@mantine/carousel";
 import Image from "next/image";
 import Autoplay from "embla-carousel-autoplay";
-import BigNumber from "bignumber.js";
 import { showNotification } from "@mantine/notifications";
 import Link from "next/link";
+import BigNumber from "bignumber.js";
 
 export default function Pass() {
   const { isConnected } = useAccount();
@@ -54,7 +54,7 @@ export default function Pass() {
   });
 
   const waitForTransaction = useWaitForTransaction({
-    confirmations: 2,
+    confirmations: 1,
     hash: data?.hash,
     timeout: 300_000,
     onSuccess(data) {
@@ -127,7 +127,7 @@ export default function Pass() {
             height={256}
             loop
             plugins={[autoplay.current]}
-            slideSize={1/3}
+            slideSize={1 / 3}
             withControls={false}
             draggable={false}
             slidesToScroll={1}
