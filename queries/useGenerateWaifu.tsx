@@ -14,7 +14,7 @@ async function generateWaifu(values: FormValues) {
       seed: values?.seed,
     });
     const res: Response = await fetch(
-      `https://waifus-api.nemusona.com/${values.modelUsed.toLowerCase()}`,
+      `https://waifus-api.nemusona.com/generate/${values.modelUsed.toLowerCase()}`,
       {
         method: "POST",
         headers: {
