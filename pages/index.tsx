@@ -214,7 +214,7 @@ export default function Home() {
                         disabled={generating}
                         min={-1}
                         value={seed}
-                        onChange={(x) => setSeed(x ?? -1)}
+                        onChange={(x) => setSeed(Number(x ?? -1))}
                       />
                       <UnstyledButton
                         onClick={() =>

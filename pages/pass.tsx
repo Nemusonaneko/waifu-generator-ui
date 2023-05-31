@@ -1,4 +1,11 @@
-import { useAccount, useConnect, useContractWrite } from "wagmi";
+import {
+  useAccount,
+  useConnect,
+  useContractWrite,
+  useNetwork,
+  useSwitchNetwork,
+  useWaitForTransaction,
+} from "wagmi";
 import Layout from "../layout";
 import { Box, Button, Center, Group, NumberInput, Text } from "@mantine/core";
 import { GOERLI_WAIFU_PASS } from "../utils/contracts";
@@ -6,6 +13,12 @@ import { abi } from "../abis/nemupass";
 import { parseEther } from "viem";
 import React from "react";
 import { InjectedConnector } from "wagmi/connectors/injected";
+import { Carousel } from "@mantine/carousel";
+import Image from "next/image";
+import Autoplay from "embla-carousel-autoplay";
+import BigNumber from "bignumber.js";
+import { showNotification } from "@mantine/notifications";
+import Link from "next/link";
 
 export default function Pass() {
   const { isConnected } = useAccount();
@@ -15,6 +28,78 @@ export default function Pass() {
     address: GOERLI_WAIFU_PASS,
     abi: abi,
     functionName: "mint",
+    onError(error: Error) {
+      showNotification({
+        title: "Something went wrong!",
+        message: error.message,
+        color: "red",
+        loading: false,
+      });
+    },
+    onSuccess(data) {
+      showNotification({
+        title: "Transaction Sent!",
+        loading: true,
+        color: "yellow",
+        message: (
+          <Link
+            href={`https://goerli.etherscan.io/tx/${data.hash}`}
+            target="_blank"
+          >
+            {"View Transaction Here"}
+          </Link>
+        ),
+      });
+    },
+  });
+
+  const waitForTransaction = useWaitForTransaction({
+    confirmations: 2,
+    hash: data?.hash,
+    timeout: 300_000,
+    onSuccess(data) {
+      showNotification({
+        title: "Transaction Successful!",
+        message: (
+          <Link
+            href={`https://goerli.etherscan.io/tx/${data.transactionHash}`}
+            target="_blank"
+          >
+            {"View Transaction Here"}
+          </Link>
+        ),
+        color: "green",
+        loading: false,
+      });
+    },
+    onError(error) {
+      showNotification({
+        title: "Transaction Failed!",
+        message: error.message,
+        color: "red",
+        loading: false,
+      });
+    },
+  });
+
+  const autoplay = React.useRef(Autoplay({ delay: 3000 }));
+
+  const waifus = React.useMemo(() => {
+    let srcs = [];
+    for (let i = 0; i < 100; i++) {
+      srcs.push(`${`/../public/waifus/${i}.png`}`);
+    }
+    srcs = srcs
+      .map((value) => ({ value, sort: Math.random() }))
+      .sort((a, b) => a.sort - b.sort)
+      .map(({ value }) => value);
+    return srcs;
+  }, []);
+
+  const { chain } = useNetwork();
+
+  const { switchNetwork } = useSwitchNetwork({
+    chainId: 5,
   });
 
   const { connect } = useConnect({
@@ -23,9 +108,10 @@ export default function Pass() {
 
   async function onMint() {
     if (isConnected) {
+      const toPay = new BigNumber(amountToMint).times(0.1).toNumber();
       write({
         args: [amountToMint],
-        value: parseEther(`${amountToMint * 0.1}`),
+        value: parseEther(`${toPay}`),
       });
     }
   }
@@ -33,30 +119,60 @@ export default function Pass() {
   return (
     <Layout>
       <Center>
-        <Box w={1024}>
+        <Box w={768}>
           <Text size={36} fw={700}>
             Waifu Pass
           </Text>
-          <Text size="lg">Waifu Pass will give you:</Text>
-          <Text size="md">{"- Early access to new features"}</Text>
-          <Text size="md">
-            {"- Lifetime access to upcoming premium feature"}
-          </Text>
-          <Text size="md">{"- 5 free mints of your generations"}</Text>
-          <Text size="md">{"- Cute Waifu"}</Text>
+          <Carousel
+            height={256}
+            loop
+            plugins={[autoplay.current]}
+            slideSize={1/3}
+            withControls={false}
+            draggable={false}
+            slidesToScroll={1}
+            speed={1}
+            slideGap="xs"
+            w={768}
+          >
+            {waifus.map((x: string, i: number) => {
+              return (
+                <Carousel.Slide key={i}>
+                  <Image src={x} key={i} alt="waifu" width={256} height={256} />
+                </Carousel.Slide>
+              );
+            })}
+          </Carousel>
+
           <Group position="left" pt={5}>
             <NumberInput
               min={1}
               max={5}
               value={amountToMint}
-              onChange={(x: any) => setAmountToMint(x.target)}
+              onChange={(x) => setAmountToMint(Number(x))}
             />
+            <Text>{`Price: ${BigNumber(0.1)
+              .times(amountToMint)
+              .toString()} ETH`}</Text>
             <Button
               radius="md"
-              onClick={!isConnected ? () => connect() : () => onMint()}
+              onClick={
+                !isConnected
+                  ? () => connect()
+                  : chain?.id === 5
+                  ? () => onMint()
+                  : () => switchNetwork?.(5)
+              }
+              loading={isLoading}
               w={148}
             >
-              <Text>{isConnected ? "Mint" : "Connect Wallet"}</Text>
+              <Text>
+                {!isConnected
+                  ? "Connect Wallet"
+                  : chain?.id === 5
+                  ? "Mint"
+                  : "Switch Network"}
+              </Text>
             </Button>
           </Group>
         </Box>

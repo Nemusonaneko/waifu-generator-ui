@@ -1,6 +1,6 @@
 import { MantineProvider } from "@mantine/core";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { NotificationsProvider } from "@mantine/notifications";
+import { Notifications } from "@mantine/notifications";
 import { AppProps } from "next/app";
 import { config } from "../components/Web3/index";
 import { WagmiConfig } from "wagmi";
@@ -22,9 +22,8 @@ export default function App(props: AppProps) {
           }}
         >
           <QueryClientProvider client={queryClient}>
-            <NotificationsProvider>
+            <Notifications/>
               <Component {...pageProps} />
-            </NotificationsProvider>
           </QueryClientProvider>
         </MantineProvider>
       </WagmiConfig>
