@@ -13,6 +13,7 @@ import {
   Tooltip,
   UnstyledButton,
   Group,
+  Container,
 } from "@mantine/core";
 import Image from "next/image";
 import DogO from "../public/DogO.png";
@@ -27,6 +28,7 @@ import History from "../components/HistoryImage/History";
 import { useForm } from "@mantine/form";
 import { translateModel } from "../utils/models";
 import { questionMarkCircle, arrowPath } from "../public/icons";
+import { useWindowSize } from "../hooks/useWindowSize";
 
 const SIXTY_SEC = 60 * 1e3;
 const THIRTY_SEC = 30 * 1e3;
@@ -149,19 +151,23 @@ export default function Home() {
     });
   };
 
+  const windowSize = useWindowSize();
+
   return (
     <Layout>
-      <Center>
-        <Box w={1024}>
-          <form onSubmit={form.onSubmit((x: SubmitValues) => onSubmit(x))}>
-            <Flex gap="md">
-              <Box sx={{ height: 512, width: 512 }}>
-                <Image
-                  alt="waifu"
-                  height={512}
-                  width={512}
-                  src={waifuData?.url ?? DogO}
-                />
+      <Container fluid>
+        <form onSubmit={form.onSubmit((x: SubmitValues) => onSubmit(x))}>
+          {windowSize.width && windowSize.width >= 1024 ? (
+            <Flex gap="xs">
+              <Box w="50%">
+                <Center>
+                  <Image
+                    alt="waifu"
+                    height={400}
+                    width={400}
+                    src={waifuData?.url ?? DogO}
+                  />
+                </Center>
                 <Stack style={{ marginTop: "10px" }} spacing="md">
                   <div>
                     <Tooltip
@@ -264,11 +270,11 @@ export default function Home() {
                   </Flex>
                 </Stack>
               </Box>
-              <Box>
+              <Box w="50%">
                 <Box
                   sx={{
-                    height: 512,
-                    width: 512,
+                    height: 400,
+                    width: "100%",
                     wordWrap: "break-word",
                     overflow: "auto",
                   }}
@@ -363,14 +369,215 @@ export default function Home() {
                 </Stack>
               </Box>
             </Flex>
-          </form>
-        </Box>
-      </Center>
-      <Center>
-        <Box w={1024} pt={96}>
+          ) : (
+            <>
+              <Center>
+                <Image
+                  alt="waifu"
+                  height={300}
+                  width={300}
+                  src={waifuData?.url ?? DogO}
+                />
+              </Center>
+              <Stack style={{ marginTop: "10px" }} spacing="xs">
+                <div>
+                  <Tooltip
+                    position="top-start"
+                    label="What you want the AI to produce in your image"
+                  >
+                    <Text size="sm" fw={500}>
+                      Positive Prompts
+                    </Text>
+                  </Tooltip>
+                  <Textarea
+                    disabled={generating}
+                    {...form.getInputProps("positivePrompts")}
+                  />
+                </div>
+                <div>
+                  <Tooltip
+                    position="top-start"
+                    label="What you want the AI to not produce in your image"
+                  >
+                    <Text size="sm" fw={500}>
+                      Negative Prompts
+                    </Text>
+                  </Tooltip>
+                  <Textarea
+                    disabled={generating}
+                    {...form.getInputProps("negativePrompts")}
+                  />
+                </div>
+                <div>
+                  <Tooltip
+                    position="top-start"
+                    label="Controls how closely the image will match your prompts. The higher it is, the closer it will be (up to a certain point) "
+                  >
+                    <Text size="sm" fw={500}>
+                      CFG Scale
+                    </Text>
+                  </Tooltip>
+                  <Slider
+                    min={0}
+                    max={20}
+                    step={1}
+                    marks={[
+                      { value: 0, label: "0" },
+                      { value: 5, label: "5" },
+                      { value: 10, label: "10" },
+                      { value: 15, label: "15" },
+                      { value: 20, label: "20" },
+                    ]}
+                    disabled={generating}
+                    {...form.getInputProps("cfgScale")}
+                  />
+                </div>
+                <div style={{ marginTop: "20px" }}>
+                  <Tooltip
+                    position="top-start"
+                    label="Controls the variation in your generated image. The higher the strength, the more variance (up to certain point)"
+                  >
+                    <Text size="sm" fw={500}>
+                      Denoise Strength
+                    </Text>
+                  </Tooltip>
+                  <Slider
+                    min={0}
+                    max={1}
+                    step={0.05}
+                    marks={[
+                      { value: 0, label: "0" },
+                      { value: 0.25, label: ".25" },
+                      { value: 0.5, label: ".5" },
+                      { value: 0.75, label: ".75" },
+                      { value: 1, label: "1" },
+                    ]}
+                    disabled={generating}
+                    {...form.getInputProps("denoiseStrength")}
+                  />
+                </div>
+                <div style={{ marginTop: "20px" }}>
+                  <Tooltip
+                    position="top-start"
+                    label="The image model used to generate your image"
+                  >
+                    <Text size="sm" fw={500}>
+                      Model
+                    </Text>
+                  </Tooltip>
+                  <Select
+                    value={model}
+                    placeholder="Choose Model"
+                    disabled={generating}
+                    data={[
+                      { value: "anything", label: "Anything V4.5" },
+                      { value: "aom", label: "AOM3" },
+                      { value: "counterfeit", label: "Counterfeit V3" },
+                      // { value: "pastel", label: "Pastel Mix" },
+                    ]}
+                    onChange={setModel}
+                  />
+                </div>
+                <div>
+                  <Tooltip
+                    position="top-start"
+                    label="Can be used to reproduce images or generate similar images, use -1 for random seed"
+                  >
+                    <Text size="sm" fw={500}>
+                      Seed
+                    </Text>
+                  </Tooltip>
+                  <Group>
+                    <NumberInput
+                      hideControls
+                      disabled={generating}
+                      min={-1}
+                      value={seed}
+                      onChange={(x) => setSeed(Number(x ?? -1))}
+                    />
+                    <UnstyledButton
+                      onClick={() =>
+                        setSeed(waifuData?.seed ? waifuData.seed : -1)
+                      }
+                      style={{ width: 32, height: 32 }}
+                    >
+                      <Tooltip
+                        position="top-start"
+                        label="Reuse seed of last generation"
+                      >
+                        {arrowPath}
+                      </Tooltip>
+                    </UnstyledButton>
+                    <UnstyledButton
+                      onClick={() => setSeed(-1)}
+                      style={{ width: 32, height: 32 }}
+                    >
+                      <Tooltip position="top-start" label="Random seed">
+                        {questionMarkCircle}
+                      </Tooltip>
+                    </UnstyledButton>
+                  </Group>
+                  <Center pt={10}>
+                    <Flex align="center" gap="xs">
+                      <Text size="md">{`Queue: ${
+                        amtInQueue ?? 0
+                      } image(s)`}</Text>
+                      <Button
+                        w={192}
+                        radius="md"
+                        size="md"
+                        type="submit"
+                        disabled={generating || countdown > 0 || !model}
+                        loading={generating}
+                        loaderPosition="right"
+                      >
+                        <Text size="md">
+                          Generate {countdown > 0 && `(${countdown})`}
+                        </Text>
+                      </Button>
+                    </Flex>
+                  </Center>
+                  <Box
+                    pt={10}
+                    sx={{
+                      width: "100%",
+                      wordWrap: "break-word",
+                      overflow: "auto",
+                    }}
+                  >
+                    <Center>
+                      <Text size="xl" fw={500}>
+                        Prompt Information:
+                      </Text>
+                    </Center>
+                    <Text size="md">Positive Prompts:</Text>
+                    <Text size="sm">{waifuData?.positive}</Text>
+                    <Text size="md">Negative Prompts:</Text>
+                    <Text size="sm">{waifuData?.negative}</Text>
+                    <Text size="md">CFG Scale: {waifuData?.cfgScale}</Text>
+                    <Text size="md">
+                      {`Denoise Strength: ${
+                        waifuData?.denoiseStrength
+                          ? (
+                              Math.round(waifuData?.denoiseStrength * 500) / 500
+                            ).toFixed(2)
+                          : ""
+                      }`}
+                    </Text>
+                    <Text size="md">Seed: {waifuData?.seed}</Text>
+                    <Text size="md">
+                      Model: {translateModel(waifuData?.model)}
+                    </Text>
+                  </Box>
+                </div>
+              </Stack>
+            </>
+          )}
+        </form>
+        <Box pt={20}>
           <History />
         </Box>
-      </Center>
+      </Container>
     </Layout>
   );
 }

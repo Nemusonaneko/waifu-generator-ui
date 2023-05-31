@@ -7,7 +7,15 @@ import {
   useWaitForTransaction,
 } from "wagmi";
 import Layout from "../layout";
-import { Box, Button, Center, Group, NumberInput, Text } from "@mantine/core";
+import {
+  Box,
+  Button,
+  Center,
+  Container,
+  Group,
+  NumberInput,
+  Text,
+} from "@mantine/core";
 import { GOERLI_WAIFU_PASS } from "../utils/contracts";
 import { abi } from "../abis/nemupass";
 import { parseEther } from "viem";
@@ -19,10 +27,14 @@ import Autoplay from "embla-carousel-autoplay";
 import { showNotification } from "@mantine/notifications";
 import Link from "next/link";
 import BigNumber from "bignumber.js";
+import { useWindowSize } from "../hooks/useWindowSize";
 
 export default function Pass() {
   const { isConnected } = useAccount();
   const [amountToMint, setAmountToMint] = React.useState<number>(1);
+
+  const windowSize = useWindowSize();
+  const width = (windowSize && windowSize.width) ?? 256;
 
   const { data, isLoading, write } = useContractWrite({
     address: GOERLI_WAIFU_PASS,
@@ -86,7 +98,7 @@ export default function Pass() {
 
   const waifus = React.useMemo(() => {
     let srcs = [];
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 50; i++) {
       srcs.push(`${`/../public/waifus/${i}.png`}`);
     }
     srcs = srcs
@@ -118,65 +130,66 @@ export default function Pass() {
 
   return (
     <Layout>
-      <Center>
-        <Box w={768}>
-          <Text size={36} fw={700}>
-            Waifu Pass
-          </Text>
-          <Carousel
-            height={256}
-            loop
-            plugins={[autoplay.current]}
-            slideSize={1 / 3}
-            withControls={false}
-            draggable={false}
-            slidesToScroll={1}
-            speed={1}
-            slideGap="xs"
-            w={768}
+      <Container fluid>
+        <Center>
+          <Box w="95%">
+            <Text size={36} fw={700}>
+              Waifu Pass
+            </Text>
+          </Box>
+        </Center>
+        <Carousel
+          height={256}
+          loop
+          plugins={[autoplay.current]}
+          withControls={false}
+          draggable={false}
+          slidesToScroll={1}
+          slideSize={256 / width}
+          speed={1}
+          slideGap="xs"
+        >
+          {waifus.map((x: string, i: number) => {
+            return (
+              <Carousel.Slide key={i}>
+                <Image src={x} key={i} alt="waifu" width={256} height={256} />
+              </Carousel.Slide>
+            );
+          })}
+        </Carousel>
+        <Group position="center" pt={10}>
+          <NumberInput
+            min={1}
+            max={5}
+            value={amountToMint}
+            onChange={(x) => setAmountToMint(Number(x))}
+            w={64}
+          />
+          <Text size="md">{`Total Cost: ${BigNumber(0.1)
+            .times(amountToMint)
+            .toString()} ETH + Gas`}</Text>
+          <Button
+            radius="md"
+            onClick={
+              !isConnected
+                ? () => connect()
+                : chain?.id === 5
+                ? () => onMint()
+                : () => switchNetwork?.(5)
+            }
+            loading={isLoading}
+            w={128}
           >
-            {waifus.map((x: string, i: number) => {
-              return (
-                <Carousel.Slide key={i}>
-                  <Image src={x} key={i} alt="waifu" width={256} height={256} />
-                </Carousel.Slide>
-              );
-            })}
-          </Carousel>
-
-          <Group position="left" pt={5}>
-            <NumberInput
-              min={1}
-              max={5}
-              value={amountToMint}
-              onChange={(x) => setAmountToMint(Number(x))}
-            />
-            <Text>{`Price: ${BigNumber(0.1)
-              .times(amountToMint)
-              .toString()} ETH`}</Text>
-            <Button
-              radius="md"
-              onClick={
-                !isConnected
-                  ? () => connect()
-                  : chain?.id === 5
-                  ? () => onMint()
-                  : () => switchNetwork?.(5)
-              }
-              loading={isLoading}
-              w={148}
-            >
-              <Text>
-                {!isConnected
-                  ? "Connect Wallet"
-                  : chain?.id === 5
-                  ? "Mint"
-                  : "Switch Network"}
-              </Text>
-            </Button>
-          </Group>
-        </Box>
-      </Center>
+            <Text>
+              {!isConnected
+                ? "Connect Wallet"
+                : chain?.id === 5
+                ? "Mint"
+                : "Switch Network"}
+            </Text>
+          </Button>
+        </Group>
+      </Container>
     </Layout>
   );
 }

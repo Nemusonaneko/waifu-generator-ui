@@ -6,6 +6,7 @@ import { useQueryClient } from "react-query";
 import Tink from "../../public/think.png";
 import DownloadButton from "./DownloadButton";
 import { translateModel } from "../../utils/models";
+import { useWindowSize } from "../../hooks/useWindowSize";
 
 export default function HistoryImage({
   index,
@@ -26,7 +27,7 @@ export default function HistoryImage({
     } catch {
       setUrl(Tink);
     }
-  }, [index, historyData])
+  }, [index, historyData]);
 
   function onDelete() {
     let current: HistoryValues[] = JSON.parse(
@@ -37,6 +38,10 @@ export default function HistoryImage({
     queryClient.invalidateQueries();
     setModalOpened(false);
   }
+
+  const windowSize = useWindowSize();
+
+  const isLg = windowSize && windowSize.width && windowSize.width >= 1024;
 
   return (
     <>
@@ -53,11 +58,11 @@ export default function HistoryImage({
         title="Image"
         onClose={() => setModalOpened(false)}
         opened={modalOpened}
-        size={544}
+        size={isLg ? "50%" : "100%"}
       >
-        <Box sx={{ width: 512 }}>
+        <Box sx={{ width: "100%" }}>
           <Center>
-            <Image src={url} alt="img" width={512} height={512} />
+            <Image src={url} alt="img" width={isLg ? 400 : 300} height={isLg ? 400 : 300} />
           </Center>
           <Box sx={{ wordWrap: "break-word", overflow: "auto" }}>
             <Text size="lg" fw={500}>

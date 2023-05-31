@@ -21,8 +21,8 @@ export default function History() {
               Delete All
             </Button>
           </Group>
-
-          <ScrollArea style={{ height: 136, width: 768 }} pt={5}>
+          
+          <ScrollArea style={{ width: "100%" }} pt={5}>
             {historyData.map((x, i) => {
               return <HistoryImage key={i} index={Number(i)} historyData={x} />;
             })}
