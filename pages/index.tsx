@@ -181,102 +181,100 @@ export default function Home() {
                       </Text>
                     </Tooltip>
                     <Textarea
+                      minRows={5}
                       disabled={generating}
                       {...form.getInputProps("positivePrompts")}
                     />
                   </div>
-                  <div>
-                    <Tooltip
-                      position="top-start"
-                      label="The image model used to generate your image"
-                    >
-                      <Text size="sm" fw={500}>
-                        Model
-                      </Text>
-                    </Tooltip>
-                    <Select
-                      value={model}
-                      placeholder="Choose Model"
-                      disabled={generating}
-                      data={[
-                        { value: "anything", label: "Anything V4.5" },
-                        { value: "aom", label: "AOM3" },
-                        { value: "counterfeit", label: "Counterfeit V3" },
-                        // { value: "pastel", label: "Pastel Mix" },
-                      ]}
-                      onChange={setModel}
-                    />
-                  </div>
-                  <div>
-                    <Tooltip
-                      position="top-start"
-                      label="Can be used to reproduce images or generate similar images, use -1 for random seed"
-                    >
-                      <Text size="sm" fw={500}>
-                        Seed
-                      </Text>
-                    </Tooltip>
-                    <Group>
-                      <NumberInput
-                        hideControls
-                        disabled={generating}
-                        min={-1}
-                        value={seed}
-                        onChange={(x) => setSeed(Number(x ?? -1))}
-                      />
-                      <UnstyledButton
-                        disabled={generating}
-                        onClick={() =>
-                          setSeed(waifuData?.seed ? waifuData.seed : -1)
-                        }
-                        style={{ width: 32, height: 32 }}
-                      >
+                  <Group position="left" align="center">
+                    <Flex gap={5}>
+                      <div>
                         <Tooltip
                           position="top-start"
-                          label="Reuse seed of last generation"
+                          label="The image model used to generate your image"
                         >
-                          {arrowPath}
+                          <Text size="sm" fw={500}>
+                            Model
+                          </Text>
                         </Tooltip>
-                      </UnstyledButton>
-                      <UnstyledButton
-                        disabled={generating}
-                        onClick={() => setSeed(-1)}
-                        style={{ width: 32, height: 32 }}
+                        <Select
+                          value={model}
+                          placeholder="Choose Model"
+                          disabled={generating}
+                          data={[
+                            { value: "anything", label: "Anything V4.5" },
+                            { value: "aom", label: "AOM3" },
+                            { value: "counterfeit", label: "Counterfeit V3" },
+                            // { value: "pastel", label: "Pastel Mix" },
+                          ]}
+                          onChange={setModel}
+                        />
+                      </div>
+                      <div>
+                        <Tooltip
+                          position="top-start"
+                          label="Can be used to reproduce images or generate similar images, use -1 for random seed"
+                        >
+                          <Text size="sm" fw={500}>
+                            Seed
+                          </Text>
+                        </Tooltip>
+                        <Group>
+                          <NumberInput
+                            hideControls
+                            disabled={generating}
+                            min={-1}
+                            value={seed}
+                            onChange={(x) => setSeed(Number(x ?? -1))}
+                          />
+                          <UnstyledButton
+                            disabled={generating}
+                            onClick={() =>
+                              setSeed(waifuData?.seed ? waifuData.seed : -1)
+                            }
+                            style={{ width: 32, height: 32 }}
+                          >
+                            <Tooltip
+                              position="top-start"
+                              label="Reuse seed of last generation"
+                            >
+                              {arrowPath}
+                            </Tooltip>
+                          </UnstyledButton>
+                          <UnstyledButton
+                            disabled={generating}
+                            onClick={() => setSeed(-1)}
+                            style={{ width: 32, height: 32 }}
+                          >
+                            <Tooltip position="top-start" label="Random seed">
+                              {questionMarkCircle}
+                            </Tooltip>
+                          </UnstyledButton>
+                        </Group>
+                      </div>
+                    </Flex>
+                    <Flex align="center" mt={20} gap={10}>
+                      <Text size="sm">{`Queue: ${
+                        amtInQueue ?? 0
+                      } image(s)`}</Text>
+                      <DownloadButton
+                        url={waifuData?.url}
+                        generating={generating}
+                      />
+                      <Button
+                        w={164}
+                        radius="md"
+                        type="submit"
+                        disabled={generating || countdown > 0 || !model}
+                        loading={generating}
+                        loaderPosition="left"
                       >
-                        <Tooltip position="top-start" label="Random seed">
-                          {questionMarkCircle}
-                        </Tooltip>
-                      </UnstyledButton>
-                    </Group>
-                  </div>
-                  <Flex
-                    style={{
-                      position: "relative",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "20px",
-                    }}
-                  >
-                    <Text>{`Queue: ${amtInQueue ?? 0} image(s)`}</Text>
-                    <DownloadButton
-                      url={waifuData?.url}
-                      generating={generating}
-                    />
-                    <Button
-                      style={{ right: 0, position: "absolute" }}
-                      w={192}
-                      radius="md"
-                      size="md"
-                      type="submit"
-                      disabled={generating || countdown > 0 || !model}
-                      loading={generating}
-                      loaderPosition="right"
-                    >
-                      <Text size="md">
-                        Generate {countdown > 0 && `(${countdown})`}
-                      </Text>
-                    </Button>
-                  </Flex>
+                        <Text size="md">
+                          Generate {countdown > 0 && `(${countdown})`}
+                        </Text>
+                      </Button>
+                    </Flex>
+                  </Group>
                 </Stack>
               </Box>
               <Box w="50%">
@@ -323,11 +321,131 @@ export default function Home() {
                       </Text>
                     </Tooltip>
                     <Textarea
+                      minRows={5}
                       disabled={generating}
                       {...form.getInputProps("negativePrompts")}
                     />
                   </div>
-                  <div>
+                  <Group position="center" grow>
+                    <div>
+                      <Tooltip
+                        position="top-start"
+                        label="Controls how closely the image will match your prompts. The higher it is, the closer it will be (up to a certain point) "
+                      >
+                        <Text size="sm" fw={500}>
+                          CFG Scale
+                        </Text>
+                      </Tooltip>
+                      <Slider
+                        min={0}
+                        max={20}
+                        step={1}
+                        marks={[
+                          { value: 0, label: "0" },
+                          { value: 5, label: "5" },
+                          { value: 10, label: "10" },
+                          { value: 15, label: "15" },
+                          { value: 20, label: "20" },
+                        ]}
+                        disabled={generating}
+                        {...form.getInputProps("cfgScale")}
+                      />
+                    </div>
+                    <div style={{}}>
+                      <Tooltip
+                        position="top-start"
+                        label="Controls the variation in your generated image. The higher the strength, the more variance (up to certain point)"
+                      >
+                        <Text size="sm" fw={500}>
+                          Denoise Strength
+                        </Text>
+                      </Tooltip>
+                      <Slider
+                        min={0}
+                        max={1}
+                        step={0.05}
+                        marks={[
+                          { value: 0, label: "0" },
+                          { value: 0.25, label: ".25" },
+                          { value: 0.5, label: ".5" },
+                          { value: 0.75, label: ".75" },
+                          { value: 1, label: "1" },
+                        ]}
+                        disabled={generating}
+                        {...form.getInputProps("denoiseStrength")}
+                      />
+                    </div>
+                  </Group>
+                </Stack>
+              </Box>
+            </Flex>
+          ) : (
+            <>
+              <Center>
+                <Image
+                  alt="waifu"
+                  height={300}
+                  width={300}
+                  src={waifuData?.url ?? Cute}
+                />
+              </Center>
+              <Stack style={{ marginTop: "10px" }} spacing="xs">
+                <Center>
+                  <Flex align="center" gap="xs" pt={10}>
+                    <Text size="xs">{`Queue: ${
+                      amtInQueue ?? 0
+                    } image(s)`}</Text>
+                    <DownloadButton
+                      url={waifuData?.url}
+                      generating={generating}
+                    />
+                    <Button
+                      w={168}
+                      radius="md"
+                      size="sm"
+                      type="submit"
+                      disabled={generating || countdown > 0 || !model}
+                      loading={generating}
+                      loaderPosition="right"
+                    >
+                      <Text size="sm">
+                        Generate {countdown > 0 && `(${countdown})`}
+                      </Text>
+                    </Button>
+                  </Flex>
+                </Center>
+                <div>
+                  <Tooltip
+                    position="top-start"
+                    label="What you want the AI to produce in your image"
+                  >
+                    <Text size="sm" fw={500}>
+                      Positive Prompts
+                    </Text>
+                  </Tooltip>
+                  <Textarea
+                    autosize
+                    disabled={generating}
+                    {...form.getInputProps("positivePrompts")}
+                  />
+                </div>
+                <div>
+                  <Tooltip
+                    position="top-start"
+                    label="What you want the AI to not produce in your image"
+                  >
+                    <Text size="sm" fw={500}>
+                      Negative Prompts
+                    </Text>
+                  </Tooltip>
+                  <Textarea
+                    autosize
+                    disabled={generating}
+                    {...form.getInputProps("negativePrompts")}
+                  />
+                </div>
+                <Group position="center" spacing="xs" grow>
+                  <div style={{ width: "50%" }}>
                     <Tooltip
                       position="top-start"
                       label="Controls how closely the image will match your prompts. The higher it is, the closer it will be (up to a certain point) "
@@ -351,7 +469,7 @@ export default function Home() {
                       {...form.getInputProps("cfgScale")}
                     />
                   </div>
-                  <div style={{ marginTop: "24px" }}>
+                  <div style={{ width: "50%" }}>
                     <Tooltip
                       position="top-start"
                       label="Controls the variation in your generated image. The higher the strength, the more variance (up to certain point)"
@@ -375,118 +493,7 @@ export default function Home() {
                       {...form.getInputProps("denoiseStrength")}
                     />
                   </div>
-                </Stack>
-              </Box>
-            </Flex>
-          ) : (
-            <>
-              <Center>
-                <Image
-                  alt="waifu"
-                  height={300}
-                  width={300}
-                  src={waifuData?.url ?? Cute}
-                />
-              </Center>
-              <Stack style={{ marginTop: "10px" }} spacing="xs">
-                <Center>
-                <Flex align="center" gap="xs" pt={10}>
-                  <Text size="xs">{`Queue: ${amtInQueue ?? 0} image(s)`}</Text>
-                  <DownloadButton
-                    url={waifuData?.url}
-                    generating={generating}
-                  />
-                  <Button
-                    w={168}
-                    radius="md"
-                    size="sm"
-                    type="submit"
-                    disabled={generating || countdown > 0 || !model}
-                    loading={generating}
-                    loaderPosition="right"
-                  >
-                    <Text size="sm">
-                      Generate {countdown > 0 && `(${countdown})`}
-                    </Text>
-                  </Button>
-                </Flex>
-                </Center>
-                <div>
-                  <Tooltip
-                    position="top-start"
-                    label="What you want the AI to produce in your image"
-                  >
-                    <Text size="sm" fw={500}>
-                      Positive Prompts
-                    </Text>
-                  </Tooltip>
-                  <Textarea
-                    disabled={generating}
-                    {...form.getInputProps("positivePrompts")}
-                  />
-                </div>
-                <div>
-                  <Tooltip
-                    position="top-start"
-                    label="What you want the AI to not produce in your image"
-                  >
-                    <Text size="sm" fw={500}>
-                      Negative Prompts
-                    </Text>
-                  </Tooltip>
-                  <Textarea
-                    disabled={generating}
-                    {...form.getInputProps("negativePrompts")}
-                  />
-                </div>
-                <div>
-                  <Tooltip
-                    position="top-start"
-                    label="Controls how closely the image will match your prompts. The higher it is, the closer it will be (up to a certain point) "
-                  >
-                    <Text size="sm" fw={500}>
-                      CFG Scale
-                    </Text>
-                  </Tooltip>
-                  <Slider
-                    min={0}
-                    max={20}
-                    step={1}
-                    marks={[
-                      { value: 0, label: "0" },
-                      { value: 5, label: "5" },
-                      { value: 10, label: "10" },
-                      { value: 15, label: "15" },
-                      { value: 20, label: "20" },
-                    ]}
-                    disabled={generating}
-                    {...form.getInputProps("cfgScale")}
-                  />
-                </div>
-                <div style={{ marginTop: "20px" }}>
-                  <Tooltip
-                    position="top-start"
-                    label="Controls the variation in your generated image. The higher the strength, the more variance (up to certain point)"
-                  >
-                    <Text size="sm" fw={500}>
-                      Denoise Strength
-                    </Text>
-                  </Tooltip>
-                  <Slider
-                    min={0}
-                    max={1}
-                    step={0.05}
-                    marks={[
-                      { value: 0, label: "0" },
-                      { value: 0.25, label: ".25" },
-                      { value: 0.5, label: ".5" },
-                      { value: 0.75, label: ".75" },
-                      { value: 1, label: "1" },
-                    ]}
-                    disabled={generating}
-                    {...form.getInputProps("denoiseStrength")}
-                  />
-                </div>
+                </Group>
                 <div style={{ marginTop: "20px" }}>
                   <Tooltip
                     position="top-start"
