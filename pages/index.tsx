@@ -186,8 +186,8 @@ export default function Home() {
                       {...form.getInputProps("positivePrompts")}
                     />
                   </div>
-                  <Group position="left" align="center">
-                    <Flex gap={5}>
+                  <Group position="left">
+                    <Box w="35%">
                       <div>
                         <Tooltip
                           position="top-start"
@@ -210,6 +210,8 @@ export default function Home() {
                           onChange={setModel}
                         />
                       </div>
+                    </Box>
+                    <Box w="60%">
                       <div>
                         <Tooltip
                           position="top-start"
@@ -219,7 +221,7 @@ export default function Home() {
                             Seed
                           </Text>
                         </Tooltip>
-                        <Group>
+                        <Flex gap={5}>
                           <NumberInput
                             hideControls
                             disabled={generating}
@@ -250,31 +252,31 @@ export default function Home() {
                               {questionMarkCircle}
                             </Tooltip>
                           </UnstyledButton>
-                        </Group>
+                        </Flex>
                       </div>
-                    </Flex>
-                    <Flex align="center" mt={20} gap={10}>
-                      <Text size="sm">{`Queue: ${
-                        amtInQueue ?? 0
-                      } image(s)`}</Text>
-                      <DownloadButton
-                        url={waifuData?.url}
-                        generating={generating}
-                      />
-                      <Button
-                        w={164}
-                        radius="md"
-                        type="submit"
-                        disabled={generating || countdown > 0 || !model}
-                        loading={generating}
-                        loaderPosition="left"
-                      >
-                        <Text size="md">
-                          Generate {countdown > 0 && `(${countdown})`}
-                        </Text>
-                      </Button>
-                    </Flex>
+                    </Box>
                   </Group>
+                  <Flex align="center" gap={10}>
+                    <Text size="sm">{`Queue: ${
+                      amtInQueue ?? 0
+                    } image(s)`}</Text>
+                    <DownloadButton
+                      url={waifuData?.url}
+                      generating={generating}
+                    />
+                    <Button
+                      w={164}
+                      radius="md"
+                      type="submit"
+                      disabled={generating || countdown > 0 || !model}
+                      loading={generating}
+                      loaderPosition="left"
+                    >
+                      <Text size="md">
+                        Generate {countdown > 0 && `(${countdown})`}
+                      </Text>
+                    </Button>
+                  </Flex>
                 </Stack>
               </Box>
               <Box w="50%">
