@@ -389,6 +389,28 @@ export default function Home() {
                 />
               </Center>
               <Stack style={{ marginTop: "10px" }} spacing="xs">
+                <Center>
+                <Flex align="center" gap="xs" pt={10}>
+                  <Text size="xs">{`Queue: ${amtInQueue ?? 0} image(s)`}</Text>
+                  <DownloadButton
+                    url={waifuData?.url}
+                    generating={generating}
+                  />
+                  <Button
+                    w={168}
+                    radius="md"
+                    size="sm"
+                    type="submit"
+                    disabled={generating || countdown > 0 || !model}
+                    loading={generating}
+                    loaderPosition="right"
+                  >
+                    <Text size="sm">
+                      Generate {countdown > 0 && `(${countdown})`}
+                    </Text>
+                  </Button>
+                </Flex>
+                </Center>
                 <div>
                   <Tooltip
                     position="top-start"
@@ -528,28 +550,6 @@ export default function Home() {
                       </Tooltip>
                     </UnstyledButton>
                   </Group>
-                  <Flex align="center" gap="xs" pt={10}>
-                    <Text size="md">{`Queue: ${
-                      amtInQueue ?? 0
-                    } image(s)`}</Text>
-                    <DownloadButton
-                      url={waifuData?.url}
-                      generating={generating}
-                    />
-                    <Button
-                      w={168}
-                      radius="md"
-                      size="sm"
-                      type="submit"
-                      disabled={generating || countdown > 0 || !model}
-                      loading={generating}
-                      loaderPosition="right"
-                    >
-                      <Text size="sm">
-                        Generate {countdown > 0 && `(${countdown})`}
-                      </Text>
-                    </Button>
-                  </Flex>
                   <Box
                     pt={10}
                     sx={{
