@@ -23,6 +23,7 @@ export default function downloadButton({
       element.download = `${data}.png`;
       document.body.appendChild(element);
       element.click();
+      document.body.removeChild(element);
     } catch (error: any) {
       showNotification({
         message: error.message.toString(),
