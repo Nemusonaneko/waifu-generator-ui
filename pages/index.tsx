@@ -30,6 +30,7 @@ import { useForm } from "@mantine/form";
 import { translateModel } from "../utils/models";
 import { questionMarkCircle, arrowPath } from "../public/icons";
 import { useWindowSize } from "../hooks/useWindowSize";
+import DownloadButton from "../components/HistoryImage/DownloadButton";
 
 const SIXTY_SEC = 60 * 1e3;
 const THIRTY_SEC = 30 * 1e3;
@@ -224,6 +225,7 @@ export default function Home() {
                         onChange={(x) => setSeed(Number(x ?? -1))}
                       />
                       <UnstyledButton
+                        disabled={generating}
                         onClick={() =>
                           setSeed(waifuData?.seed ? waifuData.seed : -1)
                         }
@@ -237,6 +239,7 @@ export default function Home() {
                         </Tooltip>
                       </UnstyledButton>
                       <UnstyledButton
+                        disabled={generating}
                         onClick={() => setSeed(-1)}
                         style={{ width: 32, height: 32 }}
                       >
@@ -251,9 +254,14 @@ export default function Home() {
                       position: "relative",
                       display: "flex",
                       alignItems: "center",
+                      gap: "20px",
                     }}
                   >
                     <Text>{`Queue: ${amtInQueue ?? 0} image(s)`}</Text>
+                    <DownloadButton
+                      url={waifuData?.url}
+                      generating={generating}
+                    />
                     <Button
                       style={{ right: 0, position: "absolute" }}
                       w={192}
@@ -500,6 +508,7 @@ export default function Home() {
                       onClick={() =>
                         setSeed(waifuData?.seed ? waifuData.seed : -1)
                       }
+                      disabled={generating}
                       style={{ width: 32, height: 32 }}
                     >
                       <Tooltip
@@ -510,6 +519,7 @@ export default function Home() {
                       </Tooltip>
                     </UnstyledButton>
                     <UnstyledButton
+                      disabled={generating}
                       onClick={() => setSeed(-1)}
                       style={{ width: 32, height: 32 }}
                     >
@@ -518,26 +528,28 @@ export default function Home() {
                       </Tooltip>
                     </UnstyledButton>
                   </Group>
-                  <Center pt={10}>
-                    <Flex align="center" gap="xs">
-                      <Text size="md">{`Queue: ${
-                        amtInQueue ?? 0
-                      } image(s)`}</Text>
-                      <Button
-                        w={192}
-                        radius="md"
-                        size="md"
-                        type="submit"
-                        disabled={generating || countdown > 0 || !model}
-                        loading={generating}
-                        loaderPosition="right"
-                      >
-                        <Text size="md">
-                          Generate {countdown > 0 && `(${countdown})`}
-                        </Text>
-                      </Button>
-                    </Flex>
-                  </Center>
+                  <Flex align="center" gap="xs" pt={10}>
+                    <Text size="md">{`Queue: ${
+                      amtInQueue ?? 0
+                    } image(s)`}</Text>
+                    <DownloadButton
+                      url={waifuData?.url}
+                      generating={generating}
+                    />
+                    <Button
+                      w={168}
+                      radius="md"
+                      size="sm"
+                      type="submit"
+                      disabled={generating || countdown > 0 || !model}
+                      loading={generating}
+                      loaderPosition="right"
+                    >
+                      <Text size="sm">
+                        Generate {countdown > 0 && `(${countdown})`}
+                      </Text>
+                    </Button>
+                  </Flex>
                   <Box
                     pt={10}
                     sx={{
