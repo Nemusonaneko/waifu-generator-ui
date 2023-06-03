@@ -98,7 +98,7 @@ export default function Pass() {
 
   const waifus = React.useMemo(() => {
     let srcs = [];
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 50; i++) {
       srcs.push(`${`/../public/waifus/${i}.png`}`);
     }
     srcs = srcs
