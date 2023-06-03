@@ -1,6 +1,7 @@
 import {
   useAccount,
   useConnect,
+  useContractRead,
   useContractWrite,
   useNetwork,
   useSwitchNetwork,
@@ -44,7 +45,13 @@ export default function Pass() {
   const windowSize = useWindowSize();
   const width = (windowSize && windowSize.width) ?? 256;
 
-  const { data, isLoading, write } = useContractWrite({
+  const { data: totalSupply } = useContractRead({
+    address: GOERLI_WAIFU_PASS,
+    abi: abi,
+    functionName: "totalSupply",
+  });
+
+  const { isLoading, write } = useContractWrite({
     address: GOERLI_WAIFU_PASS,
     abi: abi,
     functionName: "mint",
@@ -124,6 +131,8 @@ export default function Pass() {
     }
   }
 
+  console.log(Number(totalSupply));
+
   return (
     <Layout>
       <Container fluid>
@@ -159,19 +168,30 @@ export default function Pass() {
             );
           })}
         </Carousel>
-        <Group position="center" pt={10}>
+        <Center>
+          <Text size="md">{`Total Minted: ${totalSupply} / 1000`}</Text>
+        </Center>
+        <Group position="center" align="center" pt={10}>
+          <Text size="md">{`Amount to Mint:`}</Text>
           <NumberInput
             min={1}
-            max={5}
+            max={10}
+            disabled={Number(totalSupply) >= 1000}
             value={amountToMint}
             onChange={(x) => setAmountToMint(Number(x))}
             w={64}
           />
-          <Text size="md">{`Total Cost: ${BigNumber(0.1)
+        </Group>
+        <Center>
+          <Text size="md">{`Total Cost to Mint: ${BigNumber(0.1)
             .times(amountToMint)
             .toString()} ETH + Gas`}</Text>
+        </Center>
+        <Center pt={5}>
           <Button
             radius="md"
+            disabled={Number(totalSupply) >= 1000}
+            size="md"
             onClick={
               !isConnected
                 ? () => connect()
@@ -180,9 +200,9 @@ export default function Pass() {
                 : () => switchNetwork?.(5)
             }
             loading={isLoading}
-            w={148}
+            w={192}
           >
-            <Text>
+            <Text size="lg">
               {!isConnected
                 ? "Connect Wallet"
                 : chain?.id === 5
@@ -190,7 +210,7 @@ export default function Pass() {
                 : "Switch Network"}
             </Text>
           </Button>
-        </Group>
+        </Center>
       </Container>
     </Layout>
   );
