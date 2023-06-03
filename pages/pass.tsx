@@ -52,7 +52,7 @@ export default function Pass() {
       showNotification({
         title: "Transaction Sent!",
         loading: true,
-        color: "yellow",
+        color: "green",
         message: (
           <Link
             href={`https://goerli.etherscan.io/tx/${data.hash}`}
@@ -65,40 +65,40 @@ export default function Pass() {
     },
   });
 
-  const waitForTransaction = useWaitForTransaction({
-    confirmations: 1,
-    hash: data?.hash,
-    timeout: 300_000,
-    onSuccess(data) {
-      showNotification({
-        title: "Transaction Successful!",
-        message: (
-          <Link
-            href={`https://goerli.etherscan.io/tx/${data.transactionHash}`}
-            target="_blank"
-          >
-            {"View Transaction Here"}
-          </Link>
-        ),
-        color: "green",
-        loading: false,
-      });
-    },
-    onError(error) {
-      showNotification({
-        title: "Transaction Failed!",
-        message: error.message,
-        color: "red",
-        loading: false,
-      });
-    },
-  });
+  // const waitForTransaction = useWaitForTransaction({
+  //   confirmations: 1,
+  //   hash: data?.hash,
+  //   timeout: 300_000,
+  //   onSuccess(data) {
+  //     showNotification({
+  //       title: "Transaction Successful!",
+  //       message: (
+  //         <Link
+  //           href={`https://goerli.etherscan.io/tx/${data.transactionHash}`}
+  //           target="_blank"
+  //         >
+  //           {"View Transaction Here"}
+  //         </Link>
+  //       ),
+  //       color: "green",
+  //       loading: false,
+  //     });
+  //   },
+  //   onError(error) {
+  //     showNotification({
+  //       title: "Transaction Failed!",
+  //       message: error.message,
+  //       color: "red",
+  //       loading: false,
+  //     });
+  //   },
+  // });
 
   const autoplay = React.useRef(Autoplay({ delay: 3000 }));
 
   const waifus = React.useMemo(() => {
     let srcs = [];
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 20; i++) {
       srcs.push(`${`/../public/waifus/${i}.png`}`);
     }
     srcs = srcs
@@ -178,7 +178,7 @@ export default function Pass() {
                 : () => switchNetwork?.(5)
             }
             loading={isLoading}
-            w={128}
+            w={148}
           >
             <Text>
               {!isConnected

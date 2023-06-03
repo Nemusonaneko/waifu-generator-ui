@@ -11,7 +11,14 @@ import {
 import React from "react";
 import DogO from "../public/DogO.png";
 import Image from "next/image";
-import { useAccount, useConnect, useDisconnect, useEnsName } from "wagmi";
+import {
+  useAccount,
+  useConnect,
+  useDisconnect,
+  useEnsName,
+  useNetwork,
+  useSwitchNetwork,
+} from "wagmi";
 import { InjectedConnector } from "wagmi/connectors/injected";
 import formatAddress from "../utils/address";
 import Link from "next/link";
@@ -27,6 +34,10 @@ export default function Layout({ children }: { children: any }) {
     connector: new InjectedConnector(),
   });
   const { disconnect } = useDisconnect();
+  const { chain } = useNetwork();
+  const { switchNetwork } = useSwitchNetwork({
+    chainId: 5,
+  });
 
   const windowSize = useWindowSize();
 
@@ -81,13 +92,13 @@ export default function Layout({ children }: { children: any }) {
                             </Text>
                           </Menu.Item>
                         </Link> */}
-                        {/* <Link href="/faq" style={{ textDecoration: "none" }}>
-                      <Menu.Item>
-                        <Text size="xl" fw={500}>
-                          FAQ
-                        </Text>
-                      </Menu.Item>
-                    </Link> */}
+                        <Link href="/faq" style={{ textDecoration: "none" }}>
+                          <Menu.Item>
+                            <Text size="xl" fw={500}>
+                              FAQ
+                            </Text>
+                          </Menu.Item>
+                        </Link>
                         <Link
                           href="/disclaimers"
                           style={{ textDecoration: "none" }}
@@ -141,23 +152,31 @@ export default function Layout({ children }: { children: any }) {
                     <Link href="/" target="_blank">
                       <Image src={blur} width={40} height={40} alt="blur" />
                     </Link>
-                  </UnstyledButton> */}
-                  {/* <Link href="/pass" style={{ textDecoration: "none" }}>
+                  </UnstyledButton>
+                  <Link href="/pass" style={{ textDecoration: "none" }}>
                     <Button radius="md" w={110}>
                       <Text size="sm" fw={500}>
                         {"Waifu Pass"}
                       </Text>
                     </Button>
-                  </Link>
-                  <Button
+                  </Link> */}
+                  {/* <Button
                     radius="md"
                     w={128}
-                    onClick={isConnected ? () => disconnect() : () => connect()}
+                    onClick={
+                      !isConnected
+                        ? () => connect()
+                        : chain?.id !== 5
+                        ? () => switchNetwork?.(5)
+                        : () => disconnect()
+                    }
                   >
                     <Text size="xs" fw={500}>
-                      {isConnected
+                      {!isConnected
+                        ? "Connect Wallet"
+                        : chain?.id === 5
                         ? ensName ?? formatAddress(address)
-                        : "Connect Wallet"}
+                        : "Switch Network"}
                     </Text>
                   </Button> */}
                 </div>
@@ -203,12 +222,12 @@ export default function Layout({ children }: { children: any }) {
                           </Menu.Item>
                         </Link> */}
                         {/* <Link href="/faq" style={{ textDecoration: "none" }}>
-                      <Menu.Item>
-                        <Text size="xl" fw={500}>
-                          FAQ
-                        </Text>
-                      </Menu.Item>
-                    </Link> */}
+                          <Menu.Item>
+                            <Text size="xl" fw={500}>
+                              FAQ
+                            </Text>
+                          </Menu.Item>
+                        </Link> */}
                         <Link
                           href="/disclaimers"
                           style={{ textDecoration: "none" }}
@@ -219,7 +238,7 @@ export default function Layout({ children }: { children: any }) {
                             </Text>
                           </Menu.Item>
                         </Link>
-                        {/* <Link
+                        <Link
                           href="https://discord.gg/nbEN88q6dw"
                           style={{ textDecoration: "none" }}
                           target="_blank"
@@ -240,7 +259,7 @@ export default function Layout({ children }: { children: any }) {
                               Twitter
                             </Text>
                           </Menu.Item>
-                        </Link> */}
+                        </Link>
                         {/* <Link
                           href="/"
                           style={{ textDecoration: "none" }}
@@ -303,13 +322,15 @@ export default function Layout({ children }: { children: any }) {
                   </Link>
                   <Button
                     radius="md"
-                    w={96}
+                    w={128}
                     onClick={isConnected ? () => disconnect() : () => connect()}
                   >
                     <Text size="xs" fw={500}>
-                      {isConnected
-                        ? ensName ?? formatAddress(address)
-                        : "Connect"}
+                      {!isConnected
+                        ? "Connect Wallet"
+                        : chain?.id === 5
+                        ? "Mint"
+                        : "Switch Network"}
                     </Text>
                   </Button> */}
                 </div>
