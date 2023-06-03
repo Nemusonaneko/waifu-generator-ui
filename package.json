@@ -18,7 +18,7 @@
     "@mantine/modals": "^6.0.13",
     "@mantine/next": "^6.0.13",
     "@mantine/notifications": "^6.0.13",
-    "next/font": "13.4.4",
+    "@next/font": "13.4.4",
     "@types/node": "20.2.5",
     "@types/react": "18.2.7",
     "@types/react-dom": "18.2.4",
