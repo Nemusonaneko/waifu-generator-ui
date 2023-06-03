@@ -29,6 +29,14 @@ import Link from "next/link";
 import BigNumber from "bignumber.js";
 import { useWindowSize } from "../hooks/useWindowSize";
 
+function importAll(r: any) {
+  return r.keys().map(r);
+}
+
+const images = importAll(
+  require.context("../public/waifus/", false, /\.(png|jpe?g|svg)$/)
+);
+
 export default function Pass() {
   const { isConnected } = useAccount();
   const [amountToMint, setAmountToMint] = React.useState<number>(1);
@@ -96,18 +104,6 @@ export default function Pass() {
 
   const autoplay = React.useRef(Autoplay({ delay: 3000 }));
 
-  const waifus = React.useMemo(() => {
-    let srcs = [];
-    for (let i = 0; i < 50; i++) {
-      srcs.push(`${`/../public/waifus/${i}_waifu2x_256x256_1n_png.png`}`);
-    }
-    srcs = srcs
-      .map((value) => ({ value, sort: Math.random() }))
-      .sort((a, b) => a.sort - b.sort)
-      .map(({ value }) => value);
-    return srcs;
-  }, []);
-
   const { chain } = useNetwork();
 
   const { switchNetwork } = useSwitchNetwork({
@@ -149,10 +145,16 @@ export default function Pass() {
           speed={1}
           slideGap="xs"
         >
-          {waifus.map((x: string, i: number) => {
+          {images.map((x: any, i: number) => {
             return (
               <Carousel.Slide key={i}>
-                <Image src={x} key={i} alt="waifu" width={256} height={256} />
+                <Image
+                  src={x.default.src}
+                  key={i}
+                  alt="waifu"
+                  width={256}
+                  height={256}
+                />
               </Carousel.Slide>
             );
           })}

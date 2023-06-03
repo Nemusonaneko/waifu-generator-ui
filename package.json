@@ -22,6 +22,7 @@
     "@types/node": "20.2.5",
     "@types/react": "18.2.7",
     "@types/react-dom": "18.2.4",
+    "@types/webpack-env": "^1.18.1",
     "bignumber.js": "^9.1.1",
     "embla-carousel-autoplay": "^7.0.0",
     "embla-carousel-react": "^7.0.0",
