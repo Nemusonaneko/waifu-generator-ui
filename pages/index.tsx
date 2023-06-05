@@ -19,7 +19,7 @@ import Image from "next/image";
 import DogO from "../public/DogO.png";
 import Cute from "../public/cute.gif";
 import React from "react";
-import { HistoryValues, SubmitValues } from "../types";
+import { HistoryValues, ResultValues, SubmitValues } from "../types";
 import useGetQueue from "../queries/useGetQueue";
 import useGetStatus from "../queries/useGetStatus";
 import useGenerateWaifu from "../queries/useGenerateWaifu";
@@ -31,6 +31,9 @@ import { translateModel } from "../utils/models";
 import { questionMarkCircle, arrowPath } from "../public/icons";
 import { useWindowSize } from "../hooks/useWindowSize";
 import DownloadButton from "../components/HistoryImage/DownloadButton";
+import useGetResult from "../queries/useGetResult";
+import useGetGenStatus from "../queries/useGetGenStatus";
+import translateStatus from "../utils/status";
 
 const SIXTY_SEC = 60 * 1e3;
 const THIRTY_SEC = 30 * 1e3;
@@ -57,9 +60,75 @@ export default function Home() {
   const { refetch: fetchStatus, data: amtInQueue } = useGetQueue(model);
   const {
     mutate: generate,
-    data: waifuData,
+    data: returnedJobId,
     isLoading: generating,
   } = useGenerateWaifu();
+  const { mutate: fetchWaifu, data: waifuData } = useGetResult();
+  const { data: waifuStatus } = useGetGenStatus(model, returnedJobId);
+
+  React.useEffect(() => {
+    if (waifuStatus !== "completed") return;
+    const values = form.values;
+    const resultValues: ResultValues = {
+      form: {
+        positivePrompts: values.positivePrompts,
+        negativePrompts: values.negativePrompts,
+        cfgScale: values.cfgScale,
+        denoiseStrength: values.denoiseStrength,
+        modelUsed: model!,
+        seed,
+      },
+      jobId: returnedJobId!,
+    };
+    fetchWaifu(resultValues, {
+      onSuccess: (data) => {
+        let current: HistoryValues[] = JSON.parse(
+          localStorage.getItem("history") ?? "[]"
+        );
+        const toStore = {
+          imgUrl: data.url,
+          base64: data.base64,
+          positive: data.positive,
+          negative: data.negative,
+          cfgScale: data.cfgScale,
+          denoiseStrength: data.denoiseStrength,
+          model: data.model,
+          seed: data.seed,
+        };
+        const originalSize = JSON.stringify(current).length;
+        current.unshift(toStore);
+        try {
+          localStorage.setItem("history", JSON.stringify(current));
+          queryClient.invalidateQueries();
+        } catch (error) {
+          try {
+            let count = 0;
+            const storeSize = JSON.stringify(toStore).length;
+            let currentSize = originalSize;
+            while (currentSize + storeSize > originalSize) {
+              current.splice(current.length - 1, 1);
+              count++;
+              currentSize = JSON.stringify(current).length;
+            }
+            localStorage.setItem("history", JSON.stringify(current));
+            showNotification({
+              message: `Removed the last ${count} images in history to free up localStorage`,
+              color: "yellow",
+              loading: false,
+            });
+            queryClient.invalidateQueries();
+          } catch {
+            showNotification({
+              message: "Unable to save image to history.",
+              color: "red",
+              loading: false,
+            });
+            queryClient.invalidateQueries();
+          }
+        }
+      },
+    });
+  }, [waifuStatus]);
 
   React.useEffect(() => {
     const interval = setInterval(() => {
@@ -92,64 +161,14 @@ export default function Home() {
       } else {
         setNextTime(Date.now() + FIFTEEN_SEC);
       }
-      generate(
-        {
-          positivePrompts: values.positivePrompts,
-          negativePrompts: values.negativePrompts,
-          cfgScale: values.cfgScale,
-          denoiseStrength: values.denoiseStrength,
-          modelUsed: model ?? "anything",
-          seed: seed,
-        },
-        {
-          onSuccess: (data) => {
-            let current: HistoryValues[] = JSON.parse(
-              localStorage.getItem("history") ?? "[]"
-            );
-            const toStore = {
-              imgUrl: data.url,
-              base64: data.base64,
-              positive: data.positive,
-              negative: data.negative,
-              cfgScale: data.cfgScale,
-              denoiseStrength: data.denoiseStrength,
-              model: data.model,
-              seed: data.seed,
-            };
-            const originalSize = JSON.stringify(current).length;
-            current.unshift(toStore);
-            try {
-              localStorage.setItem("history", JSON.stringify(current));
-              queryClient.invalidateQueries();
-            } catch (error) {
-              try {
-                let count = 0;
-                const storeSize = JSON.stringify(toStore).length;
-                let currentSize = originalSize;
-                while (currentSize + storeSize > originalSize) {
-                  current.splice(current.length - 1, 1);
-                  count++;
-                  currentSize = JSON.stringify(current).length;
-                }
-                localStorage.setItem("history", JSON.stringify(current));
-                showNotification({
-                  message: `Removed the last ${count} images in history to free up localStorage`,
-                  color: "yellow",
-                  loading: false,
-                });
-                queryClient.invalidateQueries();
-              } catch {
-                showNotification({
-                  message: "Unable to save image to history.",
-                  color: "red",
-                  loading: false,
-                });
-                queryClient.invalidateQueries();
-              }
-            }
-          },
-        }
-      );
+      generate({
+        positivePrompts: values.positivePrompts,
+        negativePrompts: values.negativePrompts,
+        cfgScale: values.cfgScale,
+        denoiseStrength: values.denoiseStrength,
+        modelUsed: model!,
+        seed: seed,
+      });
     });
   };
 
@@ -182,7 +201,11 @@ export default function Home() {
                     </Tooltip>
                     <Textarea
                       minRows={5}
-                      disabled={generating}
+                      disabled={
+                        generating ||
+                        translateStatus(waifuStatus) === "In queue" ||
+                        translateStatus(waifuStatus) === "Generating"
+                      }
                       {...form.getInputProps("positivePrompts")}
                     />
                   </div>
@@ -200,12 +223,15 @@ export default function Home() {
                         <Select
                           value={model}
                           placeholder="Choose Model"
-                          disabled={generating}
+                          disabled={
+                            generating ||
+                            translateStatus(waifuStatus) === "In queue" ||
+                            translateStatus(waifuStatus) === "Generating"
+                          }
                           data={[
                             { value: "anything", label: "Anything V4.5" },
                             { value: "aom", label: "AOM3" },
                             { value: "counterfeit", label: "Counterfeit V3" },
-                            // { value: "pastel", label: "Pastel Mix" },
                           ]}
                           onChange={setModel}
                         />
@@ -224,13 +250,21 @@ export default function Home() {
                         <Flex gap={5}>
                           <NumberInput
                             hideControls
-                            disabled={generating}
+                            disabled={
+                              generating ||
+                              translateStatus(waifuStatus) === "In queue"
+                              || translateStatus(waifuStatus) === "Generating"
+                            }
                             min={-1}
                             value={seed}
                             onChange={(x) => setSeed(Number(x ?? -1))}
                           />
                           <UnstyledButton
-                            disabled={generating}
+                            disabled={
+                              generating ||
+                              translateStatus(waifuStatus) === "In queue"
+                              || translateStatus(waifuStatus) === "Generating"
+                            }
                             onClick={() =>
                               setSeed(waifuData?.seed ? waifuData.seed : -1)
                             }
@@ -244,7 +278,11 @@ export default function Home() {
                             </Tooltip>
                           </UnstyledButton>
                           <UnstyledButton
-                            disabled={generating}
+                            disabled={
+                              generating ||
+                              translateStatus(waifuStatus) === "In queue"
+                              || translateStatus(waifuStatus) === "Generating"
+                            }
                             onClick={() => setSeed(-1)}
                             style={{ width: 32, height: 32 }}
                           >
@@ -256,27 +294,38 @@ export default function Home() {
                       </div>
                     </Box>
                   </Group>
-                  <Flex align="center" gap={10}>
+                  <Group position="left">
                     <Text size="sm">{`Queue: ${
                       amtInQueue ?? 0
                     } image(s)`}</Text>
+                    <Text size="sm">{`Status: ${translateStatus(waifuStatus)}
+                     `}</Text>
                     <DownloadButton
                       url={waifuData?.url}
                       generating={generating}
                     />
                     <Button
-                      w={164}
+                      w={168}
                       radius="md"
                       type="submit"
-                      disabled={generating || countdown > 0 || !model}
-                      loading={generating}
+                      disabled={
+                        generating ||
+                        translateStatus(waifuStatus) === "In queue" ||
+                        countdown > 0 ||
+                        !model
+                        || translateStatus(waifuStatus) === "Generating"
+                      }
+                      loading={
+                        generating ||
+                        translateStatus(waifuStatus) === "In queue"
+                      }
                       loaderPosition="left"
                     >
                       <Text size="md">
                         Generate {countdown > 0 && `(${countdown})`}
                       </Text>
                     </Button>
-                  </Flex>
+                  </Group>
                 </Stack>
               </Box>
               <Box w="50%">
@@ -324,7 +373,11 @@ export default function Home() {
                     </Tooltip>
                     <Textarea
                       minRows={5}
-                      disabled={generating}
+                      disabled={
+                        generating ||
+                        translateStatus(waifuStatus) === "In queue"
+                        || translateStatus(waifuStatus) === "Generating"
+                      }
                       {...form.getInputProps("negativePrompts")}
                     />
                   </div>
@@ -349,7 +402,11 @@ export default function Home() {
                           { value: 15, label: "15" },
                           { value: 20, label: "20" },
                         ]}
-                        disabled={generating}
+                        disabled={
+                          generating ||
+                          translateStatus(waifuStatus) === "In queue"
+                          || translateStatus(waifuStatus) === "Generating"
+                        }
                         {...form.getInputProps("cfgScale")}
                       />
                     </div>
@@ -373,7 +430,11 @@ export default function Home() {
                           { value: 0.75, label: ".75" },
                           { value: 1, label: "1" },
                         ]}
-                        disabled={generating}
+                        disabled={
+                          generating ||
+                          translateStatus(waifuStatus) === "In queue"
+                          || translateStatus(waifuStatus) === "Generating"
+                        }
                         {...form.getInputProps("denoiseStrength")}
                       />
                     </div>
@@ -393,10 +454,13 @@ export default function Home() {
               </Center>
               <Stack style={{ marginTop: "10px" }} spacing="xs">
                 <Center>
-                  <Flex align="center" gap="xs" pt={10}>
+                  <Group position="center">
                     <Text size="xs">{`Queue: ${
                       amtInQueue ?? 0
                     } image(s)`}</Text>
+                    <Text size="xs">{`Status: ${translateStatus(
+                      waifuStatus
+                    )}`}</Text>
                     <DownloadButton
                       url={waifuData?.url}
                       generating={generating}
@@ -406,7 +470,13 @@ export default function Home() {
                       radius="md"
                       size="sm"
                       type="submit"
-                      disabled={generating || countdown > 0 || !model}
+                      disabled={
+                        generating ||
+                        translateStatus(waifuStatus) === "In queue" ||
+                        countdown > 0 ||
+                        !model
+                        || translateStatus(waifuStatus) === "Generating"
+                      }
                       loading={generating}
                       loaderPosition="right"
                     >
@@ -414,7 +484,7 @@ export default function Home() {
                         Generate {countdown > 0 && `(${countdown})`}
                       </Text>
                     </Button>
-                  </Flex>
+                  </Group>
                 </Center>
                 <div>
                   <Tooltip
@@ -427,7 +497,10 @@ export default function Home() {
                   </Tooltip>
                   <Textarea
                     autosize
-                    disabled={generating}
+                    disabled={
+                      generating || translateStatus(waifuStatus) === "In queue"
+                      || translateStatus(waifuStatus) === "Generating"
+                    }
                     {...form.getInputProps("positivePrompts")}
                   />
                 </div>
@@ -442,7 +515,10 @@ export default function Home() {
                   </Tooltip>
                   <Textarea
                     autosize
-                    disabled={generating}
+                    disabled={
+                      generating || translateStatus(waifuStatus) === "In queue"
+                      || translateStatus(waifuStatus) === "Generating"
+                    }
                     {...form.getInputProps("negativePrompts")}
                   />
                 </div>
@@ -467,7 +543,11 @@ export default function Home() {
                         { value: 15, label: "15" },
                         { value: 20, label: "20" },
                       ]}
-                      disabled={generating}
+                      disabled={
+                        generating ||
+                        translateStatus(waifuStatus) === "In queue"
+                        || translateStatus(waifuStatus) === "Generating"
+                      }
                       {...form.getInputProps("cfgScale")}
                     />
                   </div>
@@ -491,7 +571,11 @@ export default function Home() {
                         { value: 0.75, label: ".75" },
                         { value: 1, label: "1" },
                       ]}
-                      disabled={generating}
+                      disabled={
+                        generating ||
+                        translateStatus(waifuStatus) === "In queue"
+                        || translateStatus(waifuStatus) === "Generating"
+                      }
                       {...form.getInputProps("denoiseStrength")}
                     />
                   </div>
@@ -508,12 +592,14 @@ export default function Home() {
                   <Select
                     value={model}
                     placeholder="Choose Model"
-                    disabled={generating}
+                    disabled={
+                      generating || translateStatus(waifuStatus) === "In queue"
+                      || translateStatus(waifuStatus) === "Generating"
+                    }
                     data={[
                       { value: "anything", label: "Anything V4.5" },
                       { value: "aom", label: "AOM3" },
                       { value: "counterfeit", label: "Counterfeit V3" },
-                      // { value: "pastel", label: "Pastel Mix" },
                     ]}
                     onChange={setModel}
                   />
@@ -530,7 +616,11 @@ export default function Home() {
                   <Group>
                     <NumberInput
                       hideControls
-                      disabled={generating}
+                      disabled={
+                        generating ||
+                        translateStatus(waifuStatus) === "In queue"
+                        || translateStatus(waifuStatus) === "Generating"
+                      }
                       min={-1}
                       value={seed}
                       onChange={(x) => setSeed(Number(x ?? -1))}
@@ -539,7 +629,11 @@ export default function Home() {
                       onClick={() =>
                         setSeed(waifuData?.seed ? waifuData.seed : -1)
                       }
-                      disabled={generating}
+                      disabled={
+                        generating ||
+                        translateStatus(waifuStatus) === "In queue"
+                        || translateStatus(waifuStatus) === "Generating"
+                      }
                       style={{ width: 32, height: 32 }}
                     >
                       <Tooltip
@@ -550,7 +644,11 @@ export default function Home() {
                       </Tooltip>
                     </UnstyledButton>
                     <UnstyledButton
-                      disabled={generating}
+                      disabled={
+                        generating ||
+                        translateStatus(waifuStatus) === "In queue"
+                        || translateStatus(waifuStatus) === "Generating"
+                      }
                       onClick={() => setSeed(-1)}
                       style={{ width: 32, height: 32 }}
                     >

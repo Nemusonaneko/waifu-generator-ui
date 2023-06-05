@@ -4,7 +4,7 @@ export interface FormValues {
   cfgScale: number;
   denoiseStrength: number;
   seed: number;
-  modelUsed: string
+  modelUsed: string;
 }
 
 export interface SubmitValues {
@@ -23,4 +23,9 @@ export interface HistoryValues {
   denoiseStrength: number;
   model: string;
   seed: number;
+}
+
+export interface ResultValues {
+  form: FormValues;
+  jobId: string | null;
 }

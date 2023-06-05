@@ -109,7 +109,7 @@ export default function Pass() {
   //   },
   // });
 
-  const autoplay = React.useRef(Autoplay({ delay: 3000 }));
+  const autoplay = React.useRef(Autoplay({ delay: 2000 }));
 
   const { chain } = useNetwork();
 
@@ -131,7 +131,6 @@ export default function Pass() {
     }
   }
 
-  console.log(Number(totalSupply));
 
   return (
     <Layout>
