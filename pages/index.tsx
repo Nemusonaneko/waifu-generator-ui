@@ -207,7 +207,8 @@ export default function Home() {
                       disabled={
                         generating ||
                         translateStatus(waifuStatus) === "In queue" ||
-                        translateStatus(waifuStatus) === "Generating"
+                        translateStatus(waifuStatus) === "Generating"||
+                        isFetchingGenStatus
                       }
                       {...form.getInputProps("positivePrompts")}
                     />
@@ -229,7 +230,8 @@ export default function Home() {
                           disabled={
                             generating ||
                             translateStatus(waifuStatus) === "In queue" ||
-                            translateStatus(waifuStatus) === "Generating"
+                            translateStatus(waifuStatus) === "Generating"||
+                            isFetchingGenStatus
                           }
                           data={[
                             { value: "anything", label: "Anything V4.5" },
@@ -256,7 +258,8 @@ export default function Home() {
                             disabled={
                               generating ||
                               translateStatus(waifuStatus) === "In queue" ||
-                              translateStatus(waifuStatus) === "Generating"
+                              translateStatus(waifuStatus) === "Generating"||
+                              isFetchingGenStatus
                             }
                             min={-1}
                             value={seed}
@@ -266,7 +269,8 @@ export default function Home() {
                             disabled={
                               generating ||
                               translateStatus(waifuStatus) === "In queue" ||
-                              translateStatus(waifuStatus) === "Generating"
+                              translateStatus(waifuStatus) === "Generating"||
+                              isFetchingGenStatus
                             }
                             onClick={() =>
                               setSeed(waifuData?.seed ? waifuData.seed : -1)
@@ -284,7 +288,8 @@ export default function Home() {
                             disabled={
                               generating ||
                               translateStatus(waifuStatus) === "In queue" ||
-                              translateStatus(waifuStatus) === "Generating"
+                              translateStatus(waifuStatus) === "Generating"||
+                              isFetchingGenStatus
                             }
                             onClick={() => setSeed(-1)}
                             style={{ width: 32, height: 32 }}
@@ -381,7 +386,8 @@ export default function Home() {
                       disabled={
                         generating ||
                         translateStatus(waifuStatus) === "In queue" ||
-                        translateStatus(waifuStatus) === "Generating"
+                        translateStatus(waifuStatus) === "Generating"||
+                        isFetchingGenStatus
                       }
                       {...form.getInputProps("negativePrompts")}
                     />
@@ -410,7 +416,8 @@ export default function Home() {
                         disabled={
                           generating ||
                           translateStatus(waifuStatus) === "In queue" ||
-                          translateStatus(waifuStatus) === "Generating"
+                          translateStatus(waifuStatus) === "Generating"||
+                          isFetchingGenStatus
                         }
                         {...form.getInputProps("cfgScale")}
                       />
@@ -438,7 +445,8 @@ export default function Home() {
                         disabled={
                           generating ||
                           translateStatus(waifuStatus) === "In queue" ||
-                          translateStatus(waifuStatus) === "Generating"
+                          translateStatus(waifuStatus) === "Generating"||
+                          isFetchingGenStatus
                         }
                         {...form.getInputProps("denoiseStrength")}
                       />
@@ -486,7 +494,8 @@ export default function Home() {
                       loading={
                         generating ||
                         translateStatus(waifuStatus) === "In queue" ||
-                        translateStatus(waifuStatus) === "Generating"
+                        translateStatus(waifuStatus) === "Generating" ||
+                        isFetchingGenStatus
                       }
                       loaderPosition="left"
                     >
@@ -510,7 +519,8 @@ export default function Home() {
                     disabled={
                       generating ||
                       translateStatus(waifuStatus) === "In queue" ||
-                      translateStatus(waifuStatus) === "Generating"
+                      translateStatus(waifuStatus) === "Generating"||
+                      isFetchingGenStatus
                     }
                     {...form.getInputProps("positivePrompts")}
                   />
@@ -529,7 +539,8 @@ export default function Home() {
                     disabled={
                       generating ||
                       translateStatus(waifuStatus) === "In queue" ||
-                      translateStatus(waifuStatus) === "Generating"
+                      translateStatus(waifuStatus) === "Generating"||
+                      isFetchingGenStatus
                     }
                     {...form.getInputProps("negativePrompts")}
                   />
@@ -558,7 +569,8 @@ export default function Home() {
                       disabled={
                         generating ||
                         translateStatus(waifuStatus) === "In queue" ||
-                        translateStatus(waifuStatus) === "Generating"
+                        translateStatus(waifuStatus) === "Generating"||
+                        isFetchingGenStatus
                       }
                       {...form.getInputProps("cfgScale")}
                     />
@@ -586,7 +598,8 @@ export default function Home() {
                       disabled={
                         generating ||
                         translateStatus(waifuStatus) === "In queue" ||
-                        translateStatus(waifuStatus) === "Generating"
+                        translateStatus(waifuStatus) === "Generating"||
+                        isFetchingGenStatus
                       }
                       {...form.getInputProps("denoiseStrength")}
                     />
@@ -607,7 +620,8 @@ export default function Home() {
                     disabled={
                       generating ||
                       translateStatus(waifuStatus) === "In queue" ||
-                      translateStatus(waifuStatus) === "Generating"
+                      translateStatus(waifuStatus) === "Generating"||
+                      isFetchingGenStatus
                     }
                     data={[
                       { value: "anything", label: "Anything V4.5" },
@@ -632,7 +646,8 @@ export default function Home() {
                       disabled={
                         generating ||
                         translateStatus(waifuStatus) === "In queue" ||
-                        translateStatus(waifuStatus) === "Generating"
+                        translateStatus(waifuStatus) === "Generating"||
+                        isFetchingGenStatus
                       }
                       min={-1}
                       value={seed}
@@ -645,7 +660,8 @@ export default function Home() {
                       disabled={
                         generating ||
                         translateStatus(waifuStatus) === "In queue" ||
-                        translateStatus(waifuStatus) === "Generating"
+                        translateStatus(waifuStatus) === "Generating"||
+                        isFetchingGenStatus
                       }
                       style={{ width: 32, height: 32 }}
                     >
@@ -660,7 +676,8 @@ export default function Home() {
                       disabled={
                         generating ||
                         translateStatus(waifuStatus) === "In queue" ||
-                        translateStatus(waifuStatus) === "Generating"
+                        translateStatus(waifuStatus) === "Generating"||
+                        isFetchingGenStatus
                       }
                       onClick={() => setSeed(-1)}
                       style={{ width: 32, height: 32 }}
