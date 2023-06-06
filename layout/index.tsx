@@ -112,7 +112,7 @@ export default function Layout({ children }: { children: any }) {
                       </Menu.Dropdown>
                     </Menu>
                     <Link href="/">
-                      <Image src={Cute} alt="DogO" width={64} height={64} />
+                      <Image src={Cute} alt="DogO" width={64} height={64} priority />
                     </Link>
                     <Text size="md" fw={700}>
                       Nemu's Waifu Generator
@@ -285,7 +285,7 @@ export default function Layout({ children }: { children: any }) {
                       </Menu.Dropdown>
                     </Menu>
                     <Link href="/">
-                      <Image src={Cute} alt="DogO" width={64} height={64} />
+                      <Image src={Cute} alt="DogO" width={64} height={64} priority />
                     </Link>
                   </Flex>
                 </div>

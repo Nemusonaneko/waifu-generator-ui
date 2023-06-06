@@ -64,7 +64,10 @@ export default function Home() {
     isLoading: generating,
   } = useGenerateWaifu();
   const { mutate: fetchWaifu, data: waifuData } = useGetResult();
-  const { data: waifuStatus } = useGetGenStatus(model, returnedJobId);
+  const { data: waifuStatus, isLoading: isFetchingGenStatus } = useGetGenStatus(
+    model,
+    returnedJobId
+  );
 
   React.useEffect(() => {
     if (waifuStatus !== "completed") return;
@@ -128,7 +131,7 @@ export default function Home() {
         }
       },
     });
-  }, [waifuStatus]);
+  }, [waifuStatus, returnedJobId]);
 
   React.useEffect(() => {
     const interval = setInterval(() => {
@@ -252,8 +255,8 @@ export default function Home() {
                             hideControls
                             disabled={
                               generating ||
-                              translateStatus(waifuStatus) === "In queue"
-                              || translateStatus(waifuStatus) === "Generating"
+                              translateStatus(waifuStatus) === "In queue" ||
+                              translateStatus(waifuStatus) === "Generating"
                             }
                             min={-1}
                             value={seed}
@@ -262,8 +265,8 @@ export default function Home() {
                           <UnstyledButton
                             disabled={
                               generating ||
-                              translateStatus(waifuStatus) === "In queue"
-                              || translateStatus(waifuStatus) === "Generating"
+                              translateStatus(waifuStatus) === "In queue" ||
+                              translateStatus(waifuStatus) === "Generating"
                             }
                             onClick={() =>
                               setSeed(waifuData?.seed ? waifuData.seed : -1)
@@ -280,8 +283,8 @@ export default function Home() {
                           <UnstyledButton
                             disabled={
                               generating ||
-                              translateStatus(waifuStatus) === "In queue"
-                              || translateStatus(waifuStatus) === "Generating"
+                              translateStatus(waifuStatus) === "In queue" ||
+                              translateStatus(waifuStatus) === "Generating"
                             }
                             onClick={() => setSeed(-1)}
                             style={{ width: 32, height: 32 }}
@@ -312,12 +315,14 @@ export default function Home() {
                         generating ||
                         translateStatus(waifuStatus) === "In queue" ||
                         countdown > 0 ||
-                        !model
-                        || translateStatus(waifuStatus) === "Generating"
+                        !model ||
+                        translateStatus(waifuStatus) === "Generating" ||
+                        isFetchingGenStatus
                       }
                       loading={
                         generating ||
-                        translateStatus(waifuStatus) === "In queue"
+                        translateStatus(waifuStatus) === "In queue" ||
+                        translateStatus(waifuStatus) === "Generating"
                       }
                       loaderPosition="left"
                     >
@@ -375,8 +380,8 @@ export default function Home() {
                       minRows={5}
                       disabled={
                         generating ||
-                        translateStatus(waifuStatus) === "In queue"
-                        || translateStatus(waifuStatus) === "Generating"
+                        translateStatus(waifuStatus) === "In queue" ||
+                        translateStatus(waifuStatus) === "Generating"
                       }
                       {...form.getInputProps("negativePrompts")}
                     />
@@ -404,8 +409,8 @@ export default function Home() {
                         ]}
                         disabled={
                           generating ||
-                          translateStatus(waifuStatus) === "In queue"
-                          || translateStatus(waifuStatus) === "Generating"
+                          translateStatus(waifuStatus) === "In queue" ||
+                          translateStatus(waifuStatus) === "Generating"
                         }
                         {...form.getInputProps("cfgScale")}
                       />
@@ -432,8 +437,8 @@ export default function Home() {
                         ]}
                         disabled={
                           generating ||
-                          translateStatus(waifuStatus) === "In queue"
-                          || translateStatus(waifuStatus) === "Generating"
+                          translateStatus(waifuStatus) === "In queue" ||
+                          translateStatus(waifuStatus) === "Generating"
                         }
                         {...form.getInputProps("denoiseStrength")}
                       />
@@ -474,11 +479,16 @@ export default function Home() {
                         generating ||
                         translateStatus(waifuStatus) === "In queue" ||
                         countdown > 0 ||
-                        !model
-                        || translateStatus(waifuStatus) === "Generating"
+                        !model ||
+                        translateStatus(waifuStatus) === "Generating" ||
+                        isFetchingGenStatus
                       }
-                      loading={generating}
-                      loaderPosition="right"
+                      loading={
+                        generating ||
+                        translateStatus(waifuStatus) === "In queue" ||
+                        translateStatus(waifuStatus) === "Generating"
+                      }
+                      loaderPosition="left"
                     >
                       <Text size="sm">
                         Generate {countdown > 0 && `(${countdown})`}
@@ -498,8 +508,9 @@ export default function Home() {
                   <Textarea
                     autosize
                     disabled={
-                      generating || translateStatus(waifuStatus) === "In queue"
-                      || translateStatus(waifuStatus) === "Generating"
+                      generating ||
+                      translateStatus(waifuStatus) === "In queue" ||
+                      translateStatus(waifuStatus) === "Generating"
                     }
                     {...form.getInputProps("positivePrompts")}
                   />
@@ -516,8 +527,9 @@ export default function Home() {
                   <Textarea
                     autosize
                     disabled={
-                      generating || translateStatus(waifuStatus) === "In queue"
-                      || translateStatus(waifuStatus) === "Generating"
+                      generating ||
+                      translateStatus(waifuStatus) === "In queue" ||
+                      translateStatus(waifuStatus) === "Generating"
                     }
                     {...form.getInputProps("negativePrompts")}
                   />
@@ -545,8 +557,8 @@ export default function Home() {
                       ]}
                       disabled={
                         generating ||
-                        translateStatus(waifuStatus) === "In queue"
-                        || translateStatus(waifuStatus) === "Generating"
+                        translateStatus(waifuStatus) === "In queue" ||
+                        translateStatus(waifuStatus) === "Generating"
                       }
                       {...form.getInputProps("cfgScale")}
                     />
@@ -573,8 +585,8 @@ export default function Home() {
                       ]}
                       disabled={
                         generating ||
-                        translateStatus(waifuStatus) === "In queue"
-                        || translateStatus(waifuStatus) === "Generating"
+                        translateStatus(waifuStatus) === "In queue" ||
+                        translateStatus(waifuStatus) === "Generating"
                       }
                       {...form.getInputProps("denoiseStrength")}
                     />
@@ -593,8 +605,9 @@ export default function Home() {
                     value={model}
                     placeholder="Choose Model"
                     disabled={
-                      generating || translateStatus(waifuStatus) === "In queue"
-                      || translateStatus(waifuStatus) === "Generating"
+                      generating ||
+                      translateStatus(waifuStatus) === "In queue" ||
+                      translateStatus(waifuStatus) === "Generating"
                     }
                     data={[
                       { value: "anything", label: "Anything V4.5" },
@@ -618,8 +631,8 @@ export default function Home() {
                       hideControls
                       disabled={
                         generating ||
-                        translateStatus(waifuStatus) === "In queue"
-                        || translateStatus(waifuStatus) === "Generating"
+                        translateStatus(waifuStatus) === "In queue" ||
+                        translateStatus(waifuStatus) === "Generating"
                       }
                       min={-1}
                       value={seed}
@@ -631,8 +644,8 @@ export default function Home() {
                       }
                       disabled={
                         generating ||
-                        translateStatus(waifuStatus) === "In queue"
-                        || translateStatus(waifuStatus) === "Generating"
+                        translateStatus(waifuStatus) === "In queue" ||
+                        translateStatus(waifuStatus) === "Generating"
                       }
                       style={{ width: 32, height: 32 }}
                     >
@@ -646,8 +659,8 @@ export default function Home() {
                     <UnstyledButton
                       disabled={
                         generating ||
-                        translateStatus(waifuStatus) === "In queue"
-                        || translateStatus(waifuStatus) === "Generating"
+                        translateStatus(waifuStatus) === "In queue" ||
+                        translateStatus(waifuStatus) === "Generating"
                       }
                       onClick={() => setSeed(-1)}
                       style={{ width: 32, height: 32 }}
