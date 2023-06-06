@@ -44,6 +44,7 @@ export default function Home() {
   const [nextTime, setNextTime] = React.useState<number>(Date.now());
   const [model, setModel] = React.useState<string | null>(null);
   const [seed, setSeed] = React.useState<number>(-1);
+  const [waifuFetched, setWaifuFetched] = React.useState<boolean>(false);
 
   const form = useForm({
     initialValues: {
@@ -70,7 +71,7 @@ export default function Home() {
   );
 
   React.useEffect(() => {
-    if (waifuStatus !== "completed") return;
+    if (waifuStatus !== "completed" || waifuFetched) return;
     const values = form.values;
     const resultValues: ResultValues = {
       form: {
@@ -103,6 +104,7 @@ export default function Home() {
         try {
           localStorage.setItem("history", JSON.stringify(current));
           queryClient.invalidateQueries();
+          setWaifuFetched(true);
         } catch (error) {
           try {
             let count = 0;
@@ -120,6 +122,7 @@ export default function Home() {
               loading: false,
             });
             queryClient.invalidateQueries();
+            setWaifuFetched(true);
           } catch {
             showNotification({
               message: "Unable to save image to history.",
@@ -127,6 +130,7 @@ export default function Home() {
               loading: false,
             });
             queryClient.invalidateQueries();
+            setWaifuFetched(true);
           }
         }
       },
@@ -172,6 +176,7 @@ export default function Home() {
         modelUsed: model!,
         seed: seed,
       });
+      setWaifuFetched(false);
     });
   };
 
@@ -207,7 +212,7 @@ export default function Home() {
                       disabled={
                         generating ||
                         translateStatus(waifuStatus) === "In queue" ||
-                        translateStatus(waifuStatus) === "Generating"||
+                        translateStatus(waifuStatus) === "Generating" ||
                         isFetchingGenStatus
                       }
                       {...form.getInputProps("positivePrompts")}
@@ -230,7 +235,7 @@ export default function Home() {
                           disabled={
                             generating ||
                             translateStatus(waifuStatus) === "In queue" ||
-                            translateStatus(waifuStatus) === "Generating"||
+                            translateStatus(waifuStatus) === "Generating" ||
                             isFetchingGenStatus
                           }
                           data={[
@@ -258,7 +263,7 @@ export default function Home() {
                             disabled={
                               generating ||
                               translateStatus(waifuStatus) === "In queue" ||
-                              translateStatus(waifuStatus) === "Generating"||
+                              translateStatus(waifuStatus) === "Generating" ||
                               isFetchingGenStatus
                             }
                             min={-1}
@@ -269,7 +274,7 @@ export default function Home() {
                             disabled={
                               generating ||
                               translateStatus(waifuStatus) === "In queue" ||
-                              translateStatus(waifuStatus) === "Generating"||
+                              translateStatus(waifuStatus) === "Generating" ||
                               isFetchingGenStatus
                             }
                             onClick={() =>
@@ -288,7 +293,7 @@ export default function Home() {
                             disabled={
                               generating ||
                               translateStatus(waifuStatus) === "In queue" ||
-                              translateStatus(waifuStatus) === "Generating"||
+                              translateStatus(waifuStatus) === "Generating" ||
                               isFetchingGenStatus
                             }
                             onClick={() => setSeed(-1)}
@@ -386,7 +391,7 @@ export default function Home() {
                       disabled={
                         generating ||
                         translateStatus(waifuStatus) === "In queue" ||
-                        translateStatus(waifuStatus) === "Generating"||
+                        translateStatus(waifuStatus) === "Generating" ||
                         isFetchingGenStatus
                       }
                       {...form.getInputProps("negativePrompts")}
@@ -416,7 +421,7 @@ export default function Home() {
                         disabled={
                           generating ||
                           translateStatus(waifuStatus) === "In queue" ||
-                          translateStatus(waifuStatus) === "Generating"||
+                          translateStatus(waifuStatus) === "Generating" ||
                           isFetchingGenStatus
                         }
                         {...form.getInputProps("cfgScale")}
@@ -445,7 +450,7 @@ export default function Home() {
                         disabled={
                           generating ||
                           translateStatus(waifuStatus) === "In queue" ||
-                          translateStatus(waifuStatus) === "Generating"||
+                          translateStatus(waifuStatus) === "Generating" ||
                           isFetchingGenStatus
                         }
                         {...form.getInputProps("denoiseStrength")}
@@ -519,7 +524,7 @@ export default function Home() {
                     disabled={
                       generating ||
                       translateStatus(waifuStatus) === "In queue" ||
-                      translateStatus(waifuStatus) === "Generating"||
+                      translateStatus(waifuStatus) === "Generating" ||
                       isFetchingGenStatus
                     }
                     {...form.getInputProps("positivePrompts")}
@@ -539,7 +544,7 @@ export default function Home() {
                     disabled={
                       generating ||
                       translateStatus(waifuStatus) === "In queue" ||
-                      translateStatus(waifuStatus) === "Generating"||
+                      translateStatus(waifuStatus) === "Generating" ||
                       isFetchingGenStatus
                     }
                     {...form.getInputProps("negativePrompts")}
@@ -569,7 +574,7 @@ export default function Home() {
                       disabled={
                         generating ||
                         translateStatus(waifuStatus) === "In queue" ||
-                        translateStatus(waifuStatus) === "Generating"||
+                        translateStatus(waifuStatus) === "Generating" ||
                         isFetchingGenStatus
                       }
                       {...form.getInputProps("cfgScale")}
@@ -598,7 +603,7 @@ export default function Home() {
                       disabled={
                         generating ||
                         translateStatus(waifuStatus) === "In queue" ||
-                        translateStatus(waifuStatus) === "Generating"||
+                        translateStatus(waifuStatus) === "Generating" ||
                         isFetchingGenStatus
                       }
                       {...form.getInputProps("denoiseStrength")}
@@ -620,7 +625,7 @@ export default function Home() {
                     disabled={
                       generating ||
                       translateStatus(waifuStatus) === "In queue" ||
-                      translateStatus(waifuStatus) === "Generating"||
+                      translateStatus(waifuStatus) === "Generating" ||
                       isFetchingGenStatus
                     }
                     data={[
@@ -646,7 +651,7 @@ export default function Home() {
                       disabled={
                         generating ||
                         translateStatus(waifuStatus) === "In queue" ||
-                        translateStatus(waifuStatus) === "Generating"||
+                        translateStatus(waifuStatus) === "Generating" ||
                         isFetchingGenStatus
                       }
                       min={-1}
@@ -660,7 +665,7 @@ export default function Home() {
                       disabled={
                         generating ||
                         translateStatus(waifuStatus) === "In queue" ||
-                        translateStatus(waifuStatus) === "Generating"||
+                        translateStatus(waifuStatus) === "Generating" ||
                         isFetchingGenStatus
                       }
                       style={{ width: 32, height: 32 }}
@@ -676,7 +681,7 @@ export default function Home() {
                       disabled={
                         generating ||
                         translateStatus(waifuStatus) === "In queue" ||
-                        translateStatus(waifuStatus) === "Generating"||
+                        translateStatus(waifuStatus) === "Generating" ||
                         isFetchingGenStatus
                       }
                       onClick={() => setSeed(-1)}

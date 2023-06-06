@@ -8,6 +8,8 @@ export default function translateStatus(status: string | null | undefined) {
       return "In queue";
     case "active":
       return "Generating";
+    case "failed":
+      return "Failed";
     default:
       return "Not Generating";
   }
