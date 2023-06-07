@@ -1,11 +1,16 @@
 import { showNotification } from "@mantine/notifications";
 import { useQuery } from "react-query";
 
-async function getGenStatus(model: string | null, jobId: string | null | undefined) {
+async function getGenStatus(
+  model: string | null | undefined,
+  jobId: string | null | undefined
+) {
   try {
     if (!model) return null;
     if (!jobId) return null;
-    const res = await fetch(`https://waifus-api.nemusona.com/job/status/${model}/${jobId}`);
+    const res = await fetch(
+      `https://waifus-api.nemusona.com/job/status/${model}/${jobId}`
+    );
     if (res.status === 200) {
       return await res.text();
     } else {
@@ -17,7 +22,7 @@ async function getGenStatus(model: string | null, jobId: string | null | undefin
 }
 
 export default function useGetGenStatus(
-  model: string | null,
+  model: string | null | undefined,
   jobId: string | null | undefined
 ) {
   return useQuery(

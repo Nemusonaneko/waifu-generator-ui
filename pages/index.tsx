@@ -51,6 +51,7 @@ export default function Home() {
   const [model, setModel] = React.useState<string | null>(null);
   const [seed, setSeed] = React.useState<number>(-1);
   const [waifuFetched, setWaifuFetched] = React.useState<boolean>(false);
+  const [lastSettings, setLastSettings] = React.useState<FormValues>();
 
   const form = useForm<SubmitValues>({
     initialValues: {
@@ -72,20 +73,19 @@ export default function Home() {
   } = useGenerateWaifu();
   const { mutate: fetchWaifu, data: waifuData } = useGetResult();
   const { data: waifuStatus, isLoading: isFetchingGenStatus } = useGetGenStatus(
-    model,
+    lastSettings?.modelUsed,
     returnedJobId
   );
 
   React.useEffect(() => {
     if (waifuStatus !== "completed" || waifuFetched) return;
-    const values = form.values;
     const resultValues: ResultValues = {
       form: {
-        positivePrompts: values.positivePrompts,
-        negativePrompts: values.negativePrompts,
-        cfgScale: values.cfgScale,
-        denoiseStrength: values.denoiseStrength,
-        modelUsed: model!,
+        positivePrompts: lastSettings!.positivePrompts,
+        negativePrompts: lastSettings!.negativePrompts,
+        cfgScale: lastSettings!.cfgScale,
+        denoiseStrength: lastSettings!.denoiseStrength,
+        modelUsed: lastSettings!.modelUsed,
         seed,
       },
       jobId: returnedJobId!,
@@ -174,14 +174,28 @@ export default function Home() {
       } else {
         setNextTime(Date.now() + FIFTEEN_SEC);
       }
-      generate({
-        positivePrompts: values.positivePrompts,
-        negativePrompts: values.negativePrompts,
-        cfgScale: values.cfgScale,
-        denoiseStrength: values.denoiseStrength,
-        modelUsed: model!,
-        seed: seed,
-      });
+      generate(
+        {
+          positivePrompts: values.positivePrompts,
+          negativePrompts: values.negativePrompts,
+          cfgScale: values.cfgScale,
+          denoiseStrength: values.denoiseStrength,
+          modelUsed: model!,
+          seed: seed,
+        },
+        {
+          onSuccess: () => {
+            setLastSettings({
+              positivePrompts: values.positivePrompts,
+              negativePrompts: values.negativePrompts,
+              cfgScale: values.cfgScale,
+              denoiseStrength: values.denoiseStrength,
+              modelUsed: model!,
+              seed: seed,
+            });
+          },
+        }
+      );
       setWaifuFetched(false);
     });
   };
