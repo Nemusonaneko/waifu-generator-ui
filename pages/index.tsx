@@ -19,7 +19,12 @@ import Image from "next/image";
 import DogO from "../public/DogO.png";
 import Cute from "../public/cute.gif";
 import React from "react";
-import { HistoryValues, ResultValues, SubmitValues } from "../types";
+import {
+  FormValues,
+  HistoryValues,
+  ResultValues,
+  SubmitValues,
+} from "../types";
 import useGetQueue from "../queries/useGetQueue";
 import useGetStatus from "../queries/useGetStatus";
 import useGenerateWaifu from "../queries/useGenerateWaifu";
@@ -34,6 +39,7 @@ import DownloadButton from "../components/HistoryImage/DownloadButton";
 import useGetResult from "../queries/useGetResult";
 import useGetGenStatus from "../queries/useGetGenStatus";
 import translateStatus from "../utils/status";
+import DanbooruImport from "../components/DanbooruImport";
 
 const SIXTY_SEC = 60 * 1e3;
 const THIRTY_SEC = 30 * 1e3;
@@ -46,7 +52,7 @@ export default function Home() {
   const [seed, setSeed] = React.useState<number>(-1);
   const [waifuFetched, setWaifuFetched] = React.useState<boolean>(false);
 
-  const form = useForm({
+  const form = useForm<SubmitValues>({
     initialValues: {
       positivePrompts: "",
       negativePrompts: "",
@@ -199,14 +205,17 @@ export default function Home() {
                 </Center>
                 <Stack style={{ marginTop: "10px" }} spacing="md">
                   <div>
-                    <Tooltip
-                      position="top-start"
-                      label="What you want the AI to produce in your image"
-                    >
-                      <Text size="sm" fw={500}>
-                        Positive Prompts
-                      </Text>
-                    </Tooltip>
+                    <Flex gap={5}>
+                      <Tooltip
+                        position="top-start"
+                        label="What you want the AI to produce in your image"
+                      >
+                        <Text size="sm" fw={500}>
+                          Positive Prompts
+                        </Text>
+                      </Tooltip>
+                      <DanbooruImport form={form} />
+                    </Flex>
                     <Textarea
                       minRows={5}
                       disabled={
@@ -515,9 +524,12 @@ export default function Home() {
                     position="top-start"
                     label="What you want the AI to produce in your image"
                   >
-                    <Text size="sm" fw={500}>
-                      Positive Prompts
-                    </Text>
+                    <Flex gap={5}>
+                      <Text size="sm" fw={500}>
+                        Positive Prompts
+                      </Text>
+                      <DanbooruImport form={form} />
+                    </Flex>
                   </Tooltip>
                   <Textarea
                     autosize
