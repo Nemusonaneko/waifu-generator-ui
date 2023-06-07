@@ -2,8 +2,18 @@ import { Button, Group, ScrollArea, Text } from "@mantine/core";
 import useGetHistory from "../../queries/useGetHistory";
 import HistoryImage from "./HistoryImage";
 import { useQueryClient } from "react-query";
+import { SubmitValues } from "../../types";
+import { UseFormReturnType } from "@mantine/form";
 
-export default function History() {
+export default function History({
+  setModel,
+  setSeed,
+  form,
+}: {
+  setModel: React.Dispatch<React.SetStateAction<string | null>>;
+  setSeed: React.Dispatch<React.SetStateAction<number>>;
+  form: UseFormReturnType<SubmitValues>;
+}) {
   const { data: historyData } = useGetHistory();
   const queryClient = useQueryClient();
 
@@ -21,10 +31,10 @@ export default function History() {
               Delete All
             </Button>
           </Group>
-          
+
           <ScrollArea style={{ width: "100%" }} pt={5}>
             {historyData.map((x, i) => {
-              return <HistoryImage key={i} index={Number(i)} historyData={x} />;
+              return <HistoryImage setModel={setModel} setSeed={setSeed} form={form} key={i} index={Number(i)} historyData={x} />;
             })}
           </ScrollArea>
         </>

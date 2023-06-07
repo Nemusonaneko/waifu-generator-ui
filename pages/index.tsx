@@ -742,7 +742,7 @@ export default function Home() {
           )}
         </form>
         <Box pt={20}>
-          <History />
+          <History setModel={setModel} setSeed={setSeed} form={form} />
         </Box>
       </Container>
     </Layout>

@@ -1,5 +1,5 @@
 import { Box, Button, Center, Group, Modal, Text } from "@mantine/core";
-import { HistoryValues } from "../../types";
+import { HistoryValues, SubmitValues } from "../../types";
 import Image from "next/image";
 import React from "react";
 import { useQueryClient } from "react-query";
@@ -7,13 +7,21 @@ import Tink from "../../public/think.png";
 import DownloadButton from "./DownloadButton";
 import { translateModel } from "../../utils/models";
 import { useWindowSize } from "../../hooks/useWindowSize";
+import { UseFormReturnType } from "@mantine/form";
+import { showNotification } from "@mantine/notifications";
 
 export default function HistoryImage({
   index,
   historyData,
+  setModel,
+  setSeed,
+  form,
 }: {
   index: number;
   historyData: HistoryValues;
+  setModel: React.Dispatch<React.SetStateAction<string | null>>;
+  setSeed: React.Dispatch<React.SetStateAction<number>>;
+  form: UseFormReturnType<SubmitValues>;
 }) {
   const [modalOpened, setModalOpened] = React.useState<boolean>(false);
   const queryClient = useQueryClient();
@@ -39,6 +47,32 @@ export default function HistoryImage({
     setModalOpened(false);
   }
 
+  function onCopy() {
+    try {
+      form.setValues({
+        positivePrompts: historyData.positive,
+        negativePrompts: historyData.negative,
+        cfgScale: historyData.cfgScale,
+        denoiseStrength: historyData.denoiseStrength,
+      });
+      setModel(historyData.model);
+      setSeed(historyData.seed);
+      setModalOpened(false);
+      showNotification({
+        message: `Copied image settings!`,
+        color: "green",
+        loading: false,
+      });
+    } catch (error: any) {
+      setModalOpened(false);
+      showNotification({
+        message: error.message,
+        color: "red",
+        loading: false,
+      });
+    }
+  }
+
   const windowSize = useWindowSize();
 
   const isLg = windowSize && windowSize.width && windowSize.width >= 1024;
@@ -62,7 +96,12 @@ export default function HistoryImage({
       >
         <Box sx={{ width: "100%" }}>
           <Center>
-            <Image src={url} alt="img" width={isLg ? 400 : 300} height={isLg ? 400 : 300} />
+            <Image
+              src={url}
+              alt="img"
+              width={isLg ? 400 : 300}
+              height={isLg ? 400 : 300}
+            />
           </Center>
           <Box sx={{ wordWrap: "break-word", overflow: "auto" }}>
             <Text size="lg" fw={500}>
@@ -85,6 +124,9 @@ export default function HistoryImage({
             {typeof url === "string" && (
               <DownloadButton url={url} generating={false} />
             )}
+            <Button radius="md" size="xs" onClick={onCopy}>
+              Copy Settings
+            </Button>
             <Button radius="md" size="xs" color="red" onClick={onDelete}>
               Delete
             </Button>
