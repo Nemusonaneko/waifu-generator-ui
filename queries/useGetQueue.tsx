@@ -20,7 +20,7 @@ export default function useGetQueue(model: string | null) {
   }
 
   return useQuery(["queue", model], () => getQueue(model), {
-    refetchInterval: 1000,
+    refetchInterval: 5000,
     onError: (error: any) => {
       showNotification({
         message: error.message,
