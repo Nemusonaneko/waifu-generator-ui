@@ -4,6 +4,7 @@ import { useWindowSize } from "../../hooks/useWindowSize";
 import { UseFormReturnType } from "@mantine/form";
 import { SubmitValues } from "../../types";
 import { showNotification } from "@mantine/notifications";
+import validator from "validator";
 
 export default function DanbooruImport({
   form,
@@ -19,15 +20,23 @@ export default function DanbooruImport({
 
   const onSubmit = async () => {
     try {
-      let result: string = await fetch(
-        `https://danbooru.donmai.us/posts/${url}.json`
-      )
-        .then((x: any) => x.text())
-        .then((x: any) => JSON.parse(x))
-        .then((x: any) => x.tag_string);
+      let result;
+
+      if (validator.isURL(url)) {
+        result = await fetch(`${url}.json`)
+          .then((x: any) => x.text())
+          .then((x: any) => JSON.parse(x))
+          .then((x: any) => x.tag_string);
+      } else {
+        result = await fetch(`https://danbooru.donmai.us/posts/${url}.json`)
+          .then((x: any) => x.text())
+          .then((x: any) => JSON.parse(x))
+          .then((x: any) => x.tag_string);
+      }
+
       if (!result) {
         showNotification({
-          message: "Invalid ID!",
+          message: "Invalid Input!",
           color: "red",
           loading: false,
         });
@@ -67,7 +76,7 @@ export default function DanbooruImport({
         <Box w="100%">
           <Stack>
             <Textarea
-              label="Input ID"
+              label="Input ID or URL"
               autosize
               onChange={(x: any) => setUrl(x.target.value)}
             ></Textarea>

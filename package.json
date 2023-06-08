@@ -22,6 +22,7 @@
     "@types/node": "20.2.5",
     "@types/react": "18.2.7",
     "@types/react-dom": "18.2.4",
+    "@types/validator": "^13.7.17",
     "@types/webpack-env": "^1.18.1",
     "bignumber.js": "^9.1.1",
     "embla-carousel-autoplay": "^7.0.0",
@@ -33,6 +34,7 @@
     "react-dom": "18.2.0",
     "react-query": "^3.39.2",
     "typescript": "^5.0.4",
+    "validator": "^13.9.0",
     "viem": "^0.3.37",
     "wagmi": "^1.0.8"
   }
