@@ -154,7 +154,7 @@ export default function Home() {
   const onSubmit = (values: SubmitValues) => {
     fetchStatus().then(() => {
       if (amtInQueue) {
-        if (amtInQueue >= 50) {
+        if (amtInQueue >= 100) {
           showNotification({
             message:
               "Too many being generated atm. High chance of it timing out.",

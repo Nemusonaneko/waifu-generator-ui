@@ -71,7 +71,7 @@ export default function DanbooruImport({
         title="Import Tags from Danbooru"
         onClose={() => setOpened(false)}
         opened={opened}
-        size={isLg ? "50%" : "100%"}
+        size={isLg ? "40%" : "100%"}
       >
         <Box w="100%">
           <Stack>
