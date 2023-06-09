@@ -145,7 +145,7 @@ export default function Home() {
   }, [waifuStatus, returnedJobId]);
 
   React.useEffect(() => {
-    if (waifuStatus !== "completed" || waifuFetched) return;
+    if (waifuFetched) return;
     const interval = setInterval(() => {
       fetchWaifuStatus();
     }, 5000);
