@@ -72,11 +72,10 @@ export default function Home() {
     isLoading: generating,
   } = useGenerateWaifu();
   const { mutate: fetchWaifu, data: waifuData } = useGetResult();
-  const {
-    refetch: fetchWaifuStatus,
-    data: waifuStatus,
-    isLoading: isFetchingGenStatus,
-  } = useGetGenStatus(lastSettings?.modelUsed, returnedJobId);
+  const { data: waifuStatus, isLoading: isFetchingGenStatus } = useGetGenStatus(
+    lastSettings?.modelUsed,
+    returnedJobId
+  );
 
   React.useEffect(() => {
     if (waifuStatus !== "completed" || waifuFetched) return;
@@ -143,14 +142,6 @@ export default function Home() {
       },
     });
   }, [waifuStatus, returnedJobId]);
-
-  React.useEffect(() => {
-    if (waifuFetched) return;
-    const interval = setInterval(() => {
-      fetchWaifuStatus();
-    }, 5000);
-    return () => clearInterval(interval);
-  }, []);
 
   React.useEffect(() => {
     const interval = setInterval(() => {
