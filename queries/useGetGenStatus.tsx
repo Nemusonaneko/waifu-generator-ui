@@ -29,7 +29,6 @@ export default function useGetGenStatus(
     ["genStatus", model, jobId],
     () => getGenStatus(model, jobId),
     {
-      refetchInterval: 5000,
       onError: (error: any) => {
         showNotification({
           message: error.message,

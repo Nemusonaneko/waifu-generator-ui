@@ -137,7 +137,7 @@ export default function Layout({ children }: { children: any }) {
 
                   <UnstyledButton sx={{ width: 44, height: 44 }}>
                     <Link
-                      href="https://twitter.com/nemusonaUwU"
+                      href="https://twitter.com/waifugeneth"
                       target="_blank"
                     >
                       {twitter}
@@ -250,7 +250,7 @@ export default function Layout({ children }: { children: any }) {
                           </Menu.Item>
                         </Link>
                         <Link
-                          href="https://twitter.com/nemusonaUwU"
+                          href="https://twitter.com/waifugeneth"
                           style={{ textDecoration: "none" }}
                           target="_blank"
                         >
@@ -307,7 +307,7 @@ export default function Layout({ children }: { children: any }) {
 
                   <UnstyledButton sx={{ width: 44, height: 44 }}>
                     <Link
-                      href="https://twitter.com/nemusonaUwU"
+                      href="https://twitter.com/waifugeneth"
                       target="_blank"
                     >
                       {twitter}
