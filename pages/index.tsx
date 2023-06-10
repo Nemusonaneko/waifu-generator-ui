@@ -264,7 +264,7 @@ export default function Home() {
                           data={[
                             { value: "anything", label: "Anything V4.5" },
                             { value: "aom", label: "AOM3" },
-                            { value: "counterfeit", label: "Counterfeit V3" },
+                            { value: "counterfeit", label: "Counterfeit V2.5" },
                           ]}
                           onChange={setModel}
                         />
@@ -657,7 +657,7 @@ export default function Home() {
                     data={[
                       { value: "anything", label: "Anything V4.5" },
                       { value: "aom", label: "AOM3" },
-                      { value: "counterfeit", label: "Counterfeit V3" },
+                      { value: "counterfeit", label: "Counterfeit V2.5" },
                     ]}
                     onChange={setModel}
                   />
