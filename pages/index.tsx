@@ -462,7 +462,7 @@ export default function Home() {
                       <Slider
                         min={0}
                         max={1}
-                        step={0.05}
+                        step={0.01}
                         marks={[
                           { value: 0, label: "0" },
                           { value: 0.25, label: ".25" },
@@ -618,7 +618,7 @@ export default function Home() {
                     <Slider
                       min={0}
                       max={1}
-                      step={0.05}
+                      step={0.01}
                       marks={[
                         { value: 0, label: "0" },
                         { value: 0.25, label: ".25" },
