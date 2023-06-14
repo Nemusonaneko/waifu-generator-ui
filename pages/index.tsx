@@ -16,7 +16,6 @@ import {
   Container,
 } from "@mantine/core";
 import Image from "next/image";
-import DogO from "../public/DogO.png";
 import Cute from "../public/cute.gif";
 import React from "react";
 import {
@@ -41,9 +40,7 @@ import useGetGenStatus from "../queries/useGetGenStatus";
 import translateStatus from "../utils/status";
 import DanbooruImport from "../components/DanbooruImport";
 
-const SIXTY_SEC = 60 * 1e3;
 const THIRTY_SEC = 30 * 1e3;
-const FIFTEEN_SEC = 15 * 1e3;
 
 export default function Home() {
   const [countdown, setCountdown] = React.useState<number>(0);
@@ -169,10 +166,9 @@ export default function Home() {
           loading: true,
         });
 
-        const cooldown = 20 > amtInQueue ? THIRTY_SEC : SIXTY_SEC;
-        setNextTime(Date.now() + cooldown);
+        setNextTime(Date.now() + THIRTY_SEC);
       } else {
-        setNextTime(Date.now() + FIFTEEN_SEC);
+        setNextTime(Date.now() + THIRTY_SEC);
       }
       generate(
         {
