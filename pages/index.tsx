@@ -206,10 +206,10 @@ export default function Home() {
       <Container fluid>
         <Box w="100%">
           <Text size="sm">
-            {`Amount Generated (Started counting at: 2023/06/15 10:50:00 UTC) or ${(
+            {`Amount Generated (Started counting at: 2023/06/15 10:50:00 UTC or ${(
               (Date.now() / 1e3 - 1686826200) /
               86400
-            ).toFixed(2)} days ago`}
+            ).toFixed(2)} days ago)`}
           </Text>
           <Flex gap={16}>
             <Text size="sm">{`Past Hour: ${countData && countData.hour}`}</Text>
