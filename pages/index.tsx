@@ -39,6 +39,7 @@ import useGetResult from "../queries/useGetResult";
 import useGetGenStatus from "../queries/useGetGenStatus";
 import translateStatus from "../utils/status";
 import DanbooruImport from "../components/DanbooruImport";
+import useGetCount from "../queries/useGetCount";
 
 const THIRTY_SEC = 30 * 1e3;
 
@@ -73,6 +74,8 @@ export default function Home() {
     lastSettings?.modelUsed,
     returnedJobId
   );
+  const { data: countData } = useGetCount();
+  console.log(countData);
 
   React.useEffect(() => {
     if (waifuStatus !== "completed" || waifuFetched) return;
@@ -201,6 +204,19 @@ export default function Home() {
   return (
     <Layout>
       <Container fluid>
+        <Box w="100%">
+          <Text size="sm">
+            {`Amount Generated (Started counting at: 2023/06/15 10:50:00 UTC) or ${(
+              (Date.now() / 1e3 - 1686826200) /
+              86400
+            ).toFixed(2)} days ago`}
+          </Text>
+          <Flex gap={16}>
+            <Text size="sm">{`Past Hour: ${countData && countData.hour}`}</Text>
+            <Text size="sm">{`Past Day: ${countData && countData.day}`}</Text>
+            <Text size="sm">{`Past Week: ${countData && countData.week}`}</Text>
+          </Flex>
+        </Box>
         <form onSubmit={form.onSubmit((x: SubmitValues) => onSubmit(x))}>
           {windowSize.width && windowSize.width >= 1024 ? (
             <Flex gap="xs">
