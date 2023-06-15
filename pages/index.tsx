@@ -17,6 +17,7 @@ import {
 } from "@mantine/core";
 import Image from "next/image";
 import Cute from "../public/cute.gif";
+import Tink from "../public/think.png";
 import React from "react";
 import {
   FormValues,
@@ -75,7 +76,6 @@ export default function Home() {
     returnedJobId
   );
   const { data: countData } = useGetCount();
-  console.log(countData);
 
   React.useEffect(() => {
     if (waifuStatus !== "completed" || waifuFetched) return;
@@ -226,7 +226,7 @@ export default function Home() {
                     alt="waifu"
                     height={400}
                     width={400}
-                    src={waifuData?.url ?? Cute}
+                    src={waifuData?.url ?? Tink}
                   />
                 </Center>
                 <Stack style={{ marginTop: "10px" }} spacing="md">
@@ -502,7 +502,7 @@ export default function Home() {
                   alt="waifu"
                   height={300}
                   width={300}
-                  src={waifuData?.url ?? Cute}
+                  src={waifuData?.url ?? Tink}
                 />
               </Center>
               <Stack style={{ marginTop: "10px" }} spacing="xs">
