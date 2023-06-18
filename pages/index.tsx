@@ -41,7 +41,6 @@ import useGetGenStatus from "../queries/useGetGenStatus";
 import translateStatus from "../utils/status";
 import DanbooruImport from "../components/DanbooruImport";
 import useGetCount from "../queries/useGetCount";
-import useGetSession from "../queries/useGetSession";
 
 const THIRTY_SEC = 30 * 1e3;
 
@@ -65,7 +64,6 @@ export default function Home() {
   const queryClient = useQueryClient();
 
   const {} = useGetStatus();
-  const { data: session } = useGetSession();
   const { refetch: fetchStatus, data: amtInQueue } = useGetQueue(model);
   const {
     mutate: generate,
@@ -89,7 +87,6 @@ export default function Home() {
         denoiseStrength: lastSettings!.denoiseStrength,
         modelUsed: lastSettings!.modelUsed,
         seed,
-        session: session,
       },
       jobId: returnedJobId!,
     };
@@ -152,7 +149,6 @@ export default function Home() {
     seed,
     fetchWaifu,
     queryClient,
-    session,
   ]);
 
   React.useEffect(() => {
@@ -193,7 +189,6 @@ export default function Home() {
           denoiseStrength: values.denoiseStrength,
           modelUsed: model!,
           seed: seed,
-          session: session,
         },
         {
           onSuccess: () => {
@@ -204,7 +199,6 @@ export default function Home() {
               denoiseStrength: values.denoiseStrength,
               modelUsed: model!,
               seed: seed,
-              session: session,
             });
           },
         }

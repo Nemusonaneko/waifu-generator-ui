@@ -5,7 +5,6 @@ export interface FormValues {
   denoiseStrength: number;
   seed: number;
   modelUsed: string;
-  session: number | string | undefined;
 }
 
 export interface SubmitValues {

@@ -12,7 +12,6 @@ async function generateWaifu(values: FormValues) {
       cfg_scale: values?.cfgScale || 10,
       denoising_strength: values?.denoiseStrength || 0,
       seed: values?.seed,
-      session: values.session,
     });
     const res: Response = await fetch(
       `https://waifus-api.nemusona.com/job/submit/${values.modelUsed.toLowerCase()}`,
