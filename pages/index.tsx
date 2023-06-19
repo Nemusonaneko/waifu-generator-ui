@@ -221,8 +221,8 @@ export default function Home() {
           </Text>
           <Flex gap={16}>
             <Text size="sm">{`This Hour: ${countData && countData.hour}`}</Text>
-            <Text size="sm">{`1 Day: ${countData && countData.day}`}</Text>
-            <Text size="sm">{`1 Week: ${countData && countData.week}`}</Text>
+            <Text size="sm">{`This Day: ${countData && countData.day}`}</Text>
+            <Text size="sm">{`This Week: ${countData && countData.week}`}</Text>
           </Flex>
         </Box>
         <form onSubmit={form.onSubmit((x: SubmitValues) => onSubmit(x))}>
